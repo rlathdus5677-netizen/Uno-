@@ -6,7 +6,7 @@ const number = i => String(i+1).padStart(2,'0');
 export class ComebackProject {
  constructor(root){
   this.root=root;this.mode='listen';this.activeTrack=2;this.activeBehind=0;this.locked=false;this.destroyed=false;this.visible=true;this.listenState='explore';this.selectedTrack=null;this.focusBusy=false;this.focusEpoch=0;this.focusAnimations=[];this.muted=false;this.autoplayEnabled=false;
-  this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.audio=new Audio();this.animations=[];this.imageAnimations=[];this.noteAnimation=null;this.noteEpoch=0;this.rotationFrame=0;this.pointerFrame=0;this.hoverDepth=null;this.timers=new Set();
+  this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.audio=new Audio();this.animations=[];this.imageAnimations=[];this.noteAnimation=null;this.notePositionAnimation=null;this.noteEpoch=0;this.rotationFrame=0;this.pointerFrame=0;this.hoverDepth=null;this.timers=new Set();
   this.build();this.circles=[...root.querySelectorAll('.comeback-project__circle')];this.stage=root.querySelector('.comeback-project__stage');
   this.rotations=this.circles.map((circle,i)=>circle.querySelector('.comeback-project__track-artwork').animate([{transform:'rotate(0deg)'},{transform:`rotate(${360*trackData[i].rotation.direction}deg)`}],{duration:trackData[i].rotation.duration*1000,iterations:Infinity}));
   this.bind();this.updateUtilityUI();this.selectTrack(this.activeTrack);this.selectBehind(0);this.layout();this.syncRotations();
@@ -136,12 +136,40 @@ export class ComebackProject {
   this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.image)}" alt="${esc(d.title)}"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; BEHIND ARCHIVE</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>`;
   this.updateBehindNote(index,{animate:changed&&this.mode==='behind'&&!this.locked&&this.root.dataset.noteReady==='true'});
  }
+ updateNotePosition(index,{animate=false,delay=0}={}){
+  const note=this.$('.comeback-project__note'),row=this.$(`[data-step="${index}"]`),label=this.$('.comeback-project__note-label');
+  if(!row||!label)return null;
+  const style=getComputedStyle(note),from=style.translate;
+  this.notePositionAnimation?.cancel();this.notePositionAnimation=null;
+  note.style.removeProperty('translate');
+  // Compact layouts keep their existing reserved Note area instead of covering content.
+  if(style.getPropertyValue('--cp-note-row-follow').trim()==='0')return null;
+  const rowBox=row.getBoundingClientRect(),parentBox=note.offsetParent.getBoundingClientRect();
+  const y=rowBox.top-parentBox.top+(rowBox.height-label.getBoundingClientRect().height)/2;
+  const to=`0px ${y}px`;
+  note.style.setProperty('--cp-note-y',`${y}px`);
+  if(!animate||this.motion.matches)return null;
+  const movement=note.animate([{translate:from},{translate:to}],{duration:420,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'});
+  this.notePositionAnimation=movement;
+  movement.finished.catch(()=>{}).then(()=>{if(this.notePositionAnimation===movement){movement.cancel();this.notePositionAnimation=null;}});
+  return movement;
+ }
+ holdNotePosition(){
+  const note=this.$('.comeback-project__note'),translate=getComputedStyle(note).translate;
+  this.notePositionAnimation?.cancel();this.notePositionAnimation=null;
+  note.style.translate=translate;
+ }
  async updateBehindNote(index,{animate=false}={}){
   const content=this.$('.comeback-project__note-content'),epoch=++this.noteEpoch;
   const style=getComputedStyle(content),from={opacity:style.opacity,transform:style.transform};
   this.noteAnimation?.cancel();this.noteAnimation=null;
   const render=()=>{const d=behindData[index];content.innerHTML=`<p class="comeback-project__note-label">JENA'S NOTE ${esc(d.step)}</p><p class="comeback-project__note-body" lang="ko">${esc(d.note??'')}</p><p class="comeback-project__note-signature">Jena</p>`;};
-  if(!animate||this.motion.matches){render();return;}
+  if(!animate||this.motion.matches){
+   render();
+   if(this.locked&&this.mode==='behind')this.holdNotePosition();else this.updateNotePosition(index);
+   return;
+  }
+  const movement=this.updateNotePosition(index,{animate:true,delay:90});
   const exit=content.animate([from,{opacity:0,transform:'translateY(-3px)'}],{duration:110,easing:'ease-out',fill:'forwards'});
   this.noteAnimation=exit;
   await exit.finished.catch(()=>{});
@@ -149,7 +177,7 @@ export class ComebackProject {
   render();exit.cancel();
   const enter=content.animate([{opacity:0,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{duration:170,easing:'ease-out'});
   this.noteAnimation=enter;
-  await enter.finished.catch(()=>{});
+  await Promise.all([enter.finished.catch(()=>{}),movement?.finished.catch(()=>{})]);
   if(this.destroyed||epoch!==this.noteEpoch)return;
   enter.cancel();this.noteAnimation=null;
  }
@@ -163,6 +191,7 @@ export class ComebackProject {
  transform(p){return `translate(${p.x}px, ${p.y}px) scale(${p.size/600})`;}
  layout(){
   this.updateViewportAxis();
+  this.updateNotePosition(this.activeBehind);
   const geometry=this.positions(this.mode);
   if(this.mode==='listen'&&this.listenState==='focus')this.circles[this.selectedTrack].style.transform=this.transform(geometry.at(-1));
   else geometry.forEach((p,i)=>this.circles[i].style.transform=this.transform(p));
@@ -254,5 +283,5 @@ export class ComebackProject {
  stopAudio(){this.audio.pause();this.updatePlayer(false);}
  openMedia(){const d=behindData[this.activeBehind];this.$('.comeback-project__dialog-content').innerHTML=`<h2>${esc(d.videoTitle)}</h2>${d.video?`<video controls playsinline poster="${esc(d.image)}" src="${esc(d.video)}"></video>`:`<img src="${esc(d.image)}" alt="${esc(d.title)}"><p>이 단계의 비하인드 영상은 준비 중입니다. 영상이 준비되면 comebackData.js의 video 경로를 연결해주세요.</p>`}<p>${esc(d.description)}</p>`;this.$('dialog').querySelectorAll('audio,video').forEach(media=>media.muted=this.muted);this.$('dialog').showModal();}
  toast(message){const box=this.$('.comeback-project__toast');box.textContent=message;box.hidden=false;if(this.toastTimer){clearTimeout(this.toastTimer);this.timers.delete(this.toastTimer);}this.toastTimer=this.later(()=>box.hidden=true,4500);}
- destroy(){this.destroyed=true;this.noteEpoch++;this.noteAnimation?.cancel();this.root.dataset.visible='false';this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.imageAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
+ destroy(){this.destroyed=true;this.noteEpoch++;this.noteAnimation?.cancel();this.notePositionAnimation?.cancel();this.root.dataset.visible='false';this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.imageAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
 }
