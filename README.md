@@ -1,6 +1,23 @@
 # UNO — Comeback Project
 
-LIVE NOW Hero 바로 아래, PROCESS 위에 삽입하는 다크 테마의 Comeback Archive 섹션입니다. 홈페이지 전체가 아니라 LISTEN ↔ BEHIND 섹션만 구현합니다. 가상의 앨범 AFTERIMAGE와 모든 아트워크·문구는 임시 콘텐츠입니다.
+UNO Entertainment 홈페이지와 독립 실행 가능한 Comeback Archive를 함께 제공합니다. 가상의 앨범 AFTERIMAGE 및 홈페이지의 라이브 일정·문구는 임시 콘텐츠입니다.
+
+## UNO Entertainment 홈페이지
+
+로컬 실행 후 `http://localhost:3000/homepage/`에 접속합니다. 홈페이지 진입 파일은 `dist/homepage/index.html`이며, 기존 독립 Archive는 `http://localhost:3000/`에서 계속 실행됩니다.
+
+- `dist/homepage/homepage.js`: Header → Live Now → Archive → Process → Upcoming Live → Brand → Footer 구성 및 홈페이지 인터랙션
+- `dist/homepage/homepage.css`: `.uno-homepage` 범위의 스타일과 반응형 배치
+- `dist/homepage/homepageData.js`: Hero, 제작 과정 카드, 필터, 라이브 일정, 소셜 링크, Footer 콘텐츠
+- `dist/homepage/assets/`: 교체 가능한 홈페이지 전용 이미지 및 기존 로고의 복사본
+
+홈페이지는 기존 `ComebackProject` 클래스를 직접 import하고 하나의 section에 초기화합니다. `dist/comeback-project/`와 독립 실행용 `dist/index.html`은 홈페이지 작업에서 수정하지 않았습니다. 원래 928px 높이의 컴포넌트를 `min-height:100vh` wrapper에 넣고, viewport 고정 guide/utility는 wrapper의 clip-path로 Archive 영역 안에서만 표시합니다. 기존 IntersectionObserver가 화면 밖의 회전을 일시정지합니다. 홈페이지 종료 시 `unoHomepage.destroy()`는 원래 컴포넌트도 정리합니다.
+
+이미지 교체는 `homepageData.js`의 각 `image` 값을 수정하거나 해당 홈페이지 asset 파일만 교체하면 됩니다. 현재 이미지들은 기존 BEHIND PNG의 복사본이며 원본은 보존했습니다. Hero는 `hero-live.png`, Process는 `process-01.png`–`process-06.png`, 다음 라이브는 `upcoming-live.png`를 사용합니다. `artistProcessData`에서 image/title/artist/category/description을 바꾸면 카드와 상세 안내에 함께 반영됩니다.
+
+로그인·실시간 방송·알림 신청은 준비 중 안내를 표시하는 프런트엔드 프로토타입입니다. 라이브 일정은 임시 데이터이며, 캘린더 저장은 데이터의 날짜/시간과 10분 전 알림을 담은 ICS 파일을 다운로드합니다. 실제 알림 서버·회원 시스템은 연결하지 않았습니다. 소셜 URL과 법적 문구도 임시 값이며 `homepageData.js`에서 교체합니다.
+
+홈페이지 검증: 실제 Chromium에서 섹션 순서, 앵커 이동, 카테고리 필터, 가로 스크롤/드래그, 카드 상세, TOP, 안내 모달, 캘린더 다운로드, 이미지 로딩 및 1440/1280/1024/390px 폭을 확인했습니다. 삽입된 Archive와 독립 버전의 요소 배치 일치, 동일한 원·이미지·회전 객체, Focus, 양방향 morph, 10개 BEHIND 이미지/Note 선택, 화면 밖 회전 정지, reduced motion도 확인했습니다. 제공된 첨부는 텍스트 요구사항이므로 별도 와이어프레임 이미지 대신 문서의 구조와 시각적 위계를 기준으로 구현했습니다.
 
 ## 로컬 실행
 
