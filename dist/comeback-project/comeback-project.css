@@ -144,6 +144,10 @@
 /* Desktop timeline geometry. The same values define FLIP destinations in positions(). */
 @media(min-width:1001px){
  .comeback-project{
+  height:928px;
+  min-height:928px;
+  padding-top:66px;
+  padding-bottom:54px;
   --cp-timeline-node-size:33px;
   --cp-timeline-node-offset:6.5px;
   --cp-timeline-row-gap:52px;
