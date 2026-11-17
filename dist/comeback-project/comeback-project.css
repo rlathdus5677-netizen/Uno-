@@ -168,3 +168,8 @@
  .comeback-project__release-links{gap:28px}
  .comeback-project__release .comeback-project__link{font-size:10.5px!important}
 }
+
+/* Two visual layers inside each persistent circle; geometry and rotation stay independent. */
+.comeback-project__surface{position:relative}
+.comeback-project__circle .comeback-project__track-artwork{opacity:1}
+.comeback-project__circle .comeback-project__behind-artwork{position:absolute;inset:0;opacity:0}

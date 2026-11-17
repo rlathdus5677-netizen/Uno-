@@ -96,3 +96,13 @@ LISTEN은 기본 `listenState = explore`로 시작합니다. 최신 동작 기�
 진행 중 다른 번호를 누르면 현재 그려진 transform / opacity를 캡처한 뒤 기존 애니메이션을 취소하고 새 대상으로 이어갑니다. 비동기 완료는 focusEpoch로 구분해 이전 요청이 새 상태를 덮어쓰지 못하게 합니다. BEHIND 요청은 200ms 동안 원래 Explore geometry를 복원한 뒤 기존 morph를 실행합니다. BEHIND → LISTEN은 Explore로 돌아옵니다. `destroy()`는 포커스 애니메이션도 취소합니다.
 
 검증: 실제 Chromium에서 01의 중간 확대 프레임, 모든 10개 최종 지름·중심과 TRACK 10 원본 크기의 일치, TRACK 10 불필요한 확대 부재, 원·rotation identity, 선택 정보·번호, rotation 유지, hover 잠금, 컨트롤 보호, 포커스 간 직접 전환, 재클릭/바깥/Escape 복원, 빠른 요청 변경, Focus→BEHIND 및 역방향 Explore 복원, 고정 928px, 좁은 화면, reduced motion, keyboard 및 cleanup을 확인했습니다.
+
+## Separate BEHIND artwork and final chapters
+
+LISTEN circles use `assets/tracks/track-01.png` through `track-10.png`. BEHIND circles and the selected media viewer use `assets/behind/behind_01.png` through `behind_10.png`. Existing track files, uploaded behind files and `.gitkeep` are preserved unchanged.
+
+The ten `behindData` records explicitly define `id`, `step`, the final English `title`, Korean `description`, and `image`. Editing `image` in comebackData.js updates the node, viewer and modal together; animation code does not contain image paths. `thumbnail` remains an alias for compatibility, and `videoTitle` defaults to the final chapter title.
+
+Each original circle button now contains two noninteractive visual images within the same clipped surface. The original track image and its rotation animation stay mounted; the second image is an absolutely positioned BEHIND layer with no layout footprint. The existing FLIP geometry moves the same ten circle buttons. During that movement, only image opacity crossfades over 420ms with a small stagger. Reverse morph fades back to the track image. Reduced-motion uses an 80ms image transition. Incoming images are decoded before the morph, and destroy() cancels the image animations.
+
+Verified in Chromium: all ten final chapter names/descriptions and 1:1 image mapping; unchanged track assets; same circle, inner-image and rotation references through forward/reverse transitions; actual intermediate crossfade frames; node and label selection; matching viewer/modal image; Focus→BEHIND→Explore; rapid mode locks; reduced motion; narrow viewport; cleanup; unchanged 33px nodes, 52px row spacing and fixed 928px section height.

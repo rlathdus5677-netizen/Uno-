@@ -6,9 +6,9 @@ const number = i => String(i+1).padStart(2,'0');
 export class ComebackProject {
  constructor(root){
   this.root=root;this.mode='listen';this.activeTrack=2;this.activeBehind=0;this.locked=false;this.destroyed=false;this.visible=true;this.listenState='explore';this.selectedTrack=null;this.focusBusy=false;this.focusEpoch=0;this.focusAnimations=[];
-  this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.audio=new Audio();this.animations=[];this.rotationFrame=0;this.pointerFrame=0;this.hoverDepth=null;this.timers=new Set();
+  this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.audio=new Audio();this.animations=[];this.imageAnimations=[];this.rotationFrame=0;this.pointerFrame=0;this.hoverDepth=null;this.timers=new Set();
   this.build();this.circles=[...root.querySelectorAll('.comeback-project__circle')];this.stage=root.querySelector('.comeback-project__stage');
-  this.rotations=this.circles.map((circle,i)=>circle.querySelector('img').animate([{transform:'rotate(0deg)'},{transform:`rotate(${360*trackData[i].rotation.direction}deg)`}],{duration:trackData[i].rotation.duration*1000,iterations:Infinity}));
+  this.rotations=this.circles.map((circle,i)=>circle.querySelector('.comeback-project__track-artwork').animate([{transform:'rotate(0deg)'},{transform:`rotate(${360*trackData[i].rotation.direction}deg)`}],{duration:trackData[i].rotation.duration*1000,iterations:Infinity}));
   this.bind();this.selectTrack(this.activeTrack);this.selectBehind(0);this.layout();this.syncRotations();
   this.resize=new ResizeObserver(()=>{if(!this.locked&&!this.focusBusy)this.layout();else this.resizePending=true;});this.resize.observe(this.stage);
   this.observer=new IntersectionObserver(([entry])=>{this.visible=entry.isIntersecting;this.syncRotations();if(!this.visible)this.stopAudio();},{threshold:.02});this.observer.observe(root);
@@ -27,7 +27,7 @@ export class ComebackProject {
     <div class="comeback-project__release"><p class="comeback-project__eyebrow"><span aria-hidden="true">↓</span> &nbsp; ${esc(releaseData.eyebrow)}</p><h3>${esc(releaseData.title)}</h3><div class="comeback-project__release-links">${this.link(releaseData.primaryCta.label,releaseData.primaryCta.url)}${this.link(releaseData.secondaryCta.label,releaseData.secondaryCta.url,'data-listen-now')}</div></div>
     <article class="comeback-project__media" aria-live="polite"></article>
    </div>
-   <div class="comeback-project__objects">${trackData.map((t,i)=>`<button type="button" class="comeback-project__circle" data-track="${i}" aria-label="Track ${number(i)}: ${esc(t.title)}" aria-pressed="false" style="z-index:${trackData.length-i}"><span class="comeback-project__surface"><img src="${esc(t.cover)}" alt="" draggable="false"></span></button>`).join('')}</div>
+   <div class="comeback-project__objects">${trackData.map((t,i)=>`<button type="button" class="comeback-project__circle" data-track="${i}" aria-label="Track ${number(i)}: ${esc(t.title)}" aria-pressed="false" style="z-index:${trackData.length-i}"><span class="comeback-project__surface"><img class="comeback-project__track-artwork" src="${esc(t.cover)}" alt="" draggable="false"><img class="comeback-project__behind-artwork" src="${esc(behindData[i].image)}" alt="" aria-hidden="true" draggable="false"></span></button>`).join('')}</div>
    <div class="comeback-project__orbit-caption"><span>10 TRACKS / ${esc(albumData.duration)}</span><span data-listen-hint>HOVER TO EXPLORE · NUMBERS TO FOCUS</span></div>
    <div class="comeback-project__listen"><p class="comeback-project__album-artist">${esc(albumData.artist)}</p><h2 class="comeback-project__album-name">${esc(albumData.title)}</h2><p class="comeback-project__album-edition">${esc(albumData.edition)} &nbsp; / &nbsp; ${esc(albumData.year)}</p><div class="comeback-project__divider"></div><div class="comeback-project__track-details" aria-live="polite"></div><div class="comeback-project__select-tracks" aria-label="Select track">${trackData.map((t,i)=>`<button type="button" class="comeback-project__track-pick" data-pick="${i}" aria-label="Focus track ${number(i)}: ${esc(t.title)}. Click again to explore." aria-pressed="false">${number(i)}</button>`).join('')}</div></div>
    <div class="comeback-project__switch" role="group" aria-label="Album view">
@@ -109,7 +109,7 @@ export class ComebackProject {
   if(index===this.activeTrack&&!this.audio.paused)this.updatePlayer(true);
  }
  selectBehind(index){this.activeBehind=index;const d=behindData[index];this.root.querySelectorAll('[data-step]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));if(this.mode==='behind')this.circles.forEach((c,i)=>{c.dataset.active=String(i===index);c.setAttribute('aria-pressed',String(i===index));});
-  this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.thumbnail)}" alt="${esc(d.title)} — temporary concept artwork"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; CONCEPT VISUAL</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>`;
+  this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.image)}" alt="${esc(d.title)}"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; BEHIND ARCHIVE</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>`;
  }
  positions(mode){const w=this.stage.clientWidth;const mobile=w<580;const diameter=mobile?Math.min(w*.87,350):Math.min(680,w*.60);const centerX=w*.5,centerY=mobile?190:380;
   // Read shared layout tokens so timeline rows and the original circle objects stay aligned.
@@ -160,6 +160,19 @@ export class ComebackProject {
   this.layout();this.resizePending=false;if(!forMode)this.syncRotations();
   this.$('.comeback-project__mode-announcement').textContent=index===null?'Explore mode. Move across the artwork to explore ten tracks.':`Track ${number(index)} focus. Click the selected number again or outside the artwork to explore.`;
  }
+ transitionCircleImages(next){
+  const reduced=this.motion.matches;
+  this.imageAnimations=this.circles.flatMap((circle,i)=>{
+   const track=circle.querySelector('.comeback-project__track-artwork');
+   const behind=circle.querySelector('.comeback-project__behind-artwork');
+   return [track,behind].map((image,j)=>{
+    const from=getComputedStyle(image).opacity;
+    const to=String(next==='behind'?j:1-j);
+    image.style.opacity=to;
+    return image.animate([{opacity:from},{opacity:to}],{duration:reduced?80:420,delay:reduced?0:220+i*18,easing:'ease-in-out',fill:'backwards'});
+   });
+  });
+ }
  async setMode(next){
   if(this.locked||next===this.mode||this.destroyed)return;this.locked=true;this.stopAudio();this.root.setAttribute('aria-busy','true');
   this.root.dataset.preparing='true';this.root.querySelectorAll('[data-mode-target]').forEach(b=>b.disabled=true);
@@ -167,6 +180,10 @@ export class ComebackProject {
   this.clearExploration();
   this.$('.comeback-project__listen').inert=true;this.$('.comeback-project__behind').inert=true;
   this.root.dataset.revealed='false';
+  // Decode the incoming visuals before starting the existing morph, avoiding blank frames.
+  const incoming=next==='behind'?'.comeback-project__behind-artwork':'.comeback-project__track-artwork';
+  await Promise.all(this.circles.map(circle=>circle.querySelector(incoming).decode().catch(()=>{})));
+  if(this.destroyed)return;
   const reduced=this.motion.matches;const duration=reduced?120:motionData.duration;const stagger=reduced?0:motionData.stagger;
   if(next==='behind'&&!reduced){await this.slowRotations(150);if(this.destroyed)return;}else this.rotations.forEach(a=>a.pause());
   // FLIP: record current transforms, update the same ten buttons' final transforms,
@@ -176,9 +193,10 @@ export class ComebackProject {
   const destinations=this.positions(next);
   this.circles.forEach((circle,i)=>{circle.style.transform=this.transform(destinations[i]);circle.setAttribute('aria-label',next==='behind'?`Behind ${number(i)}: ${behindData[i].title}`:`Track ${number(i)}: ${trackData[i].title}`);});
   this.animations=this.circles.map((circle,i)=>{const keys=[{transform:first[i]}];if(next==='behind'&&!reduced){const p=this.positions('listen')[i];keys.push({transform:this.transform({x:p.x+p.size*.02,y:p.y+p.size*.02,size:p.size*.96}),offset:.12});}keys.push({transform:this.transform(destinations[i])});return circle.animate(keys,{duration,delay:i*stagger,easing:'cubic-bezier(.65,0,.18,1)',fill:'backwards'});});
+  this.transitionCircleImages(next);
   this.later(()=>{if(next==='behind')this.root.dataset.revealed='true';},reduced?0:900);
   await Promise.all(this.animations.map(a=>a.finished.catch(()=>{})));if(this.destroyed)return;
-  this.animations.forEach(a=>a.cancel());this.animations=[];this.locked=false;this.root.removeAttribute('aria-busy');
+  this.animations.forEach(a=>a.cancel());this.animations=[];this.imageAnimations.forEach(a=>a.cancel());this.imageAnimations=[];this.locked=false;this.root.removeAttribute('aria-busy');
   this.root.querySelectorAll('[data-mode-target]').forEach(b=>{b.disabled=false;b.setAttribute('aria-pressed',String(b.dataset.modeTarget===next));});
   const behind=next==='behind';this.$('.comeback-project__listen').inert=behind;this.$('.comeback-project__listen').setAttribute('aria-hidden',String(behind));this.$('.comeback-project__behind').inert=!behind;this.$('.comeback-project__behind').setAttribute('aria-hidden',String(!behind));
 
@@ -190,7 +208,7 @@ export class ComebackProject {
   if(this.activeTrack===index&&!this.audio.paused){this.audio.pause();this.updatePlayer(false);return;}this.selectTrack(index);const src=new URL(t.audio,import.meta.url).href;if(this.audio.src!==src)this.audio.src=src;try{await this.audio.play();if(!this.destroyed)this.updatePlayer(true);}catch{this.toast('오디오를 재생할 수 없습니다. 음원 파일을 확인해주세요.');}}
  updatePlayer(playing){const play=this.$('[data-play]');if(play){play.classList.toggle('is-playing',playing);play.setAttribute('aria-label',`${playing?'Pause':'Play'} preview`);}this.$('.comeback-project__wave')?.classList.toggle('is-playing',playing);}
  stopAudio(){this.audio.pause();this.updatePlayer(false);}
- openMedia(){const d=behindData[this.activeBehind];this.$('.comeback-project__dialog-content').innerHTML=`<h2>${esc(d.videoTitle)}</h2>${d.video?`<video controls playsinline poster="${esc(d.thumbnail)}" src="${esc(d.video)}"></video>`:`<img src="${esc(d.thumbnail)}" alt="${esc(d.title)} concept artwork"><p>이 비하인드 콘텐츠는 임시 비주얼입니다. 실제 영상이 준비되면 comebackData.js의 video 경로만 교체해주세요.</p>`}<p>${esc(d.description)}</p>`;this.$('dialog').showModal();}
+ openMedia(){const d=behindData[this.activeBehind];this.$('.comeback-project__dialog-content').innerHTML=`<h2>${esc(d.videoTitle)}</h2>${d.video?`<video controls playsinline poster="${esc(d.image)}" src="${esc(d.video)}"></video>`:`<img src="${esc(d.image)}" alt="${esc(d.title)}"><p>이 단계의 비하인드 영상은 준비 중입니다. 영상이 준비되면 comebackData.js의 video 경로를 연결해주세요.</p>`}<p>${esc(d.description)}</p>`;this.$('dialog').showModal();}
  toast(message){const box=this.$('.comeback-project__toast');box.textContent=message;box.hidden=false;if(this.toastTimer){clearTimeout(this.toastTimer);this.timers.delete(this.toastTimer);}this.toastTimer=this.later(()=>box.hidden=true,4500);}
- destroy(){this.destroyed=true;this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
+ destroy(){this.destroyed=true;this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.imageAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
 }
