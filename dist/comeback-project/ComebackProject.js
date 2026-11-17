@@ -105,7 +105,12 @@ export class ComebackProject {
   this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.thumbnail)}" alt="${esc(d.title)} — temporary concept artwork"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; CONCEPT VISUAL</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>`;
  }
  positions(mode){const w=this.stage.clientWidth;const mobile=w<580;const diameter=mobile?Math.min(w*.87,350):Math.min(680,w*.60);const centerX=w*.5,centerY=mobile?190:380;
-  return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+6+i*44,size:motionData.nodeSize};const size=diameter*(1-i*.078);return{x:centerX-size/2,y:centerY-size/2,size};});}
+  // Read shared layout tokens so timeline rows and the original circle objects stay aligned.
+  const style=mode==='behind'?getComputedStyle(this.root):null;
+  const nodeSize=parseFloat(style?.getPropertyValue('--cp-timeline-node-size'))||motionData.nodeSize;
+  const nodeOffset=parseFloat(style?.getPropertyValue('--cp-timeline-node-offset'))||6;
+  const rowGap=parseFloat(style?.getPropertyValue('--cp-timeline-row-gap'))||44;
+  return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+nodeOffset+i*rowGap,size:nodeSize};const size=diameter*(1-i*.078);return{x:centerX-size/2,y:centerY-size/2,size};});}
  transform(p){return `translate(${p.x}px, ${p.y}px) scale(${p.size/600})`;}
  layout(){this.positions(this.mode).forEach((p,i)=>this.circles[i].style.transform=this.transform(p));}
  async setMode(next){
