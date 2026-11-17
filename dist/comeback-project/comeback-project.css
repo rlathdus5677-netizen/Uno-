@@ -1,4 +1,4 @@
-.comeback-project{--cp-bg:#202124;--cp-fg:#f4f2f7;--cp-muted:#b7b1bf;--cp-purple:#aa87ff;position:relative;isolation:isolate;box-sizing:border-box;background:var(--cp-bg);color:var(--cp-fg);font-family:Arial,Helvetica,sans-serif;padding:52px 60px 40px;overflow:hidden}
+.comeback-project{--track-artwork-opacity:0.78;--cp-bg:#202124;--cp-fg:#f4f2f7;--cp-muted:#b7b1bf;--cp-purple:#aa87ff;position:relative;isolation:isolate;box-sizing:border-box;background:var(--cp-bg);color:var(--cp-fg);font-family:Arial,Helvetica,sans-serif;padding:52px 60px 40px;overflow:hidden}
 .comeback-project *{box-sizing:border-box}
 .comeback-project button,.comeback-project a{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .comeback-project button{cursor:pointer}
@@ -112,7 +112,7 @@
 .comeback-project__orbit-caption{bottom:7px}
 
 
-.comeback-project__surface{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;pointer-events:none;background:#161419;transform:scale(1);opacity:1;transition:transform 450ms cubic-bezier(.22,1,.36,1),opacity 450ms cubic-bezier(.22,1,.36,1);will-change:transform,opacity}
+.comeback-project__surface{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;pointer-events:none;background:transparent;transform:scale(1);opacity:1;transition:transform 450ms cubic-bezier(.22,1,.36,1),opacity 450ms cubic-bezier(.22,1,.36,1);will-change:transform,opacity}
 .comeback-project[data-preparing=true] .comeback-project__surface{transition-duration:150ms}
 .comeback-project__circle img{border-radius:50%}
 @media(prefers-reduced-motion:reduce){.comeback-project__surface{transition:none!important}
@@ -170,7 +170,8 @@
 
 /* Two visual layers inside each persistent circle; geometry and rotation stay independent. */
 .comeback-project__surface{position:relative}
-.comeback-project__circle .comeback-project__track-artwork{opacity:1}
+/* Image-only alpha stays independent of the existing mode crossfade opacity. */
+.comeback-project__circle .comeback-project__track-artwork{opacity:1;filter:opacity(var(--track-artwork-opacity))}
 .comeback-project__circle .comeback-project__behind-artwork{position:absolute;inset:0;opacity:0}
 
 /* Stable editorial UI around the existing interaction. */
