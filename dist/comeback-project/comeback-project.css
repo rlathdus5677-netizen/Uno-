@@ -52,7 +52,7 @@
 .comeback-project__release .comeback-project__eyebrow{color:var(--cp-purple);margin-bottom:9px;font-size:9px}
 .comeback-project__release h3{font-size:16px;font-weight:400;letter-spacing:.5px;margin:0 0 15px}
 .comeback-project__release-links{display:flex;gap:24px}
-.comeback-project__media{position:absolute;left:50%;right:8%;top:25px}
+.comeback-project__media{position:absolute;left:calc(50% + 24px);right:8%;top:25px}
 .comeback-project__media-visual{position:relative;aspect-ratio:1.65;background:#19151f;overflow:hidden}
 .comeback-project__media-visual img{width:100%;height:100%;object-fit:cover;filter:brightness(.8)}
 .comeback-project__media-visual:after{content:'UNO / AFTERIMAGE';position:absolute;bottom:18px;left:22px;font:9px monospace;letter-spacing:3px;color:#ddd}
