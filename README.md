@@ -1,6 +1,6 @@
 # UNO — Comeback Project
 
-기존 UNO 홈페이지에 삽입할 수 있는 독립형 인터랙티브 프로토타입입니다. 홈페이지 전체가 아니라 LISTEN ↔ BEHIND 섹션만 구현합니다. 가상의 앨범 AFTERIMAGE와 모든 아트워크·문구는 임시 콘텐츠입니다.
+LIVE NOW Hero 바로 아래, PROCESS 위에 삽입하는 흰색 Comeback Archive 섹션입니다. 홈페이지 전체가 아니라 LISTEN ↔ BEHIND 섹션만 구현합니다. 가상의 앨범 AFTERIMAGE와 모든 아트워크·문구는 임시 콘텐츠입니다.
 
 ## 로컬 실행
 
@@ -16,13 +16,13 @@ npm run check
 
 `dist/comeback-project/comebackData.js`만 수정합니다.
 
-- `albumData`: 앨범명, 아티스트, 연도, 소개
+- `albumData`: 섹션 라벨, 앨범명, 아티스트, 연도, 소개
 - `trackData`: 트랙명, cover, audio, Spotify / YouTube Music URL, 재생 시간, 회전 설정
 - `behindData`: 단계명, 제목, 설명, 썸네일, video, CTA 라벨과 링크
 - `releaseData`: TODAY, 발매 문구, 발매 CTA
 - `motionData`: 이동 시간, stagger, 노드 크기
 
-`cover`와 `thumbnail`은 이미지 URL이며 기존 파일만 교체해도 됩니다. 음원은 `audio`에 URL을 설정하면 작동합니다. 한 번에 한 트랙만 재생되고 60초 이후 정지합니다. 빈 URL은 이동하지 않으며 준비 중 안내가 표시됩니다. 비하인드 `video`를 연결하면 모달에서 네이티브 비디오 플레이어를 사용합니다. `ctaUrl`을 연결하면 외부 링크로 작동합니다.
+`cover`와 `thumbnail`은 이미지 URL이며 기존 파일만 교체해도 됩니다. 음원은 `audio`에 URL을 설정하면 작동합니다. 한 번에 한 트랙만 재생되고 60초 이후 정지합니다. 빈 URL은 이동하지 않으며 준비 중 안내가 표시됩니다. 비하인드 `video`를 연결하면 모달에서 네이티브 비디오 플레이어를 사용합니다. 비하인드 하단 CTA는 표시하지 않으며 썸네일의 재생 버튼으로 콘텐츠를 엽니다.
 
 ## 기존 홈페이지에 삽입
 
@@ -60,6 +60,16 @@ npm run check
 
 선택 깊이에 따라 여러 surface가 최대 3% 확장되고, 현재 트랙보다 안쪽의 레이어는 5% 확장하면서 페이드됩니다. 반경을 되돌아가면 같은 레이어가 복원됩니다. 전환은 450ms이며, 원 밖으로 나오면 composition을 복원하고 마지막 탐색 트랙은 유지합니다. Hover나 키보드 focus만으로 오디오를 재생하지 않으며, 원 클릭 또는 PLAY 버튼으로 미리듣기를 요청합니다.
 
-오른쪽 컨트롤은 LISTEN / BEHIND 두 개의 별도 버튼입니다. Hover / keyboard focus 시 작은 label을 표시하며 active mode를 보라색 아이콘과 선으로 나타냅니다. 기존 하단 mode controls도 그대로 동작합니다. BEHIND 진입 시 hover를 잠그고 150ms 동안 surface를 복원하며 회전을 감속한 뒤 기존 morph를 실행합니다.
+오른쪽 컨트롤은 LISTEN / BEHIND 두 개의 별도 버튼입니다. Hover / keyboard focus 시 작은 label을 표시하며 active mode를 보라색 아이콘과 선으로 나타냅니다. 자체 헤더, 대형 페이지 제목, 하단 mode navigation과 푸터는 없으며 오른쪽 컨트롤을 사용합니다. BEHIND 진입 시 hover를 잠그고 150ms 동안 surface를 복원하며 회전을 감속한 뒤 기존 morph를 실행합니다.
 
 수정 검증: 실제 Chromium에서 모든 artwork의 rotation transform이 시간에 따라 바뀌는지, 포인터의 양방향 radial 탐색, 확대·fade·복원, hover autoplay 부재, 클릭 / keyboard 접근, 두 mode tabs, hover 중 morph와 DOM identity 유지, reverse morph, 기존 viewer, 연속 mode 요청, reduced motion 및 responsive widths를 확인했습니다.
+
+## Homepage layout adaptation
+
+1440px에서 섹션 높이는 900px입니다. 상단 여백 52px, 좌우 gutter 60px, interaction 영역 높이 760px로 구성합니다. 앨범 최대 지름은 680px이며, 섹션의 정확한 중앙(X=720px)에 놓입니다. 좌우 대칭 gutter를 제외한 interaction 영역의 50%가 같은 축이므로 padding 때문에 중심이 밀리지 않습니다. 얇은 보라색 가이드가 원 뒤에서 같은 축을 따라 이어지며 pointer 이벤트를 받지 않습니다. BEHIND에서는 기존 제작 타임라인의 연결선을 사용합니다.
+
+LISTEN과 BEHIND는 같은 section 높이를 유지합니다. 트랙 정보는 왼쪽 safe area, 모드 컨트롤은 오른쪽 60px gutter에 정렬됩니다. 원의 layer 비율·반경 판정·회전·hover·morph는 유지하고 배치 좌표와 전체 지름만 조정했습니다. 임시 아트워크와 트랙/비하인드 데이터는 변경하지 않았습니다.
+
+컴포넌트에는 body/html scroll 제어, 100vh 최소 높이, fixed 페이지 레이아웃이 없습니다. index.html은 섹션 실행용이며, 실제 홈페이지에는 위 삽입 예제대로 ComebackProject만 사용하세요. 좁은 화면에서는 기존 세로 배치를 유지하면서 양쪽 모드에 같은 높이를 적용합니다.
+
+검증: 1440px 중심/지름/gutter/높이의 실제 bounding box, 흰 배경, 모드별 동일 높이, 타임라인·미디어 경계, 동일 DOM 유지, 앞뒤 host 요소를 넣었을 때 페이지 스크롤과 다음 섹션 위치를 확인했습니다. 최신 와이어프레임 이미지는 첨부되지 않아 요청 문서의 명시된 수치와 구조를 기준으로 조정했습니다.

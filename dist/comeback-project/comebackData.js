@@ -1,5 +1,5 @@
 const asset = name => new URL(`./assets/tracks/${name}`, import.meta.url).href;
-export const albumData = {artist:'UNO COLLECTIVE',title:'AFTERIMAGE',edition:'THE 1ST FULL ALBUM',year:'2026',intro:'Every sound has a beginning.\nFind yours in the space between.',description:'Ten tracks. One unfolding story.',duration:'32:48'};
+export const albumData = {sectionLabel:'COMEBACK ARCHIVE',artist:'UNO COLLECTIVE',title:'AFTERIMAGE',edition:'THE 1ST FULL ALBUM',year:'2026',intro:'Every sound has a beginning.\nFind yours in the space between.',description:'Ten tracks. One unfolding story.',duration:'32:48'};
 const titles=['FIRST LIGHT','IN THE STATIC','MIDNIGHT CALL','SLOW MOTION','AFTERIMAGE','BETWEEN US','SOFT COLLISION','OUT OF FRAME','STILL HERE','A NEW BEGINNING'];
 export const trackData=titles.map((title,i)=>({id:i+1,title,cover:asset(`track-${String(i+1).padStart(2,'0')}.svg`),audio:'',spotifyUrl:'',youtubeMusicUrl:'',previewDuration:60,duration:['2:48','3:12','3:36','3:09','3:42','2:56','3:28','3:01','3:26','3:30'][i],rotation:{duration:[52,64,46,70,56,42,62,48,68,58][i],direction:i%2?-1:1}}));
 const steps=['THE BEGINNING','CHOOSING THE SONG','MAKING THE SOUND','RECORDING','BUILDING THE CONCEPT','FINDING THE LOOK','MAKING THE MOVE','PRACTICE LOG','ON THE SET','THE NIGHT BEFORE'];
