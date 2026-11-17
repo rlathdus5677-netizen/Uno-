@@ -84,3 +84,15 @@ CSS의 `--cp-timeline-*` 변수로 노드 크기, 행 간격, 레이블 오프�
 ## Fixed desktop section height
 
 1001px 이상 데스크톱에서 height와 min-height를 모두 928px로 지정합니다. 상단 padding 66px, 라벨 14px, stage 상단 여백 34px, stage 760px, 하단 padding 54px를 합쳐 정확히 928px입니다. 기존 900px 배치 대비 위아래 여백만 각각 14px 늘렸으며 원·타임라인·미디어의 크기와 내부 간격은 유지합니다. 두 모드 모두 같은 규칙을 사용하고 viewport 높이에는 의존하지 않습니다. 다음 홈페이지 섹션은 이 928px 경계 바로 다음에 배치할 수 있습니다.
+
+## TRACK FOCUS MODE
+
+LISTEN은 기본 `listenState = explore`로 시작합니다. 최신 동작 기준으로 TRACK 01이 가장 안쪽, TRACK 10이 가장 바깥쪽입니다. 기존 10개의 크기 비율은 유지하고 트랙별 반경 및 stacking 순서만 이 번호 체계에 맞췄습니다. radial hover도 같은 순서의 반경으로 판정합니다.
+
+하단 01–10 버튼은 `setTrackFocus(index)`를 호출합니다. 내부 index는 0–9이며 기존 trackData를 그대로 참조합니다. 선택된 기존 circle 버튼 자체가 `positions('listen').at(-1)`의 geometry로 확장됩니다. 포커스 전용 이미지나 원을 생성하지 않으며 별도의 고정 px 지름도 정의하지 않습니다. TRACK 10을 선택하면 transform의 크기는 바뀌지 않고 다른 레이어가 걷힙니다.
+
+650ms 전환 동안 나머지 원은 4.5% 확장과 작은 분리 이동, opacity를 조합해 퇴장합니다. 선택된 이미지의 독립 회전은 계속됩니다. 숨겨진 원은 포인터와 키보드 탐색에서 제외하고 회전을 일시 중지합니다. 포커스 안에서는 radial hover를 잠그며 번호를 바꾸면 큰 원에서 다른 큰 원으로 직접 전환합니다. 같은 번호 재클릭, 원 바깥 빈 공간 클릭, Escape는 Explore로 복원합니다. 재생·서비스 링크·번호·모드 컨트롤은 빈 공간 클릭으로 처리하지 않습니다. 번호 클릭이나 hover만으로 오디오를 재생하지 않습니다.
+
+진행 중 다른 번호를 누르면 현재 그려진 transform / opacity를 캡처한 뒤 기존 애니메이션을 취소하고 새 대상으로 이어갑니다. 비동기 완료는 focusEpoch로 구분해 이전 요청이 새 상태를 덮어쓰지 못하게 합니다. BEHIND 요청은 200ms 동안 원래 Explore geometry를 복원한 뒤 기존 morph를 실행합니다. BEHIND → LISTEN은 Explore로 돌아옵니다. `destroy()`는 포커스 애니메이션도 취소합니다.
+
+검증: 실제 Chromium에서 01의 중간 확대 프레임, 모든 10개 최종 지름·중심과 TRACK 10 원본 크기의 일치, TRACK 10 불필요한 확대 부재, 원·rotation identity, 선택 정보·번호, rotation 유지, hover 잠금, 컨트롤 보호, 포커스 간 직접 전환, 재클릭/바깥/Escape 복원, 빠른 요청 변경, Focus→BEHIND 및 역방향 Explore 복원, 고정 928px, 좁은 화면, reduced motion, keyboard 및 cleanup을 확인했습니다.
