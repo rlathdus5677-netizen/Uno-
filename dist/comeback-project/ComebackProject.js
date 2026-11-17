@@ -1,17 +1,17 @@
-import {albumData,trackData,behindData,releaseData,motionData} from './comebackData.js';
+import {albumData,trackData,behindData,releaseData,motionData,artistData} from './comebackData.js';
 const esc = value => String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow = '<svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 10 10 2M3 2h7v7" stroke="currentColor" stroke-width="1"/></svg>';
 const number = i => String(i+1).padStart(2,'0');
 /** Standalone component. All assets and copy live in comebackData.js. Call destroy() before removing. */
 export class ComebackProject {
  constructor(root){
-  this.root=root;this.mode='listen';this.activeTrack=2;this.activeBehind=0;this.locked=false;this.destroyed=false;this.visible=true;this.listenState='explore';this.selectedTrack=null;this.focusBusy=false;this.focusEpoch=0;this.focusAnimations=[];
+  this.root=root;this.mode='listen';this.activeTrack=2;this.activeBehind=0;this.locked=false;this.destroyed=false;this.visible=true;this.listenState='explore';this.selectedTrack=null;this.focusBusy=false;this.focusEpoch=0;this.focusAnimations=[];this.muted=false;this.autoplayEnabled=false;
   this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.audio=new Audio();this.animations=[];this.imageAnimations=[];this.rotationFrame=0;this.pointerFrame=0;this.hoverDepth=null;this.timers=new Set();
   this.build();this.circles=[...root.querySelectorAll('.comeback-project__circle')];this.stage=root.querySelector('.comeback-project__stage');
   this.rotations=this.circles.map((circle,i)=>circle.querySelector('.comeback-project__track-artwork').animate([{transform:'rotate(0deg)'},{transform:`rotate(${360*trackData[i].rotation.direction}deg)`}],{duration:trackData[i].rotation.duration*1000,iterations:Infinity}));
-  this.bind();this.selectTrack(this.activeTrack);this.selectBehind(0);this.layout();this.syncRotations();
-  this.resize=new ResizeObserver(()=>{if(!this.locked&&!this.focusBusy)this.layout();else this.resizePending=true;});this.resize.observe(this.stage);
-  this.observer=new IntersectionObserver(([entry])=>{this.visible=entry.isIntersecting;this.syncRotations();if(!this.visible)this.stopAudio();},{threshold:.02});this.observer.observe(root);
+  this.bind();this.updateUtilityUI();this.selectTrack(this.activeTrack);this.selectBehind(0);this.layout();this.syncRotations();
+  this.resize=new ResizeObserver(()=>{this.updateViewportAxis();if(!this.locked&&!this.focusBusy)this.layout();else this.resizePending=true;});this.resize.observe(this.stage);
+  this.observer=new IntersectionObserver(([entry])=>{this.visible=entry.isIntersecting;this.root.dataset.visible=String(this.visible);this.syncRotations();if(!this.visible)this.stopAudio();},{threshold:.02});this.observer.observe(root);
  }
  $(selector){return this.root.querySelector(selector);}
  later(fn,ms){const id=setTimeout(()=>{this.timers.delete(id);if(!this.destroyed)fn();},ms);this.timers.add(id);return id;}
@@ -19,9 +19,10 @@ export class ComebackProject {
  build(){
   this.root.dataset.mode='listen';this.root.dataset.revealed='false';this.root.dataset.listenState='explore';
   this.root.innerHTML=`
+  <div class="comeback-project__guide-line" aria-hidden="true"></div>
+  <div class="comeback-project__artist" aria-label="${esc(artistData.latin)} ${esc(artistData.korean)}"><span>${esc(artistData.latin)}</span><span lang="ko">${esc(artistData.korean)}</span></div>
   <p class="comeback-project__label">${esc(albumData.sectionLabel)}</p>
   <div class="comeback-project__stage">
-   <div class="comeback-project__guide-line" aria-hidden="true"></div>
    <div class="comeback-project__behind" aria-hidden="true" inert>
     <div class="comeback-project__timeline"><div class="comeback-project__line" aria-hidden="true"></div>${behindData.map((step,i)=>`<button type="button" class="comeback-project__step" style="--i:${i}" data-step="${i}" aria-pressed="false"><span>${esc(step.step)}</span>${esc(step.title)}</button>`).join('')}</div>
     <div class="comeback-project__release"><p class="comeback-project__eyebrow"><span aria-hidden="true">↓</span> &nbsp; ${esc(releaseData.eyebrow)}</p><h3>${esc(releaseData.title)}</h3><div class="comeback-project__release-links">${this.link(releaseData.primaryCta.label,releaseData.primaryCta.url)}${this.link(releaseData.secondaryCta.label,releaseData.secondaryCta.url,'data-listen-now')}</div></div>
@@ -35,14 +36,20 @@ export class ComebackProject {
     <button class="comeback-project__switch-tab" type="button" data-mode-target="behind" aria-label="Behind: open the making of the album" aria-pressed="false"><svg aria-hidden="true" width="16" height="48" viewBox="0 0 16 48" fill="currentColor"><circle cx="8" cy="8" r="8"/><circle cx="8" cy="24" r="8"/><circle cx="8" cy="40" r="8"/></svg><span class="comeback-project__switch-label">BEHIND</span></button>
    </div>
   </div>
+  <div class="comeback-project__utilities" role="group" aria-label="오디오 설정">
+   <button type="button" class="comeback-project__utility" data-mute aria-pressed="false"><span class="comeback-project__utility-icon" aria-hidden="true"><svg width="12" height="19" viewBox="0 0 115 183" fill="currentColor"><path d="M0 0 115 96V183L0 87Z"/></svg></span><span data-mute-label>소리 끄기</span></button>
+   <button type="button" class="comeback-project__utility" data-autoplay aria-pressed="false" title="자동 재생 설정만 변경됩니다. 연속 재생은 준비 중입니다."><span class="comeback-project__utility-icon" aria-hidden="true"><svg width="18" height="17" viewBox="0 0 276 258" fill="currentColor"><path fill-rule="evenodd" d="M0 34 137 0 276 82V184L137 258 0 178ZM60 65V211L218 128Z"/></svg></span><span>자동 재생</span><span class="comeback-project__utility-state" data-autoplay-state>OFF</span></button>
+  </div>
   <div class="comeback-project__toast" role="status" hidden></div><span class="comeback-project__mode-announcement" role="status"></span>
   <dialog class="comeback-project__dialog"><button type="button" data-close aria-label="Close behind preview">×</button><div class="comeback-project__dialog-content"></div></dialog>`;
  }
  bind(){
   const signal=this.abort.signal;
   this.root.addEventListener('click',event=>{
-   if(this.locked)return;
    const button=event.target.closest('button');
+   if(button?.hasAttribute('data-mute')){this.muted=!this.muted;this.applyMute();this.updateUtilityUI();return;}
+   if(button?.hasAttribute('data-autoplay')){this.autoplayEnabled=!this.autoplayEnabled;this.updateUtilityUI();return;}
+   if(this.locked)return;
    if(!button){
     const control=event.target.closest('a,input,select,textarea,video,summary,[role="button"],dialog,.comeback-project__listen');
     if(!control&&this.mode==='listen'&&this.listenState==='focus'&&!this.locked&&this.radialTrack(event)===null)this.setTrackFocus(null);
@@ -76,6 +83,22 @@ export class ComebackProject {
   document.addEventListener('visibilitychange',()=>{this.syncRotations();if(document.hidden)this.stopAudio();},{signal});
   this.motion.addEventListener('change',()=>this.syncRotations(),{signal});
   this.$('dialog').addEventListener('close',()=>this.$('dialog video')?.pause(),{signal});
+ }
+ applyMute(){
+  this.audio.muted=this.muted;
+  document.querySelectorAll('audio,video').forEach(media=>media.muted=this.muted);
+ }
+ updateUtilityUI(){
+  const mute=this.$('[data-mute]'),autoplay=this.$('[data-autoplay]');
+  mute.setAttribute('aria-pressed',String(this.muted));
+  this.$('[data-mute-label]').textContent=this.muted?'소리 켜기':'소리 끄기';
+  autoplay.setAttribute('aria-pressed',String(this.autoplayEnabled));
+  autoplay.setAttribute('aria-label',`자동 재생 ${this.autoplayEnabled?'끄기':'켜기'} (연속 재생 준비 중)`);
+  this.$('[data-autoplay-state]').textContent=this.autoplayEnabled?'ON':'OFF';
+ }
+ updateViewportAxis(){
+  const box=this.stage.getBoundingClientRect();
+  this.root.style.setProperty('--cp-viewport-axis',`${box.left+box.width/2}px`);
  }
  syncRotations(){this.rotations.forEach((a,i)=>{if(this.mode==='listen'&&!this.locked&&this.visible&&!document.hidden&&!this.motion.matches&&(this.listenState==='explore'||i===this.selectedTrack)){a.playbackRate=1;a.play();}else a.pause();});}
  radialTrack(point){
@@ -120,6 +143,7 @@ export class ComebackProject {
   return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+nodeOffset+i*rowGap,size:nodeSize};const size=diameter*(1-(trackData.length-1-i)*.078);return{x:centerX-size/2,y:centerY-size/2,size};});}
  transform(p){return `translate(${p.x}px, ${p.y}px) scale(${p.size/600})`;}
  layout(){
+  this.updateViewportAxis();
   const geometry=this.positions(this.mode);
   if(this.mode==='listen'&&this.listenState==='focus')this.circles[this.selectedTrack].style.transform=this.transform(geometry.at(-1));
   else geometry.forEach((p,i)=>this.circles[i].style.transform=this.transform(p));
@@ -208,7 +232,7 @@ export class ComebackProject {
   if(this.activeTrack===index&&!this.audio.paused){this.audio.pause();this.updatePlayer(false);return;}this.selectTrack(index);const src=new URL(t.audio,import.meta.url).href;if(this.audio.src!==src)this.audio.src=src;try{await this.audio.play();if(!this.destroyed)this.updatePlayer(true);}catch{this.toast('오디오를 재생할 수 없습니다. 음원 파일을 확인해주세요.');}}
  updatePlayer(playing){const play=this.$('[data-play]');if(play){play.classList.toggle('is-playing',playing);play.setAttribute('aria-label',`${playing?'Pause':'Play'} preview`);}this.$('.comeback-project__wave')?.classList.toggle('is-playing',playing);}
  stopAudio(){this.audio.pause();this.updatePlayer(false);}
- openMedia(){const d=behindData[this.activeBehind];this.$('.comeback-project__dialog-content').innerHTML=`<h2>${esc(d.videoTitle)}</h2>${d.video?`<video controls playsinline poster="${esc(d.image)}" src="${esc(d.video)}"></video>`:`<img src="${esc(d.image)}" alt="${esc(d.title)}"><p>이 단계의 비하인드 영상은 준비 중입니다. 영상이 준비되면 comebackData.js의 video 경로를 연결해주세요.</p>`}<p>${esc(d.description)}</p>`;this.$('dialog').showModal();}
+ openMedia(){const d=behindData[this.activeBehind];this.$('.comeback-project__dialog-content').innerHTML=`<h2>${esc(d.videoTitle)}</h2>${d.video?`<video controls playsinline poster="${esc(d.image)}" src="${esc(d.video)}"></video>`:`<img src="${esc(d.image)}" alt="${esc(d.title)}"><p>이 단계의 비하인드 영상은 준비 중입니다. 영상이 준비되면 comebackData.js의 video 경로를 연결해주세요.</p>`}<p>${esc(d.description)}</p>`;this.$('dialog').querySelectorAll('audio,video').forEach(media=>media.muted=this.muted);this.$('dialog').showModal();}
  toast(message){const box=this.$('.comeback-project__toast');box.textContent=message;box.hidden=false;if(this.toastTimer){clearTimeout(this.toastTimer);this.timers.delete(this.toastTimer);}this.toastTimer=this.later(()=>box.hidden=true,4500);}
- destroy(){this.destroyed=true;this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.imageAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
+ destroy(){this.destroyed=true;this.root.dataset.visible='false';this.focusEpoch++;this.focusAnimations.forEach(a=>a.cancel());this.imageAnimations.forEach(a=>a.cancel());this.abort.abort();this.resize.disconnect();this.observer.disconnect();cancelAnimationFrame(this.rotationFrame);cancelAnimationFrame(this.pointerFrame);this.infoAnimation?.cancel();this.animations.forEach(a=>a.cancel());this.rotations.forEach(a=>a.cancel());this.timers.forEach(clearTimeout);this.stopAudio();this.audio.removeAttribute('src');this.audio.load();if(this.$('dialog').open)this.$('dialog').close();}
 }

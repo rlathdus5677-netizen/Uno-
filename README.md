@@ -1,6 +1,6 @@
 # UNO — Comeback Project
 
-LIVE NOW Hero 바로 아래, PROCESS 위에 삽입하는 흰색 Comeback Archive 섹션입니다. 홈페이지 전체가 아니라 LISTEN ↔ BEHIND 섹션만 구현합니다. 가상의 앨범 AFTERIMAGE와 모든 아트워크·문구는 임시 콘텐츠입니다.
+LIVE NOW Hero 바로 아래, PROCESS 위에 삽입하는 다크 테마의 Comeback Archive 섹션입니다. 홈페이지 전체가 아니라 LISTEN ↔ BEHIND 섹션만 구현합니다. 가상의 앨범 AFTERIMAGE와 모든 아트워크·문구는 임시 콘텐츠입니다.
 
 ## 로컬 실행
 
@@ -106,3 +106,16 @@ The ten `behindData` records explicitly define `id`, `step`, the final English `
 Each original circle button now contains two noninteractive visual images within the same clipped surface. The original track image and its rotation animation stay mounted; the second image is an absolutely positioned BEHIND layer with no layout footprint. The existing FLIP geometry moves the same ten circle buttons. During that movement, only image opacity crossfades over 420ms with a small stagger. Reverse morph fades back to the track image. Reduced-motion uses an 80ms image transition. Incoming images are decoded before the morph, and destroy() cancels the image animations.
 
 Verified in Chromium: all ten final chapter names/descriptions and 1:1 image mapping; unchanged track assets; same circle, inner-image and rotation references through forward/reverse transitions; actual intermediate crossfade frames; node and label selection; matching viewer/modal image; Focus→BEHIND→Explore; rapid mode locks; reduced motion; narrow viewport; cleanup; unchanged 33px nodes, 52px row spacing and fixed 928px section height.
+
+
+## Dark editorial UI and persistent utilities
+
+기본 배경은 #202124이며 밝은 전경, muted light gray, UNO purple accent를 사용합니다. 원/타임라인/media의 위치·크기와 928px desktop section은 유지합니다. artistData의 JENA / 김지안은 공통 중심축 양옆에 놓이고 두 모드에서 계속 표시됩니다.
+
+중앙 guide는 1px fixed 레이어로 viewport의 top:0부터 bottom:0까지 100vh 높이를 사용합니다. 928px을 유지하는 section 자체에는 viewport height를 적용하지 않습니다. stage bounding box로 계산한 --cp-viewport-axis를 써서 guide와 원/아티스트가 같은 축을 공유합니다. guide는 artwork보다 뒤에 있고 pointer 이벤트를 받지 않습니다.
+
+오른쪽 하단 utility는 고정 위치의 작은 inline SVG + text 컨트롤입니다. 사용자가 제공한 미리보기의 기하학 형태를 inline SVG로 구현했으며 PNG 파일 경로나 외부 asset을 사용하지 않습니다. 소리 끄기/켜기는 기존 Audio 인스턴스와 현재 페이지의 audio/video를 실제 mute/unmute합니다. 새 modal video는 현재 mute 설정을 상속합니다. 자동 재생은 ON/OFF UI 설정만 제공하며, 연속 음원 재생은 아직 연결하지 않았습니다. 이 설정을 켜도 자동으로 음원을 재생하지 않습니다. 두 상태는 모드 전환 동안 유지됩니다.
+
+Archive가 viewport 밖으로 나가거나 destroy()가 호출되면 viewport 고정 guide/utility는 숨겨져 다른 homepage section에 노출되지 않습니다. 기존 transition, image crossfade, track/behind data 및 asset 경로는 변경하지 않았습니다.
+
+검증: 수정 전후 LISTEN/BEHIND의 기존 bounding box 전체 일치, 다크 배경에서 실제 텍스트 contrast >=4.5, 공통 중심축과 viewport guide, mode transition 중 artist/guide 안정성, 페이지 media mute/unmute, autoplay UI state 및 무의도 재생 부재, utility 클릭 시 Focus 유지, 928px 및 viewport resize, offscreen visibility를 Chromium에서 확인했습니다. 기존 10개 circle/image/rotation identity, 양방향 morph와 실제 중간 crossfade 프레임, 모든 BEHIND 데이터/이미지 연결, node/viewer selection, Focus, reduced motion과 cleanup도 재검증했습니다.

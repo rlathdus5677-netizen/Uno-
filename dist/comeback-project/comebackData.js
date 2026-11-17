@@ -17,3 +17,5 @@ export const behindData = [
 ].map(entry=>({...entry,videoTitle:entry.title,thumbnail:entry.image,video:'',ctaLabel:'WATCH BEHIND',ctaUrl:'',caption:`CHAPTER ${entry.step} / THE MAKING OF AFTERIMAGE`}));
 export const releaseData={eyebrow:'TODAY',title:'COMEBACK RELEASED',primaryCta:{label:'WATCH MV',url:''},secondaryCta:{label:'LISTEN NOW',url:''}};
 export const motionData={duration:1120,stagger:35,nodeSize:26};
+
+export const artistData={latin:'JENA',korean:'김지안'};
