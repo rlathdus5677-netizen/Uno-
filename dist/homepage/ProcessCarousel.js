@@ -1,7 +1,7 @@
 // Native horizontal scrolling, with one shared center/scale calculation for every input.
 export class ProcessCarousel {
- constructor(rail,{previous,next,reducedMotion}){
-  this.rail=rail;this.previous=previous;this.next=next;this.motion=reducedMotion;
+ constructor(rail,{previous,next,reducedMotion,progress}){
+  this.rail=rail;this.previous=previous;this.next=next;this.motion=reducedMotion;this.progress=progress;
   this.abort=new AbortController();this.cards=[];this.activeIndex=0;this.frame=0;this.scrollFrame=0;this.timer=0;this.suppressUntil=0;
   const signal=this.abort.signal;
   rail.addEventListener('scroll',()=>{this.queueVisuals();this.scheduleSnap();},{passive:true,signal});
@@ -58,6 +58,13 @@ export class ProcessCarousel {
    card.style.setProperty('--process-card-scale',scale.toFixed(4));
    if(i===index)card.setAttribute('aria-current','true');else card.removeAttribute('aria-current');
   });
+  if(this.progress){
+   this.progress.style.setProperty('--process-progress-count',this.cards.length);
+   this.progress.style.setProperty('--process-progress-index',index);
+   this.progress.setAttribute('aria-valuemax',this.cards.length);
+   this.progress.setAttribute('aria-valuenow',index+1);
+   this.progress.setAttribute('aria-valuetext',`${index+1} / ${this.cards.length}`);
+  }
   const selected=this.targetIndex??index;
   this.previous.disabled=selected===0;this.next.disabled=selected===this.cards.length-1;
  }
