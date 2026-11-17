@@ -119,3 +119,14 @@ Verified in Chromium: all ten final chapter names/descriptions and 1:1 image map
 Archive가 viewport 밖으로 나가거나 destroy()가 호출되면 viewport 고정 guide/utility는 숨겨져 다른 homepage section에 노출되지 않습니다. 기존 transition, image crossfade, track/behind data 및 asset 경로는 변경하지 않았습니다.
 
 검증: 수정 전후 LISTEN/BEHIND의 기존 bounding box 전체 일치, 다크 배경에서 실제 텍스트 contrast >=4.5, 공통 중심축과 viewport guide, mode transition 중 artist/guide 안정성, 페이지 media mute/unmute, autoplay UI state 및 무의도 재생 부재, utility 클릭 시 Focus 유지, 928px 및 viewport resize, offscreen visibility를 Chromium에서 확인했습니다. 기존 10개 circle/image/rotation identity, 양방향 morph와 실제 중간 crossfade 프레임, 모든 BEHIND 데이터/이미지 연결, node/viewer selection, Focus, reduced motion과 cleanup도 재검증했습니다.
+
+
+## JENA’S NOTE
+
+BEHIND has a small, transparent editorial annotation connected to the existing activeBehind selection. Every behindData entry in `dist/comeback-project/comebackData.js` now has its own temporary `note` paragraph. To replace copy later, edit only that entry’s `note` value. The label reads the selected entry’s step, and the image, title, description and note all use the same selection. No additional selection state or circle objects are created.
+
+At 1440px, Note occupies the existing whitespace between the visible timeline titles and the central axis, with no background, border, shadow, brackets or indicators. Its maximum width is 224px, body type is 11.5px, and height is natural. Text wraps without hardcoded line breaks and supports two to five lines without moving other UI. Compact widths use existing spare space below content so other elements retain their geometry.
+
+Note stays hidden in LISTEN and appears after the original forward morph finishes. Leaving BEHIND fades it away. Changing chapter fades the old content up by 3px over 110ms, swaps the copy, then fades the new content in from 3px below over 170ms. A generation token cancels stale transitions on rapid chapter changes; reduced motion swaps copy immediately. Mode changes and destroy() cancel Note animation without altering the original circle motion or image crossfade.
+
+Verified in Chromium: exact original LISTEN and BEHIND bounding boxes; all 01–10 copy mappings; real intermediate note transition frames; data-only two/three/five-line replacements; no overlap with the timeline, axis or viewer at 1440px; stable 928px height; last-selection-wins behavior; Note hidden in LISTEN and revealed only after morph; preserved circle/image identity, rotation and utility states; responsive bounds, reduced motion and lifecycle cleanup.

@@ -192,3 +192,13 @@
  .comeback-project__artist span:last-child{font-size:12px}
  .comeback-project__utilities{right:6%;bottom:20px}
 }
+
+/* Quiet, selection-linked annotation in the existing left-side whitespace. */
+.comeback-project__note{position:absolute;left:30%;top:190px;width:calc(20% - 40px);max-width:224px;z-index:2;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity 250ms ease,transform 250ms ease}
+.comeback-project[data-note-ready=true] .comeback-project__note{opacity:1;transform:translateY(0);pointer-events:auto}
+.comeback-project__note-label{margin:0 0 15px;font-size:8.5px;line-height:1.4;letter-spacing:1.4px;font-weight:400;color:var(--cp-purple)}
+.comeback-project__note-body{margin:0;font-size:11.5px;line-height:1.95;font-weight:400;color:#b5aebf;word-break:keep-all;overflow-wrap:anywhere;white-space:normal}
+.comeback-project__note-signature{margin:18px 0 0;font-size:10px;line-height:1.5;letter-spacing:.5px;color:#aaa1b6}
+@media(min-width:1001px) and (max-width:1249px){.comeback-project__note{left:calc(50% + 24px);right:8%;top:600px;width:auto;max-width:320px}}
+@media(max-width:1000px){.comeback-project__note{left:6%;top:710px;width:calc(44% - 32px);max-width:300px}}
+@media(max-width:650px){.comeback-project__note{left:3%;right:3%;top:950px;width:auto;max-width:320px}}
