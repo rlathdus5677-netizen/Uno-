@@ -42,7 +42,7 @@ npm run check
 
 ## 인터랙션 구조
 
-10개의 원형 버튼은 초기화 시 한 번 생성됩니다. LISTEN과 BEHIND는 같은 섹션에서 같은 버튼을 유지합니다. 현재 transform을 기록하고 최종 transform을 설정한 후, Web Animations API의 FLIP 방식으로 이전 상태에서 최종 상태까지 이동합니다. 이미지 회전은 버튼 안쪽의 별도 레이어에서 처리하므로 artwork 교체가 위치·크기·애니메이션에 영향을 주지 않습니다.
+10개의 원형 버튼은 초기화 시 한 번 생성됩니다. LISTEN과 BEHIND는 같은 섹션에서 같은 버튼을 유지합니다. 현재 transform을 기록하고 최종 transform을 설정한 후, Web Animations API의 FLIP 방식으로 이전 상태에서 최종 상태까지 이동합니다. 버튼은 위치와 morph, 안쪽 surface는 hover scale / opacity, 이미지는 독립 회전을 담당하므로 artwork 교체가 위치·크기·애니메이션에 영향을 주지 않습니다.
 
 기본 전환은 회전 감속 150ms + 이동 1120ms + stagger 35ms × 9로 약 1.59초입니다. 타임라인 노드 위치는 텍스트 길이와 무관하게 계산됩니다. 전환 중 mode 버튼을 잠그고 중복 요청을 무시합니다. 화면 밖과 탭 비활성 상태에서는 회전을 멈추며 reduced motion에서는 정지된 이미지와 짧은 전환을 제공합니다. destroy()는 관찰자, 이벤트, 애니메이션, 타이머, 오디오를 정리합니다.
 
@@ -53,3 +53,13 @@ npm run check
 ## 임시 아트워크
 
 `assets/tracks/track-01.svg`부터 `track-10.svg`까지 독립적인 원본 SVG입니다. 하나의 이미지나 GIF가 아닌 10개의 교체 가능한 이미지이며, 실제 아티스트 또는 기존 앨범 커버를 복제하지 않았습니다.
+
+## LISTEN radial interaction
+
+각 artwork는 42–70초 주기로 독립 회전합니다. Hover로 회전을 멈추지 않습니다. 포인터와 공통 중심 사이의 거리를 기준으로 10개의 원래 반경을 판정하여 TRACK 01 ↔ 10을 선택합니다. 확대된 시각 요소나 투명해진 요소의 DOM hit-test에 의존하지 않아 경계가 흔들리지 않습니다.
+
+선택 깊이에 따라 여러 surface가 최대 3% 확장되고, 현재 트랙보다 안쪽의 레이어는 5% 확장하면서 페이드됩니다. 반경을 되돌아가면 같은 레이어가 복원됩니다. 전환은 450ms이며, 원 밖으로 나오면 composition을 복원하고 마지막 탐색 트랙은 유지합니다. Hover나 키보드 focus만으로 오디오를 재생하지 않으며, 원 클릭 또는 PLAY 버튼으로 미리듣기를 요청합니다.
+
+오른쪽 컨트롤은 LISTEN / BEHIND 두 개의 별도 버튼입니다. Hover / keyboard focus 시 작은 label을 표시하며 active mode를 보라색 아이콘과 선으로 나타냅니다. 기존 하단 mode controls도 그대로 동작합니다. BEHIND 진입 시 hover를 잠그고 150ms 동안 surface를 복원하며 회전을 감속한 뒤 기존 morph를 실행합니다.
+
+수정 검증: 실제 Chromium에서 모든 artwork의 rotation transform이 시간에 따라 바뀌는지, 포인터의 양방향 radial 탐색, 확대·fade·복원, hover autoplay 부재, 클릭 / keyboard 접근, 두 mode tabs, hover 중 morph와 DOM identity 유지, reverse morph, 기존 viewer, 연속 mode 요청, reduced motion 및 responsive widths를 확인했습니다.
