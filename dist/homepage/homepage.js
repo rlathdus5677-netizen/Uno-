@@ -43,10 +43,11 @@ export class UnoHomepage{
     <div class="uno-homepage__process-bottom"><div class="uno-homepage__progress" role="progressbar" aria-label="캐러셀 현재 카드" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><i class="uno-homepage__progress-indicator" aria-hidden="true"></i></div><a class="uno-homepage__process-all" href="#join" data-home-action="process-all">모두보기 ${arrow}</a></div>
    </section>
    <section class="uno-homepage__upcoming" id="upcoming-live" aria-labelledby="uno-upcoming-title">
+    <div class="uno-homepage__upcoming-inner">
     <p class="uno-homepage__section-label">${esc(upcomingLiveData.label)}</p><h2 class="uno-homepage__upcoming-headline" id="uno-upcoming-title">${esc(upcomingLiveData.headline)}</h2>
     <div class="uno-homepage__live-grid"><img class="uno-homepage__upcoming-image" src="${esc(upcomingLiveData.image)}" alt="${esc(upcomingLiveData.alt)}" loading="lazy">
      <div class="uno-homepage__schedule"><p class="uno-homepage__schedule-label">${esc(upcomingLiveData.eyebrow)}</p><p class="uno-homepage__date">${esc(upcomingLiveData.dateLabel)}</p><p class="uno-homepage__time">${esc(upcomingLiveData.timeLabel)}</p><h3 class="uno-homepage__schedule-title">${esc(upcomingLiveData.title)}</h3><p class="uno-homepage__schedule-description">${esc(upcomingLiveData.description)}</p><button type="button" class="uno-homepage__text-link uno-homepage__reminder" data-home-action="reminder">${esc(upcomingLiveData.cta)}<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></button><p class="uno-homepage__schedule-notice">${esc(upcomingLiveData.notice)}</p></div>
-    </div>
+    </div></div>
    </section>
    <section class="uno-homepage__brand" id="about-uno" aria-label="About UNO Entertainment">
     <p class="uno-homepage__section-label">${esc(brandData.label)}</p>
