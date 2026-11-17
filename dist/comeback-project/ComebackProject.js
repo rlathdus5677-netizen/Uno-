@@ -1,6 +1,7 @@
 import {albumData,trackData,behindData,releaseData,motionData} from './comebackData.js';
 const esc = value => String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow = '<svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 10 10 2M3 2h7v7" stroke="currentColor" stroke-width="1"/></svg>';
+const logoUrl = new URL('./assets/uno-logo.svg', import.meta.url).href;
 const number = i => String(i+1).padStart(2,'0');
 /** Standalone component. All assets and copy live in comebackData.js. Call destroy() before removing. */
 export class ComebackProject {
@@ -19,7 +20,7 @@ export class ComebackProject {
  build(){
   this.root.dataset.mode='listen';this.root.dataset.revealed='false';
   this.root.innerHTML=`
-  <header class="comeback-project__header"><div class="comeback-project__logo" aria-label="UNO Entertainment">uno<small>ENTERTAINMENT</small></div><div class="comeback-project__archive"><span class="comeback-project__dot"></span> THE COMEBACK ARCHIVE <span>/ ${esc(albumData.year)}</span></div></header>
+  <header class="comeback-project__header"><div class="comeback-project__logo" aria-label="UNO Entertainment"><img src="${esc(logoUrl)}" alt="UNO"><small>ENTERTAINMENT</small></div><div class="comeback-project__archive"><span class="comeback-project__dot"></span> THE COMEBACK ARCHIVE <span>/ ${esc(albumData.year)}</span></div></header>
   <div class="comeback-project__intro"><div><p class="comeback-project__eyebrow">A NEW CHAPTER, UNFOLDING.</p><h1>THE SOUND. <em>THE STORY.</em></h1></div><p class="comeback-project__intro-side">${esc(albumData.intro)}</p></div>
   <div class="comeback-project__stage">
    <div class="comeback-project__behind" aria-hidden="true" inert>
@@ -31,8 +32,8 @@ export class ComebackProject {
    <div class="comeback-project__orbit-caption"><span>10 TRACKS / ${esc(albumData.duration)}</span><span>MOVE TO EXPLORE · CLICK TO PREVIEW</span></div>
    <div class="comeback-project__listen"><p class="comeback-project__album-artist">${esc(albumData.artist)}</p><h2 class="comeback-project__album-name">${esc(albumData.title)}</h2><p class="comeback-project__album-edition">${esc(albumData.edition)} &nbsp; / &nbsp; ${esc(albumData.year)}</p><div class="comeback-project__divider"></div><div class="comeback-project__track-details" aria-live="polite"></div><div class="comeback-project__select-tracks" aria-label="Select track">${trackData.map((t,i)=>`<button type="button" class="comeback-project__track-pick" data-pick="${i}" aria-label="Select track ${number(i)}: ${esc(t.title)}" aria-pressed="false">${number(i)}</button>`).join('')}</div></div>
    <div class="comeback-project__switch" role="group" aria-label="Album view">
-    <button class="comeback-project__switch-tab" type="button" data-mode-target="listen" aria-label="Listen: explore the album" aria-pressed="true"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor"/><circle cx="12" cy="12" r="5.5" stroke="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg><span class="comeback-project__switch-label">LISTEN</span></button>
-    <button class="comeback-project__switch-tab" type="button" data-mode-target="behind" aria-label="Behind: open the making of the album" aria-pressed="false"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 5v14M11 5h9M11 12h9M11 19h9" stroke="currentColor"/><circle cx="6" cy="5" r="1.5" fill="currentColor"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/><circle cx="6" cy="19" r="1.5" fill="currentColor"/></svg><span class="comeback-project__switch-label">BEHIND</span></button>
+    <button class="comeback-project__switch-tab" type="button" data-mode-target="listen" aria-label="Listen: explore the album" aria-pressed="true"><svg class="comeback-project__listen-symbol" aria-hidden="true" width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="26" fill="#969696"/><circle cx="26" cy="26" r="18" fill="#d2d2d2"/><circle cx="26" cy="26" r="9" fill="#efefef"/></svg><span class="comeback-project__switch-label">LISTEN</span></button>
+    <button class="comeback-project__switch-tab" type="button" data-mode-target="behind" aria-label="Behind: open the making of the album" aria-pressed="false"><svg aria-hidden="true" width="16" height="48" viewBox="0 0 16 48" fill="currentColor"><circle cx="8" cy="8" r="8"/><circle cx="8" cy="24" r="8"/><circle cx="8" cy="40" r="8"/></svg><span class="comeback-project__switch-label">BEHIND</span></button>
    </div>
   </div>
   <footer class="comeback-project__footer"><div class="comeback-project__modes"><button type="button" class="comeback-project__mode-tab" data-mode-target="listen" aria-pressed="true"><span>01</span> LISTEN</button><button type="button" class="comeback-project__mode-tab" data-mode-target="behind" aria-pressed="false"><span>02</span> BEHIND</button></div><span class="comeback-project__footer-note">ONE ALBUM. TEN TRACKS. EVERY MOMENT IN BETWEEN.</span></footer>
@@ -103,7 +104,7 @@ export class ComebackProject {
   if(index===this.activeTrack&&!this.audio.paused)this.updatePlayer(true);
  }
  selectBehind(index){this.activeBehind=index;const d=behindData[index];this.root.querySelectorAll('[data-step]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));if(this.mode==='behind')this.circles.forEach((c,i)=>{c.dataset.active=String(i===index);c.setAttribute('aria-pressed',String(i===index));});
-  this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.thumbnail)}" alt="${esc(d.title)} — temporary concept artwork"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; CONCEPT VISUAL</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>${d.ctaUrl?this.link(d.ctaLabel,d.ctaUrl):`<button type="button" class="comeback-project__link" data-media-play>${esc(d.ctaLabel)} ${arrow}</button>`}`;
+  this.$('.comeback-project__media').innerHTML=`<div class="comeback-project__media-visual"><img src="${esc(d.thumbnail)}" alt="${esc(d.title)} — temporary concept artwork"><button type="button" class="comeback-project__media-play" data-media-play aria-label="Open ${esc(d.videoTitle)}"></button></div><p class="comeback-project__media-caption">${esc(d.caption)} &nbsp; · &nbsp; CONCEPT VISUAL</p><span class="comeback-project__media-number">${esc(d.step)} / ${esc(d.title)}</span><h2>${esc(d.videoTitle)}</h2><p class="comeback-project__media-description">${esc(d.description)}</p>`;
  }
  positions(mode){const w=this.stage.clientWidth;const mobile=w<580;const diameter=mobile?Math.min(w*.87,350):Math.min(590,w*.49);const centerX=w*(mobile?.46:.335),centerY=mobile?190:303;
   return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+6+i*44,size:motionData.nodeSize};const size=diameter*(1-i*.078);return{x:centerX-size/2,y:centerY-size/2,size};});}
