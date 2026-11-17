@@ -40,7 +40,7 @@ export class UnoHomepage{
     <div class="uno-homepage__filters" id="join" role="group" aria-label="제작 과정 카테고리">${processData.filters.map(f=>`<button class="uno-homepage__filter" type="button" data-category="${esc(f.id)}" aria-pressed="${f.id==='all'}">${esc(f.label)}</button>`).join('')}</div>
     <div class="uno-homepage__rail-tools"><button type="button" data-home-action="rail-prev" aria-label="이전 콘텐츠">${arrow.replace('viewBox=','style="transform:rotate(180deg)" viewBox=')}</button><button type="button" data-home-action="rail-next" aria-label="다음 콘텐츠">${arrow}</button></div>
     <div class="uno-homepage__rail" tabindex="0" role="region" aria-roledescription="캐러셀" aria-label="아티스트 제작 과정 콘텐츠"></div>
-    <div class="uno-homepage__process-bottom"><span data-home-count></span><div class="uno-homepage__progress" role="progressbar" aria-label="캐러셀 현재 카드" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><i class="uno-homepage__progress-indicator" aria-hidden="true"></i></div><span>SCROLL TO DISCOVER / 함께 만드는 다음 장면</span></div>
+    <div class="uno-homepage__process-bottom"><div class="uno-homepage__progress" role="progressbar" aria-label="캐러셀 현재 카드" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><i class="uno-homepage__progress-indicator" aria-hidden="true"></i></div><a class="uno-homepage__process-all" href="#join" data-home-action="process-all">모두보기 ${arrow}</a></div>
    </section>
    <section class="uno-homepage__upcoming" id="upcoming-live" aria-labelledby="uno-upcoming-title">
     <p class="uno-homepage__section-label">${esc(upcomingLiveData.label)}</p><h2 class="uno-homepage__upcoming-headline" id="uno-upcoming-title">${esc(upcomingLiveData.headline)}</h2>
@@ -67,6 +67,7 @@ export class UnoHomepage{
    switch(control.dataset.homeAction){
     case 'navigate':{event.preventDefault();const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);this.root.querySelectorAll('.uno-homepage__nav a').forEach(a=>{if(a===control)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});break;}
     case 'top':window.scrollTo({top:0,behavior:this.motion.matches?'instant':'smooth'});this.root.querySelectorAll('.uno-homepage__nav a').forEach((a,i)=>{if(i===0)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});break;
+    case 'process-all':event.preventDefault();this.activeCategory='all';this.renderCards();this.$('#join').scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'center'});this.$('[data-category=all]').focus({preventScroll:true});break;
     case 'rail-prev':this.scrollRail(-1);break;
     case 'rail-next':this.scrollRail(1);break;
     case 'live-preview':this.openDialog(heroData.previewTitle,`<img class="uno-homepage__dialog-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}"><p>${esc(heroData.previewDescription)}</p><button type="button" class="uno-homepage__text-link" data-home-action="show-schedule">라이브 일정 보기 ${arrow}</button>`,'UNO LIVE');break;
@@ -88,7 +89,6 @@ export class UnoHomepage{
   this.root.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===this.activeCategory)));
   const items=artistProcessData.filter(d=>this.activeCategory==='all'||d.category===this.activeCategory),rail=this.$('.uno-homepage__rail');rail.dataset.filtered=String(this.activeCategory!=='all');
   rail.innerHTML=items.map((d,i)=>`<button type="button" class="uno-homepage__process-card" data-process-id="${esc(d.id)}" aria-label="${i+1} / ${items.length} · ${esc(d.title)} 선택 및 자세히 보기"><img class="uno-homepage__card-image" src="${esc(d.image)}" alt="${esc(d.alt)}" loading="lazy" draggable="false"><span class="uno-homepage__card-content"><span class="uno-homepage__card-meta">${esc(d.category.toUpperCase())}</span><h3>${esc(d.title)}</h3><p class="uno-homepage__card-description">${esc(d.description)}</p></span></button>`).join('');this.carousel.setCards([...rail.querySelectorAll('[data-process-id]')]);
-  this.$('[data-home-count]').textContent=`${String(items.length).padStart(2,'0')} STORIES / ${this.activeCategory.toUpperCase()}`;
   this.railAnimation?.cancel();if(!this.motion.matches)this.railAnimation=rail.animate([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});
  }
  scrollRail(direction){this.carousel.step(direction)}
