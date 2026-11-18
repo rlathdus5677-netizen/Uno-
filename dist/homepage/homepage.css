@@ -50,11 +50,11 @@
 .uno-homepage__process-all svg{width:16px;height:16px}
 .uno-homepage__progress{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:205px;height:4px;background:transparent;overflow:visible}
 .uno-homepage__progress-indicator{position:relative;display:block;width:calc(100% / var(--process-progress-count,8));height:4px;border-radius:2px;background:var(--uno-purple);transform:translateX(calc(var(--process-progress-index,0)*100%));transition:transform 550ms cubic-bezier(.22,1,.36,1),width 350ms ease}
-.uno-homepage__upcoming{--live-content-width:var(--content-width);--live-gap:60px;height:var(--live-height);padding:70px 0;background:#fff}
+.uno-homepage__upcoming{--live-height:1024px;--live-muted:#b7b1bf;--live-content-width:var(--content-width);--live-gap:60px;display:flex;align-items:center;height:var(--live-height);min-height:var(--live-height);padding:96px 0;background:var(--uno-dark);color:var(--uno-white)}
 .uno-homepage__upcoming-inner{width:var(--live-content-width);max-width:none;margin-left:auto;margin-right:auto}
 .uno-homepage__upcoming .uno-homepage__section-label{font-size:var(--type-meta);line-height:1.35}
 .uno-homepage__schedule{margin-top:50px}
-.uno-homepage__upcoming-headline{font-size:var(--type-section-compact);font-weight:var(--weight-heading);letter-spacing:0;line-height:var(--leading-heading);white-space:nowrap;margin:21.8px 0 18px}
+.uno-homepage__upcoming-headline{font-size:var(--type-section-compact);font-weight:var(--weight-heading);letter-spacing:0;line-height:var(--leading-heading);white-space:nowrap;margin:21.8px 0 36px}
 .uno-homepage__live-grid{display:grid;grid-template-columns:minmax(0,757fr) minmax(0,383fr);gap:var(--live-gap);align-items:start;width:100%;max-width:none;margin-left:auto;margin-right:auto}
 .uno-homepage__upcoming-image{width:100%;aspect-ratio:791/500;object-fit:cover;object-position:50% 50%;border-radius:18px;display:block}
 .uno-homepage__schedule-label{font-size:var(--type-meta);font-weight:var(--weight-heading);letter-spacing:1.5px;color:var(--uno-muted);line-height:1.35;margin:0 0 34px}
@@ -135,3 +135,8 @@
 .uno-homepage__hero-cta{position:relative;left:-4px}
 .uno-homepage__schedule-description{max-width:318px}
 @media(min-width:1001px){.uno-homepage__archive .comeback-project__label{margin-left:calc(var(--page-gutter) - 60px);font-size:12px;font-weight:700;letter-spacing:2px;line-height:1.35}.uno-homepage__archive .comeback-project__artist{top:34px}}
+
+/* Upcoming Live reuses the same dark background token as the Archive wrapper. */
+.uno-homepage__upcoming .uno-homepage__section-label,.uno-homepage__upcoming .uno-homepage__schedule-label,.uno-homepage__upcoming .uno-homepage__schedule-notice{color:var(--live-muted)}
+.uno-homepage__upcoming .uno-homepage__upcoming-headline,.uno-homepage__upcoming .uno-homepage__date,.uno-homepage__upcoming .uno-homepage__time,.uno-homepage__upcoming .uno-homepage__schedule-title{color:var(--uno-white)}
+.uno-homepage__upcoming .uno-homepage__schedule-description{color:#c9c5cf}
