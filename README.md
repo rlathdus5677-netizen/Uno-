@@ -17,7 +17,9 @@ UNO Entertainment 홈페이지와 독립 실행 가능한 Comeback Archive를 �
 
 로그인·실시간 방송·알림 신청은 준비 중 안내를 표시하는 프런트엔드 프로토타입입니다. 라이브 일정은 임시 데이터이며, 캘린더 저장은 데이터의 날짜/시간과 10분 전 알림을 담은 ICS 파일을 다운로드합니다. 실제 알림 서버·회원 시스템은 연결하지 않았습니다. 소셜 URL과 법적 문구도 임시 값이며 `homepageData.js`에서 교체합니다.
 
-최종 디자인 기준은 [Figma 1440px 와이어프레임](https://www.figma.com/design/VV0hSYzQLOqMcvb3LOdyz8/3%ED%8C%80?node-id=3496-76)입니다. 1440px에서 Header/Hero/Archive/Process/Upcoming/About/Footer 높이는 각각 62/790/928/930/750/550/150px, 전체 높이는 4160px입니다. `homepage.css`의 page grid, typography, section height 토큰으로 공통 기준을 관리합니다. 기존 dark Archive와 실제 카드·라이브 콘텐츠는 유지합니다. 최신 프레임의 Hero는 중앙 정렬, PROCESS active 카드는 약 312×412px, Upcoming 이미지는 791×500px와 정보 폭 383px입니다. Brand는 왼쪽 그룹 X=120px(슬로건 X=115px), 심볼 X=665px·680×310px을 적용하며 Footer는 왼쪽 X=70px / 오른쪽 끝 X=1380px이라는 Figma의 별도 좌표를 따릅니다. LISTEN 지름은 안쪽부터 95.2/156.4/204/272/326.4/401.2/455.6/537.2/598.4/680px로 변화하며 중심과 바깥 10번 원은 유지됩니다.
+최종 디자인 기준은 [Figma 1440px 와이어프레임](https://www.figma.com/design/VV0hSYzQLOqMcvb3LOdyz8/3%ED%8C%80?node-id=3496-76)입니다. 1440px에서 Header/Hero/Archive/Process/Upcoming/About/Footer 높이는 각각 62/790/928/930/750/550/150px, 전체 높이는 4160px입니다. 이후 사용자가 공통 desktop gutter 60px / 가용 폭 1320px을 명시적으로 선택했으므로 기존 Figma의 섹션별 120px gutter와 Footer의 별도 좌표를 공통 grid로 통일했습니다. `--page-gutter`는 24–60px 사이에서 viewport에 따라 변하며 고정 content max-width는 사용하지 않습니다. Hero 배경과 PROCESS rail은 full-bleed를 유지합니다. Archive 내부 stage/원/정보/Behind geometry는 바꾸지 않고 섹션 label만 공통 grid에 정렬합니다.
+
+Brand는 부모 grid의 오른쪽 column에 기존 680×310px 심볼을 배치해 X=700–1380px을 사용하고, 왼쪽 그룹과 Footer는 X=60px부터 시작합니다. Upcoming은 X=60–1380px, 두 column gap은 최신 Figma에서 측정한 60px입니다. PROCESS의 카드 크기·31.631px gap·controller·데이터는 유지하며 rail의 width는 viewport 전체입니다. 기존 dark Archive와 실제 카드·라이브 콘텐츠는 보존합니다. LISTEN 지름은 안쪽부터 95.2/156.4/204/272/326.4/401.2/455.6/537.2/598.4/680px입니다.
 
 검증: Chromium에서 전체 페이지와 각 section 스크린샷을 비교했고, 1440/1280/1024/768/390/360px overflow, 로컬 asset과 font, 필터별 무한 루프/진행 바, 중앙 확대, 앵커/모달/TOP/캘린더, Archive Focus/양방향 morph/10개 chapter/동일 DOM과 회전, utility 잘림과 상태 유지, 독립 실행 버전을 확인했습니다.
 
