@@ -262,3 +262,8 @@
 .uno-vote-complete__event>span{color:var(--vote-purple);font-family:'Noto Sans KR',Pretendard,sans-serif;font-size:14px;font-weight:700;line-height:17px}
 .uno-vote-complete__event strong{font-size:13px;font-weight:700;line-height:16px}
 .uno-vote-complete__confirm{width:100%;height:52px;border-radius:26px;background:var(--vote-purple);color:#fff;font-size:20px;font-weight:700;line-height:24px}
+
+/* Mobile: expose neighboring process cards while retaining the centered carousel. */
+@media (max-width:650px) {
+  .uno-homepage__rail { --process-card-width: min(240px, 56vw); gap: 16px; }
+}
