@@ -188,7 +188,7 @@
 /* Archive UI shares the LIVE video/CTA guide. Stage and circle geometry stay intact. */
 .uno-homepage__archive{--archive-stage-inset:60px;--archive-ui-inset:calc(var(--page-gutter) - var(--archive-stage-inset))}
 .uno-homepage__archive .comeback-project__listen{left:var(--archive-ui-inset)}
-.uno-homepage__archive .comeback-project__switch{right:var(--archive-ui-inset)}
-.uno-homepage__archive .comeback-project__switch-tab{justify-items:end}
+.uno-homepage__archive .comeback-project__switch{right:var(--archive-ui-inset);align-items:center}
+.uno-homepage__archive .comeback-project__switch-tab{justify-items:center}
 .uno-homepage__archive .comeback-project__utilities{right:var(--page-gutter)}
 @media(max-width:650px){.uno-homepage__archive{--archive-stage-inset:6vw}}
