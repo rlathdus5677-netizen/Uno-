@@ -56,7 +56,7 @@
 .uno-homepage__schedule{margin-top:50px}
 .uno-homepage__upcoming-headline{font-size:var(--type-section-compact);font-weight:var(--weight-heading);letter-spacing:0;line-height:var(--leading-heading);white-space:nowrap;margin:21.8px 0 36px}
 .uno-homepage__live-grid{display:grid;grid-template-columns:minmax(0,757fr) minmax(0,383fr);gap:var(--live-gap);align-items:start;width:100%;max-width:none;margin-left:auto;margin-right:auto}
-.uno-homepage__upcoming-image{width:100%;height:auto;aspect-ratio:auto 1440/790;object-fit:contain;object-position:50% 50%;border-radius:18px;display:block}
+.uno-homepage__upcoming-image{width:100%;height:auto;aspect-ratio:auto 826/454;object-fit:contain;object-position:50% 50%;border-radius:18px;display:block}
 .uno-homepage__schedule-label{font-size:var(--type-meta);font-weight:var(--weight-heading);letter-spacing:1.5px;color:var(--uno-muted);line-height:1.35;margin:0 0 34px}
 .uno-homepage__date{font-size:var(--type-feature-large);font-weight:var(--weight-feature);letter-spacing:0;line-height:1.35;color:var(--uno-ink);margin:0}
 .uno-homepage__time{font-size:var(--type-feature-large);font-weight:var(--weight-feature);letter-spacing:0;line-height:1.35;color:var(--uno-ink);margin:0}
@@ -162,8 +162,8 @@
 
 /* LIVE SCHEDULE contact UI stays within the existing right-hand column. */
 .uno-homepage__upcoming .uno-homepage__schedule{height:400.25px;min-height:0}
-.uno-homepage__upcoming .uno-homepage__schedule-label{margin-bottom:28px}
-.uno-homepage__upcoming .uno-homepage__schedule-description{max-width:100%;margin:26px 0 28px}
+.uno-homepage__upcoming .uno-homepage__schedule-label{color:var(--uno-white);margin-bottom:36px}
+.uno-homepage__upcoming .uno-homepage__schedule-description{max-width:100%;margin:22px 0 48px}
 .uno-homepage__reminder-form{margin:0}
 .uno-homepage__contact-tabs{display:flex;gap:26px;margin-bottom:16px}
 .uno-homepage__contact-tabs [role=tab]{position:relative;padding:0 0 9px;border:0;background:none;color:var(--live-muted);font:500 12px/1.35 Pretendard,Arial,sans-serif;cursor:pointer}
@@ -171,19 +171,20 @@
 .uno-homepage__contact-tabs [aria-selected=true]:after{content:'';position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--uno-purple)}
 .uno-homepage__contact-input{display:block;width:100%;height:48px;box-sizing:border-box;padding:0 20px;border:1px solid #66616d;border-radius:999px;background:var(--uno-dark);color:var(--uno-white);font:400 13px/1.35 Pretendard,Arial,sans-serif}
 .uno-homepage__contact-input::placeholder{color:#aaa3b3;opacity:1}
-.uno-homepage__reminder-form .uno-homepage__reminder{margin-top:12px}
-.uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:16px;padding:0 3px;font-size:11px;line-height:1.5}
+.uno-homepage__reminder-form .uno-homepage__reminder{margin-top:14px}
+.uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:22px;padding:0 3px;font-size:11px;line-height:1.5;text-align:center}
 /* Reserve the former information block height so the live image stays anchored. */
 @media(max-width:1024px){
  .uno-homepage__upcoming .uno-homepage__schedule{height:353.25px;min-height:0}
- .uno-homepage__upcoming .uno-homepage__schedule-label{margin-bottom:24px}
- .uno-homepage__upcoming .uno-homepage__schedule-description{margin:20px 0 24px}
- .uno-homepage__contact-tabs{margin-bottom:12px}
+ .uno-homepage__upcoming .uno-homepage__schedule-label{margin-bottom:32px}
+ .uno-homepage__upcoming .uno-homepage__schedule-description{margin:20px 0 44px}
+ .uno-homepage__contact-tabs{margin-bottom:16px}
  .uno-homepage__contact-input{height:44px}
  .uno-homepage__reminder-form .uno-homepage__reminder{margin-top:12px}
- .uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:12px}
+ .uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:20px}
 }
-@media(max-width:650px){.uno-homepage__upcoming .uno-homepage__schedule{height:356.25px;min-height:0}}
+/* Stacked LIVE content keeps normal flow so the expanded form never overlaps Brand. */
+@media(max-width:900px){.uno-homepage__upcoming .uno-homepage__schedule{height:auto;min-height:356.25px}}
 
 /* Archive UI shares the LIVE video/CTA guide. Stage and circle geometry stay intact. */
 .uno-homepage__archive{--archive-stage-inset:60px;--archive-ui-inset:calc(var(--page-gutter) - var(--archive-stage-inset))}
