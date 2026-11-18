@@ -1,5 +1,7 @@
 import {ComebackProject} from '../comeback-project/ComebackProject.js';
 import {ProcessCarousel} from './ProcessCarousel.js';
+import {ParticipationModal} from './ParticipationModal.js';
+import {participationData} from './participationData.js';
 import {siteData,navigationData,heroData,processData,artistProcessData,upcomingLiveData,brandData,socialLinks,footerData,uiAssets,liveContactData} from './homepageData.js';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.2"/></svg>';
@@ -13,8 +15,8 @@ const socials={
 };
 export class UnoHomepage{
  constructor(root){
-  this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.archiveNavFrame=0;this.railAnimation=null;this.calendarUrl=null;this.contactMethod='email';this.contactValues={email:'',phone:''};
-  this.render();this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
+  this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.archiveNavFrame=0;this.archiveResetFrame=0;this.archiveProcessVisit=false;this.archiveProcessSeen=false;this.lastScrollY=scrollY;this.railAnimation=null;this.calendarUrl=null;this.contactMethod='email';this.contactValues={email:'',phone:''};
+  this.render();this.participation=new ParticipationModal(this.root);this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
   this.archiveObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.archive=String(entry.isIntersecting);},{threshold:0});this.archiveObserver.observe(this.$('.uno-homepage__archive'));
   this.footerObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.footer=String(entry.isIntersecting);},{threshold:0});this.footerObserver.observe(this.$('.uno-homepage__footer'));
   requestAnimationFrame(()=>{const hash=location.hash;if(hash){const target=document.getElementById(hash.slice(1));target?.scrollIntoView({behavior:'instant'});}});
@@ -71,7 +73,7 @@ export class UnoHomepage{
   this.root.addEventListener('click',event=>{
    const contactTab=event.target.closest('[data-contact-method]');if(contactTab){this.setContactMethod(contactTab.dataset.contactMethod);return;}
    const filter=event.target.closest('[data-category]');if(filter){this.activeCategory=filter.dataset.category;this.renderCards();return;}
-   const card=event.target.closest('[data-process-id]');if(card){if(!this.carousel.select(card))return;const d=artistProcessData.find(d=>d.id===card.dataset.processId);this.openDialog(d.title,`<img class="uno-homepage__dialog-image" src="${esc(d.image)}" alt="${esc(d.alt)}"><p>${esc(d.description)}</p>`,`${d.artist} / ${d.category.toUpperCase()}`);return;}
+   const card=event.target.closest('[data-process-id]');if(card){if(!this.carousel.select(card))return;const d=artistProcessData.find(d=>d.id===card.dataset.processId);if(participationData[d.id]){this.participation.open(participationData[d.id],card);return;}this.openDialog(d.title,`<img class="uno-homepage__dialog-image" src="${esc(d.image)}" alt="${esc(d.alt)}"><p>${esc(d.description)}</p>`,`${d.artist} / ${d.category.toUpperCase()}`);return;}
    const control=event.target.closest('[data-home-action]');if(!control)return;
    switch(control.dataset.homeAction){
     case 'navigate':{event.preventDefault();cancelAnimationFrame(this.archiveNavFrame);const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);if(control.dataset.target==='#comeback-archive')this.openArchiveBehind();this.updateScrollUI();break;}
@@ -110,9 +112,21 @@ export class UnoHomepage{
  }
  scrollRail(direction){this.carousel.step(direction)}
  openArchiveBehind(){
+  cancelAnimationFrame(this.archiveResetFrame);this.archiveResetFrame=0;this.archiveProcessVisit=true;this.archiveProcessSeen=false;
   const activate=()=>{this.archiveNavFrame=0;if(this.abort.signal.aborted)return;if(this.archive.locked||this.archive.focusBusy){this.archiveNavFrame=requestAnimationFrame(activate);return;}if(this.archive.mode!=='behind')this.archive.setMode('behind');};activate();
  }
+ resetArchiveListen(){
+  cancelAnimationFrame(this.archiveNavFrame);this.archiveNavFrame=0;this.archiveProcessVisit=false;this.archiveProcessSeen=false;
+  const reset=()=>{this.archiveResetFrame=0;if(this.abort.signal.aborted)return;if(this.archive.locked||this.archive.focusBusy){this.archiveResetFrame=requestAnimationFrame(reset);return;}if(this.archive.mode!=='listen')this.archive.setMode('listen');};reset();
+ }
  updateScrollUI(){
+  if(this.participation.dialog.open)return;
+  const currentY=scrollY,archiveTop=this.$('#comeback-archive').getBoundingClientRect().top;
+  if(this.archiveProcessVisit){
+   if(archiveTop<=Math.min(innerHeight*.35,260))this.archiveProcessSeen=true;
+   if(this.archiveProcessSeen&&currentY<this.lastScrollY&&archiveTop>Math.min(innerHeight*.35,260))this.resetArchiveListen();
+  }
+  this.lastScrollY=currentY;
   this.$('.uno-homepage__top').dataset.visible=String(window.scrollY>160);
   const links=[...this.root.querySelectorAll('.uno-homepage__nav a')],probe=Math.min(innerHeight*.35,260);let active=links[0];
   links.forEach(link=>{const section=this.$(link.dataset.target);if(section&&section.getBoundingClientRect().top<=probe)active=link;});
@@ -125,5 +139,5 @@ export class UnoHomepage{
   const text=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//UNO Entertainment//Live Schedule//KO','BEGIN:VEVENT',`UID:uno-live-${stamp(start)}@calendar.invalid`,`DTSTAMP:${stamp(new Date())}`,`DTSTART:${stamp(start)}`,`DTEND:${stamp(end)}`,`SUMMARY:${safe(upcomingLiveData.calendarTitle)}`,`DESCRIPTION:${safe(upcomingLiveData.description)}`,'BEGIN:VALARM','TRIGGER:-PT10M','ACTION:DISPLAY',`DESCRIPTION:${safe(upcomingLiveData.calendarTitle)}`,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
   if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.calendarUrl=URL.createObjectURL(new Blob([text],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=this.calendarUrl;link.download='uno-jena-live.ics';link.click();
  }
- destroy(){this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.footerObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);cancelAnimationFrame(this.archiveNavFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
+ destroy(){this.participation.destroy();this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.footerObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);cancelAnimationFrame(this.archiveNavFrame);cancelAnimationFrame(this.archiveResetFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
 }
