@@ -1,4 +1,4 @@
-import {albumData,trackData,behindData,releaseData,motionData,artistData} from './comebackData.js';
+import {albumData,trackData,behindData,releaseData,motionData,artistData,listenLayoutData} from './comebackData.js';
 const esc = value => String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow = '<svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 10 10 2M3 2h7v7" stroke="currentColor" stroke-width="1"/></svg>';
 const number = i => String(i+1).padStart(2,'0');
@@ -187,7 +187,7 @@ export class ComebackProject {
   const nodeSize=parseFloat(style?.getPropertyValue('--cp-timeline-node-size'))||motionData.nodeSize;
   const nodeOffset=parseFloat(style?.getPropertyValue('--cp-timeline-node-offset'))||6;
   const rowGap=parseFloat(style?.getPropertyValue('--cp-timeline-row-gap'))||44;
-  return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+nodeOffset+i*rowGap,size:nodeSize};const size=diameter*(1-(trackData.length-1-i)*.078);return{x:centerX-size/2,y:centerY-size/2,size};});}
+  return this.circles.map((_,i)=>{if(mode==='behind')return{x:w*(mobile?.03:.06),y:(mobile?20:24)+nodeOffset+i*rowGap,size:nodeSize};const size=diameter*listenLayoutData.diameterRatios[i];return{x:centerX-size/2,y:centerY-size/2,size};});}
  transform(p){return `translate(${p.x}px, ${p.y}px) scale(${p.size/600})`;}
  layout(){
   this.updateViewportAxis();

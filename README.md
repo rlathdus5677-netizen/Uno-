@@ -11,13 +11,13 @@ UNO Entertainment 홈페이지와 독립 실행 가능한 Comeback Archive를 �
 - `dist/homepage/homepageData.js`: Hero, 제작 과정 카드, 필터, 라이브 일정, 소셜 링크, Footer 콘텐츠
 - `dist/homepage/assets/`: 교체 가능한 홈페이지 전용 이미지 및 기존 로고의 복사본
 
-홈페이지는 기존 `ComebackProject` 클래스를 직접 import하고 하나의 section에 초기화합니다. `dist/comeback-project/`와 독립 실행용 `dist/index.html`은 홈페이지 작업에서 수정하지 않았습니다. Desktop wrapper도 928px을 확보하며, guide는 wrapper의 clip-path로 Archive 안에서만 표시합니다. 홈페이지 안의 desktop 오디오 utility만 section 내부에 배치해 잘림을 방지합니다. 기존 IntersectionObserver가 화면 밖의 회전을 일시정지합니다. 홈페이지 종료 시 `unoHomepage.destroy()`는 원래 컴포넌트도 정리합니다.
+홈페이지는 기존 `ComebackProject` 클래스를 직접 import하고 하나의 section에 초기화합니다. 독립 실행용 `dist/index.html`은 유지합니다. 최신 수정에서는 공유 컴포넌트의 LISTEN 지름 비율만 `listenLayoutData.diameterRatios`로 분리했으며 기존 morph·선택·rotation 구조는 유지합니다. Desktop wrapper도 928px을 확보하며, guide는 wrapper의 clip-path로 Archive 안에서만 표시합니다. 홈페이지 안의 desktop 오디오 utility만 section 내부에 배치해 잘림을 방지합니다. 기존 IntersectionObserver가 화면 밖의 회전을 일시정지합니다. 홈페이지 종료 시 `unoHomepage.destroy()`는 원래 컴포넌트도 정리합니다.
 
 이미지 교체는 `homepageData.js`의 각 `image` 값을 수정하거나 해당 홈페이지 asset 파일만 교체하면 됩니다. Hero는 Figma 원본의 `assets/figma/hero-live.png`를 사용하며 로고와 아이콘도 같은 폴더에 보관합니다. Process의 8개 이미지와 다음 라이브의 `upcoming-live.png`, 기존 Archive 이미지는 보존했습니다. `artistProcessData`에서 image/title/artist/category/description을 바꾸면 카드와 상세 안내에 함께 반영됩니다. Pretendard는 `assets/fonts/`에서 로컬 제공하며 라이선스는 같은 폴더의 `OFL.txt`에 있습니다.
 
 로그인·실시간 방송·알림 신청은 준비 중 안내를 표시하는 프런트엔드 프로토타입입니다. 라이브 일정은 임시 데이터이며, 캘린더 저장은 데이터의 날짜/시간과 10분 전 알림을 담은 ICS 파일을 다운로드합니다. 실제 알림 서버·회원 시스템은 연결하지 않았습니다. 소셜 URL과 법적 문구도 임시 값이며 `homepageData.js`에서 교체합니다.
 
-최종 디자인 기준은 [Figma 1440px 와이어프레임](https://www.figma.com/design/VV0hSYzQLOqMcvb3LOdyz8/3%ED%8C%80?node-id=3313-376)입니다. 1440px에서 Header/Hero/Archive/Process/Upcoming/About/Footer 높이는 각각 80/790/928/930/750/550/150px, 전체 높이는 4178px입니다. `homepage.css`의 page grid, typography, section height 토큰으로 공통 기준을 관리합니다. 기존 dark Archive와 실제 카드·라이브 콘텐츠는 유지합니다.
+최종 디자인 기준은 [Figma 1440px 와이어프레임](https://www.figma.com/design/VV0hSYzQLOqMcvb3LOdyz8/3%ED%8C%80?node-id=3496-76)입니다. 1440px에서 Header/Hero/Archive/Process/Upcoming/About/Footer 높이는 각각 62/790/928/930/750/550/150px, 전체 높이는 4160px입니다. `homepage.css`의 page grid, typography, section height 토큰으로 공통 기준을 관리합니다. 기존 dark Archive와 실제 카드·라이브 콘텐츠는 유지합니다. 최신 프레임의 Hero는 중앙 정렬, PROCESS active 카드는 약 312×412px, Upcoming 이미지는 791×500px와 정보 폭 383px입니다. Brand는 왼쪽 그룹 X=120px(슬로건 X=115px), 심볼 X=665px·680×310px을 적용하며 Footer는 왼쪽 X=70px / 오른쪽 끝 X=1380px이라는 Figma의 별도 좌표를 따릅니다. LISTEN 지름은 안쪽부터 95.2/156.4/204/272/326.4/401.2/455.6/537.2/598.4/680px로 변화하며 중심과 바깥 10번 원은 유지됩니다.
 
 검증: Chromium에서 전체 페이지와 각 section 스크린샷을 비교했고, 1440/1280/1024/768/390/360px overflow, 로컬 asset과 font, 필터별 무한 루프/진행 바, 중앙 확대, 앵커/모달/TOP/캘린더, Archive Focus/양방향 morph/10개 chapter/동일 DOM과 회전, utility 잘림과 상태 유지, 독립 실행 버전을 확인했습니다.
 

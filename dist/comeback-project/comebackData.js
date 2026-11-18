@@ -20,3 +20,6 @@ export const releaseData={eyebrow:'TODAY',title:'COMEBACK RELEASED',primaryCta:{
 export const motionData={duration:1120,stagger:35,nodeSize:26};
 
 export const artistData={latin:'JENA',korean:'김지안'};
+
+// Inner-to-outer LISTEN diameters; TRACK 10 remains the unchanged outer reference.
+export const listenLayoutData={diameterRatios:[.14,.23,.30,.40,.48,.59,.67,.79,.88,1]};
