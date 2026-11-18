@@ -1,6 +1,6 @@
 import {ComebackProject} from '../comeback-project/ComebackProject.js';
 import {ProcessCarousel} from './ProcessCarousel.js';
-import {siteData,navigationData,heroData,processData,artistProcessData,upcomingLiveData,brandData,socialLinks,footerData,uiAssets} from './homepageData.js';
+import {siteData,navigationData,heroData,processData,artistProcessData,upcomingLiveData,brandData,socialLinks,footerData,uiAssets,liveContactData} from './homepageData.js';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.2"/></svg>';
 const externalArrow='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="m5 19 14-14M7 5h12v12" stroke="currentColor" stroke-width="1.2"/></svg>';
@@ -13,7 +13,7 @@ const socials={
 };
 export class UnoHomepage{
  constructor(root){
-  this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.railAnimation=null;this.calendarUrl=null;
+  this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.railAnimation=null;this.calendarUrl=null;this.contactMethod='email';this.contactValues={email:'',phone:''};
   this.render();this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
   this.archiveObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.archive=String(entry.isIntersecting);},{threshold:0});this.archiveObserver.observe(this.$('.uno-homepage__archive'));
   this.footerObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.footer=String(entry.isIntersecting);},{threshold:0});this.footerObserver.observe(this.$('.uno-homepage__footer'));
@@ -47,7 +47,11 @@ export class UnoHomepage{
     <div class="uno-homepage__upcoming-inner">
     <p class="uno-homepage__section-label">${esc(upcomingLiveData.label)}</p><h2 class="uno-homepage__upcoming-headline" id="uno-upcoming-title">${esc(upcomingLiveData.headline)}</h2>
     <div class="uno-homepage__live-grid"><img class="uno-homepage__upcoming-image" src="${esc(upcomingLiveData.image)}" alt="${esc(upcomingLiveData.alt)}" loading="lazy">
-     <div class="uno-homepage__schedule"><p class="uno-homepage__schedule-label">${esc(upcomingLiveData.eyebrow)}</p><p class="uno-homepage__date">${esc(upcomingLiveData.dateLabel)}</p><p class="uno-homepage__time">${esc(upcomingLiveData.timeLabel)}</p><h3 class="uno-homepage__schedule-title">${esc(upcomingLiveData.title)}</h3><p class="uno-homepage__schedule-description">${esc(upcomingLiveData.description)}</p><button type="button" class="uno-homepage__text-link uno-homepage__reminder" data-home-action="reminder">${esc(upcomingLiveData.cta)}<img class="uno-homepage__chevron-image" src="${esc(uiAssets.liveChevron)}" alt="" aria-hidden="true"></button><p class="uno-homepage__schedule-notice">${esc(upcomingLiveData.notice)}</p></div>
+     <div class="uno-homepage__schedule"><p class="uno-homepage__schedule-label">${esc(upcomingLiveData.eyebrow)}</p><p class="uno-homepage__date">${esc(upcomingLiveData.dateLabel)}</p><p class="uno-homepage__time">${esc(upcomingLiveData.timeLabel)}</p><p class="uno-homepage__schedule-description">${esc(upcomingLiveData.description)}</p><form class="uno-homepage__reminder-form" data-live-reminder>
+      <div class="uno-homepage__contact-tabs" role="tablist" aria-label="알림 수신 방법">${Object.entries(liveContactData).map(([method,d])=>`<button type="button" role="tab" id="uno-contact-${method}" aria-controls="uno-contact-panel" aria-selected="${method==='email'}" tabindex="${method==='email'?0:-1}" data-contact-method="${method}">${esc(d.label)}</button>`).join('')}</div>
+      <div id="uno-contact-panel" role="tabpanel" aria-labelledby="uno-contact-email"><input class="uno-homepage__contact-input" name="contact" type="email" inputmode="email" autocomplete="email" aria-label="이메일" placeholder="${esc(liveContactData.email.placeholder)}" required maxlength="254" spellcheck="false"></div>
+      <button type="submit" class="uno-homepage__text-link uno-homepage__reminder">${esc(upcomingLiveData.cta)}<img class="uno-homepage__chevron-image" src="${esc(uiAssets.liveChevron)}" alt="" aria-hidden="true"></button>
+      <p class="uno-homepage__schedule-notice">${esc(upcomingLiveData.notice)}</p></form></div>
     </div></div>
    </section>
    <section class="uno-homepage__brand" id="about-uno" aria-label="About UNO Entertainment">
@@ -65,6 +69,7 @@ export class UnoHomepage{
  bind(){
   const signal=this.abort.signal;
   this.root.addEventListener('click',event=>{
+   const contactTab=event.target.closest('[data-contact-method]');if(contactTab){this.setContactMethod(contactTab.dataset.contactMethod);return;}
    const filter=event.target.closest('[data-category]');if(filter){this.activeCategory=filter.dataset.category;this.renderCards();return;}
    const card=event.target.closest('[data-process-id]');if(card){if(!this.carousel.select(card))return;const d=artistProcessData.find(d=>d.id===card.dataset.processId);this.openDialog(d.title,`<img class="uno-homepage__dialog-image" src="${esc(d.image)}" alt="${esc(d.alt)}"><p>${esc(d.description)}</p>`,`${d.artist} / ${d.category.toUpperCase()}`);return;}
    const control=event.target.closest('[data-home-action]');if(!control)return;
@@ -76,7 +81,7 @@ export class UnoHomepage{
     case 'rail-next':this.scrollRail(1);break;
     case 'live-preview':this.openDialog(heroData.previewTitle,`<img class="uno-homepage__dialog-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}"><p>${esc(heroData.previewDescription)}</p><button type="button" class="uno-homepage__text-link" data-home-action="show-schedule">라이브 일정 보기 ${arrow}</button>`,'UNO LIVE');break;
     case 'show-schedule':this.$('dialog.uno-homepage__dialog').close();this.$('#upcoming-live').scrollIntoView({behavior:this.motion.matches?'instant':'smooth'});break;
-    case 'reminder':this.openDialog('다음 라이브를 함께 기다려요.',`<p>${esc(upcomingLiveData.dateLabel)} · ${esc(upcomingLiveData.timeLabel)}</p><p>${esc(upcomingLiveData.reminderDescription)}</p><button type="button" class="uno-homepage__text-link" data-home-action="calendar">캘린더에 일정 저장 ${arrow}</button>`,'LIVE REMINDER');break;
+    case 'reminder':this.openReminderPreview();break;
     case 'calendar':this.downloadCalendar();break;
     case 'login':this.openDialog('조금만 기다려주세요.','<p>로그인 서비스를 준비하고 있어요. 지금은 UNO의 라이브와 아티스트 콘텐츠를 먼저 둘러보세요.</p>','UNO ACCOUNT');break;
     case 'about':this.openDialog(brandData.aboutTitle,`<p>${esc(brandData.aboutDescription)}</p>`,'ABOUT UNO');break;
@@ -86,9 +91,16 @@ export class UnoHomepage{
     case 'close-dialog':this.$('dialog.uno-homepage__dialog').close();break;
    }
   },{signal});
+  this.$('[data-live-reminder]').addEventListener('submit',event=>{event.preventDefault();const input=this.$('.uno-homepage__contact-input');input.value=input.value.trim();input.setCustomValidity(this.contactMethod==='phone'&&!/^[+\d()\s-]+$/.test(input.value)?'휴대폰 번호를 확인해주세요.':'');if(this.contactMethod==='phone'&&!/^\d{10,15}$/.test(input.value.replace(/\D/g,'')))input.setCustomValidity('휴대폰 번호를 확인해주세요.');if(!input.reportValidity())return;this.contactValues[this.contactMethod]=input.value;this.openReminderPreview();},{signal});
+  this.$('.uno-homepage__contact-input').addEventListener('input',event=>event.target.setCustomValidity(''),{signal});
+  this.$('.uno-homepage__contact-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const next=event.key==='Home'?'email':event.key==='End'?'phone':this.contactMethod==='email'?'phone':'email';this.setContactMethod(next);this.$(`[data-contact-method=${next}]`).focus();},{signal});
   window.addEventListener('scroll',()=>{if(!this.scrollFrame)this.scrollFrame=requestAnimationFrame(()=>{this.scrollFrame=0;this.updateScrollUI()})},{passive:true,signal});
   this.$('dialog.uno-homepage__dialog').addEventListener('click',e=>{if(e.target!==e.currentTarget)return;const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.currentTarget.close()},{signal});
  }
+ setContactMethod(method){
+  if(!liveContactData[method])return;const input=this.$('.uno-homepage__contact-input');this.contactValues[this.contactMethod]=input.value;this.contactMethod=method;const d=liveContactData[method];this.root.querySelectorAll('[data-contact-method]').forEach(tab=>{const active=tab.dataset.contactMethod===method;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});this.$('#uno-contact-panel').setAttribute('aria-labelledby',`uno-contact-${method}`);input.type=d.type;input.inputMode=d.type==='tel'?'tel':'email';input.autocomplete=d.autocomplete;input.placeholder=d.placeholder;input.setAttribute('aria-label',d.label);input.maxLength=method==='phone'?24:254;input.value=this.contactValues[method];input.setCustomValidity('');
+ }
+ openReminderPreview(){this.openDialog('다음 라이브를 함께 기다려요.',`<p>${esc(upcomingLiveData.dateLabel)} · ${esc(upcomingLiveData.timeLabel)}</p><p>${esc(upcomingLiveData.reminderDescription)}</p><button type="button" class="uno-homepage__text-link" data-home-action="calendar">캘린더에 일정 저장 ${arrow}</button>`,'LIVE REMINDER')}
  renderCards(){
   this.root.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===this.activeCategory)));
   const items=artistProcessData.filter(d=>this.activeCategory==='all'||d.category===this.activeCategory),rail=this.$('.uno-homepage__rail');rail.dataset.filtered=String(this.activeCategory!=='all');

@@ -159,3 +159,28 @@
    The UNO SVG has a 3.92% transparent right inset: align its visible artwork
    with the CTA edge without changing the SVG, rendered size or vertical flow. */
 .uno-homepage__brand-symbol{translate:3.92% 0}
+
+/* LIVE SCHEDULE contact UI stays within the existing right-hand column. */
+.uno-homepage__upcoming .uno-homepage__schedule{min-height:400.25px}
+.uno-homepage__upcoming .uno-homepage__schedule-label{margin-bottom:20px}
+.uno-homepage__upcoming .uno-homepage__schedule-description{max-width:100%;margin:18px 0 20px}
+.uno-homepage__reminder-form{margin:0}
+.uno-homepage__contact-tabs{display:flex;gap:26px;margin-bottom:12px}
+.uno-homepage__contact-tabs [role=tab]{position:relative;padding:0 0 9px;border:0;background:none;color:var(--live-muted);font:500 12px/1.35 Pretendard,Arial,sans-serif;cursor:pointer}
+.uno-homepage__contact-tabs [aria-selected=true]{color:var(--uno-white)}
+.uno-homepage__contact-tabs [aria-selected=true]:after{content:'';position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--uno-purple)}
+.uno-homepage__contact-input{display:block;width:100%;height:48px;box-sizing:border-box;padding:0 20px;border:1px solid #66616d;border-radius:999px;background:var(--uno-dark);color:var(--uno-white);font:400 13px/1.35 Pretendard,Arial,sans-serif}
+.uno-homepage__contact-input::placeholder{color:#aaa3b3;opacity:1}
+.uno-homepage__reminder-form .uno-homepage__reminder{margin-top:12px}
+.uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:12px;padding:0 3px;font-size:11px;line-height:1.5}
+/* Reserve the former information block height so the live image stays anchored. */
+@media(max-width:1024px){
+ .uno-homepage__upcoming .uno-homepage__schedule{min-height:353.25px}
+ .uno-homepage__upcoming .uno-homepage__schedule-label{margin-bottom:16px}
+ .uno-homepage__upcoming .uno-homepage__schedule-description{margin:12px 0}
+ .uno-homepage__contact-tabs{margin-bottom:8px}
+ .uno-homepage__contact-input{height:44px}
+ .uno-homepage__reminder-form .uno-homepage__reminder{margin-top:8px}
+ .uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:8px}
+}
+@media(max-width:650px){.uno-homepage__upcoming .uno-homepage__schedule{min-height:356.25px}}

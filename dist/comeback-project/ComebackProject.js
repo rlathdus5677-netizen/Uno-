@@ -30,7 +30,6 @@ export class ComebackProject {
     <article class="comeback-project__media" aria-live="polite"></article>
    </div>
    <div class="comeback-project__objects">${trackData.map((t,i)=>`<button type="button" class="comeback-project__circle" data-track="${i}" aria-label="Track ${number(i)}: ${esc(t.title)}" aria-pressed="false" style="z-index:${trackData.length-i}"><span class="comeback-project__surface"><img class="comeback-project__track-artwork" src="${esc(t.cover)}" alt="" draggable="false"><img class="comeback-project__behind-artwork" src="${esc(behindData[i].image)}" alt="" aria-hidden="true" draggable="false"></span></button>`).join('')}</div>
-   <div class="comeback-project__orbit-caption"><span>10 TRACKS / ${esc(albumData.duration)}</span><span data-listen-hint>HOVER TO EXPLORE · NUMBERS TO FOCUS</span></div>
    <div class="comeback-project__listen"><p class="comeback-project__album-artist">${esc(albumData.artist)}</p><h2 class="comeback-project__album-name">${esc(albumData.title)}</h2><p class="comeback-project__album-edition">${esc(albumData.edition)} &nbsp; / &nbsp; ${esc(albumData.year)}</p><div class="comeback-project__divider"></div><div class="comeback-project__track-details" aria-live="polite"></div><div class="comeback-project__select-tracks" aria-label="Select track">${trackData.map((t,i)=>`<button type="button" class="comeback-project__track-pick" data-pick="${i}" aria-label="Focus track ${number(i)}: ${esc(t.title)}. Click again to explore." aria-pressed="false">${number(i)}</button>`).join('')}</div></div>
    <div class="comeback-project__switch" role="group" aria-label="Album view">
     <button class="comeback-project__switch-tab" type="button" data-mode-target="listen" aria-label="Listen: explore the album" aria-pressed="true"><svg class="comeback-project__listen-symbol" aria-hidden="true" width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="26" fill="#969696"/><circle cx="26" cy="26" r="18" fill="#d2d2d2"/><circle cx="26" cy="26" r="9" fill="#efefef"/></svg><span class="comeback-project__switch-label">LISTEN</span></button>
@@ -207,7 +206,6 @@ export class ComebackProject {
   this.clearExploration();this.selectedTrack=index;this.listenState=index===null?'explore':'focus';
   this.root.dataset.listenState=this.listenState;
   if(index!==null)this.selectTrack(index);
-  this.$('[data-listen-hint]').textContent=index===null?'HOVER TO EXPLORE · NUMBERS TO FOCUS':'CLICK AGAIN OR OUTSIDE TO EXPLORE';
   const geometry=this.positions('listen'),largest=geometry.at(-1);
   const centeredScale=(p,scale,dx=0,dy=0)=>({x:p.x+(p.size-p.size*scale)/2+dx,y:p.y+(p.size-p.size*scale)/2+dy,size:p.size*scale});
   const reduced=this.motion.matches,ms=reduced?100:duration;

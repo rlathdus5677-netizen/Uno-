@@ -169,3 +169,5 @@ UPCOMING LIVE의 이미지는 원본 1440:790 비율과 width 100% / height auto
 BEHIND 01–10의 상세 media viewer는 원본 이미지/영상의 intrinsic 비율로 높이를 계산합니다. `media-visual`의 고정 ratio와 mobile ratio override를 제거하고 내부 media에 width 100% / height auto를 적용했습니다. 가로 위치·폭은 그대로이며 caption/number/title/description이 기존 간격을 유지해 media 바로 아래로 따라옵니다. 타임라인·Note·원형 artwork crop 및 morph 로직은 변경하지 않습니다.
 
 Brand는 UPCOMING LIVE 영상의 실제 left edge와 알림 CTA의 right edge를 기준으로 검증합니다. 왼쪽 그룹은 이미 같은 좌표여서 유지하며, UNO SVG 내부 3.92%의 오른쪽 투명 여백만 가로 위치로 보정합니다. 심볼의 실제 그림 끝이 CTA 끝에 맞으며 SVG 크기·세로 배치·원본 파일과 LIVE/Footer는 바꾸지 않습니다.
+
+LISTEN의 하단 orbit guidance DOM과 해당 Focus 안내 갱신만 제거했으며 정보 그룹 간격을 총 약 32px 넓혔습니다. 원형 geometry·animation·Behind data는 유지합니다. LIVE SCHEDULE은 이메일/휴대폰 접근 가능한 탭, 타입별 연락처 입력·검증, 동일 폭 CTA와 개인정보 안내를 표시합니다. 연락처는 현재 페이지 메모리에서만 유지하며 전송·저장하지 않습니다. 실제 알림 발송 서버는 연결되지 않았으므로 유효한 제출에는 기존 준비 중 안내/캘린더 저장을 제공합니다. 오른쪽 블록의 이전 높이를 확보해 기존 라이브 이미지 좌표와 섹션 높이를 유지합니다.
