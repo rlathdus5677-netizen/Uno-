@@ -41,7 +41,7 @@ export class ParticipationModal {
   const data=this.content;let items=data.items.filter(item=>this.sort!=='saved'||this.favorites.has(item.id));
   items=[...items].sort(this.sort==='popular'?(a,b)=>b.votes-a.votes:this.sort==='newest'?(a,b)=>b.order-a.order:(a,b)=>a.order-b.order);
   const pageSize=this.mobileLayout.matches?4:data.pageSize;
-  const pages=this.mobileLayout.matches?Math.max(1,Math.ceil(items.length/pageSize)):(data.pageCount||Math.max(1,Math.ceil(items.length/pageSize)));this.page=Math.max(0,Math.min(this.page,pages-1));
+  const pages=this.mobileLayout.matches?Math.max(data.pageCount||1,Math.ceil(items.length/pageSize)):(data.pageCount||Math.max(1,Math.ceil(items.length/pageSize)));this.page=Math.max(0,Math.min(this.page,pages-1));
   const pageItems=items.slice(this.page*pageSize,(this.page+1)*pageSize);
   this.dialog.querySelectorAll('[data-sort]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sort===this.sort)));
   this.dialog.querySelector('.uno-participation__results').innerHTML=pageItems.length?`<div class="uno-participation__grid">${pageItems.map(item=>`<article class="uno-participation__card"><img src="${esc(item.image)}" alt="${esc(item.title)} 스타일" draggable="false"><button type="button" class="uno-participation__favorite" data-participation-action="favorite" data-id="${esc(item.id)}" aria-label="${esc(item.title)} 찜" aria-pressed="${this.favorites.has(item.id)}">${heart}</button><div class="uno-participation__card-copy"><h3>${esc(item.title)}</h3><p>${item.votes.toLocaleString('ko-KR')} 팬들이 투표했어요.</p></div></article>`).join('')}</div>`:this.page>0?'<p class="uno-participation__empty" data-page-pending>콘텐츠 준비 중입니다.</p>':'<p class="uno-participation__empty">아직 찜한 스타일이 없습니다.</p>';
