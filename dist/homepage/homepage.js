@@ -132,6 +132,9 @@ export class UnoHomepage{
   }
   this.lastScrollY=currentY;
   this.$('.uno-homepage__top').dataset.visible=String(window.scrollY>160);
+  // Keep the mobile TOP button in the compact footer's clear upper-right area.
+  const topButton=this.$('.uno-homepage__top'),footerTop=this.$('.uno-homepage__footer').getBoundingClientRect().top;
+  if(innerWidth<=650)topButton.style.setProperty('--footer-top-bottom',`${Math.max(16,innerHeight-footerTop-97)}px`);else topButton.style.removeProperty('--footer-top-bottom');
   const links=[...this.root.querySelectorAll('.uno-homepage__nav a')],probe=Math.min(innerHeight*.35,260);let active=links[0];
   links.forEach(link=>{const section=this.$(link.dataset.target);if(section&&section.getBoundingClientRect().top<=probe)active=link;});
   const last=links.at(-1),lastSection=last&&this.$(last.dataset.target);
