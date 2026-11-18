@@ -154,3 +154,8 @@
  .uno-homepage__live-grid{min-height:calc((100vw - 2*var(--page-gutter) - var(--live-gap))*757/1140*500/791);grid-template-rows:auto 1fr;align-items:center}
  .uno-homepage__schedule{margin-top:0}
 }
+
+/* Live image/CTA and Brand already share the horizontal grid variables.
+   The UNO SVG has a 3.92% transparent right inset: align its visible artwork
+   with the CTA edge without changing the SVG, rendered size or vertical flow. */
+.uno-homepage__brand-symbol{translate:3.92% 0}
