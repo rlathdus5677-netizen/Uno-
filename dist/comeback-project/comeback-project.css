@@ -207,3 +207,10 @@
 .comeback-project__utility [data-sound-state]{color:var(--cp-purple)}
 .comeback-project__utility[aria-pressed=true] [data-sound-state]{color:#ada4bb}
 .comeback-project__utility-icon[data-muted=false] [data-sound-mute-mark]{display:none}
+
+/* Homepage mobile archive only: keep controls below the content, not fixed over it. */
+@media (max-width:650px) {
+  .uno-homepage__archive .comeback-project { padding-bottom: 118px; }
+  .uno-homepage__archive .comeback-project[data-mode="listen"] .comeback-project__stage { height: 805px; }
+  .uno-homepage__archive .comeback-project__utilities { position: absolute; right: 6%; bottom: 24px; }
+}
