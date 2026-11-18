@@ -13,7 +13,7 @@ UNO Entertainment 홈페이지와 독립 실행 가능한 Comeback Archive를 �
 
 홈페이지는 기존 `ComebackProject` 클래스를 직접 import하고 하나의 section에 초기화합니다. 독립 실행용 `dist/index.html`은 유지합니다. 최신 수정에서는 공유 컴포넌트의 LISTEN 지름 비율만 `listenLayoutData.diameterRatios`로 분리했으며 기존 morph·선택·rotation 구조는 유지합니다. Desktop wrapper도 928px을 확보하며, guide는 wrapper의 clip-path로 Archive 안에서만 표시합니다. 홈페이지 안의 desktop 오디오 utility만 section 내부에 배치해 잘림을 방지합니다. 기존 IntersectionObserver가 화면 밖의 회전을 일시정지합니다. 홈페이지 종료 시 `unoHomepage.destroy()`는 원래 컴포넌트도 정리합니다.
 
-이미지 교체는 `homepageData.js`의 각 `image` 값을 수정하거나 해당 홈페이지 asset 파일만 교체하면 됩니다. Hero는 Figma 원본의 `assets/figma/hero-live-3543-150.png`를 사용하며 로고와 아이콘도 같은 폴더에 보관합니다. Process의 8개 이미지와 다음 라이브의 `upcoming-live.png`, 기존 Archive 이미지는 보존했습니다. `artistProcessData`에서 image/title/artist/category/description을 바꾸면 카드와 상세 안내에 함께 반영됩니다. Pretendard는 `assets/fonts/`에서 로컬 제공하며 라이선스는 같은 폴더의 `OFL.txt`에 있습니다.
+이미지 교체는 `homepageData.js`의 각 `image` 값을 수정하거나 해당 홈페이지 asset 파일만 교체하면 됩니다. Hero는 Figma 원본의 `assets/figma/hero-live.png`를 사용하며 로고와 아이콘도 같은 폴더에 보관합니다. Process의 8개 이미지와 다음 라이브의 `upcoming-live.png`, 기존 Archive 이미지는 보존했습니다. `artistProcessData`에서 image/title/artist/category/description을 바꾸면 카드와 상세 안내에 함께 반영됩니다. Pretendard는 `assets/fonts/`에서 로컬 제공하며 라이선스는 같은 폴더의 `OFL.txt`에 있습니다.
 
 로그인·실시간 방송·알림 신청은 준비 중 안내를 표시하는 프런트엔드 프로토타입입니다. 라이브 일정은 임시 데이터이며, 캘린더 저장은 데이터의 날짜/시간과 10분 전 알림을 담은 ICS 파일을 다운로드합니다. 실제 알림 서버·회원 시스템은 연결하지 않았습니다. 소셜 URL과 법적 문구도 임시 값이며 `homepageData.js`에서 교체합니다.
 
