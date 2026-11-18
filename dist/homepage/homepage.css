@@ -144,6 +144,6 @@
 /* Five complete desktop cards, including the existing center enlargement.
    Total visual width = 5.20322 cards + four gaps; 6px breathing room per edge. */
 @media(min-width:1200px){
- .uno-homepage__rail{--process-card-width:min(259.601px,calc((100vw - 2*var(--page-gutter) - 4*31.631px - 12px)/5.20322));width:min(var(--content-width),calc(5.20322*259.601px + 4*31.631px + 12px));margin-inline:auto}
+ .uno-homepage__rail{--process-card-width:min(259.601px,calc((100vw - 2*var(--page-gutter) - 4*31.631px - 12px)/5.20322));--process-viewport-width:min(calc(100vw - 2*var(--page-gutter)),calc(5.20322*259.601px + 4*31.631px + 12px));width:var(--process-viewport-width);padding-inline:max(0px,calc((var(--process-viewport-width) - var(--process-card-width))/2));margin-inline:auto}
  .uno-homepage__process-card{display:flex;flex-direction:column;height:342.411px}
 }
