@@ -16,7 +16,7 @@ export class ParticipationModal {
     const kind=action.dataset.participationAction;
     if(kind==='close')this.close();
     if(kind==='sort'){this.sort=action.dataset.sort;this.page=0;this.renderResults();}
-    if(kind==='favorite'){const id=action.dataset.id;const wasFavorite=this.favorites.has(id);wasFavorite?this.favorites.delete(id):this.favorites.add(id);this.renderResults();const trigger=this.dialog.querySelector(`[data-participation-action="favorite"][data-id="${id}"]`);trigger?.focus({preventScroll:true});const outfit=this.content.items.find(item=>item.id===id);if(!wasFavorite&&outfit?.voteEnabled)this.voteComplete.open(outfit,trigger);}
+    if(kind==='favorite'){const id=action.dataset.id;const wasFavorite=this.favorites.has(id);wasFavorite?this.favorites.delete(id):this.favorites.add(id);this.renderResults();const trigger=this.dialog.querySelector(`[data-participation-action="favorite"][data-id="${id}"]`);trigger?.focus({preventScroll:true});const outfit=this.content.items.find(item=>item.id===id);if(!wasFavorite&&outfit)this.voteComplete.open(outfit,trigger);}
     if(kind==='page'){const results=this.dialog.querySelector('.uno-participation__results');results.style.minHeight=`${results.getBoundingClientRect().height}px`;this.page=Number(action.dataset.page);this.renderResults();this.dialog.querySelector('.uno-participation__page.active')?.focus({preventScroll:true});}
     return;
    }
