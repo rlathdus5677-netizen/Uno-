@@ -1,0 +1,69 @@
+/* Shared LISTEN language. Circle geometry, BEHIND and desktop utilities retain their styles. */
+.uno-homepage__archive .comeback-project__label,.uno-homepage__archive .comeback-project__listen{font-family:Pretendard,Arial,sans-serif}
+.uno-homepage__archive .comeback-project__label{font-weight:700;letter-spacing:.2px}
+.uno-homepage__archive .comeback-project__album-artist{font-size:10px;font-weight:400;line-height:1.11;letter-spacing:.2px;margin:0 0 10px}
+.uno-homepage__archive .comeback-project__album-name{font-size:30px;font-weight:700;line-height:1.11;letter-spacing:.02em;margin:0 0 10px}
+.uno-homepage__archive .comeback-project__album-edition{font-size:10px;font-weight:400;line-height:1.11;letter-spacing:.2px;margin:0}
+.uno-homepage__archive .comeback-project__divider{margin:18px 0 14px}
+.uno-homepage__archive .comeback-project__track-details{font-size:10px;line-height:1.11}
+.uno-homepage__archive .comeback-project__track-count{display:block;font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px;word-spacing:5px;color:#7c61ff}
+.uno-homepage__archive .comeback-project__track-title{font-size:26px;font-weight:700;line-height:1.11;letter-spacing:.02em;margin:10px 0}
+.uno-homepage__archive .comeback-project__preview-label{display:block;font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px}
+.uno-homepage__archive .comeback-project__wave{min-width:0}
+.uno-homepage__archive .comeback-project__time{font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px;flex-shrink:0}
+.uno-homepage__archive .comeback-project__services{gap:6px}
+.uno-homepage__archive .comeback-project__services .comeback-project__link{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:87px;height:22px;padding:0 10px;border:0;border-radius:999px;background:#7c61ff;color:#fff;font:400 10px/1.11 Pretendard,Arial,sans-serif!important;letter-spacing:.2px;white-space:nowrap}
+.uno-homepage__archive .comeback-project__services .comeback-project__link+ .comeback-project__link{min-width:125px}
+.uno-homepage__archive .comeback-project__services .comeback-project__link svg{margin:0;width:8px;height:8px}
+.uno-homepage__archive .comeback-project__select-tracks{margin-top:25px;gap:6px}
+.uno-homepage__archive .comeback-project__track-pick{display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex:0 0 20px;padding:0;border:0;border-radius:50%;background:transparent;font:400 10px/1.11 Pretendard,Arial,sans-serif!important;letter-spacing:.2px;color:#f4f2f7!important}
+.uno-homepage__archive .comeback-project__track-pick[aria-pressed=true]{background:#7c61ff;color:#fff!important}
+.uno-homepage__schedule-label-mobile{display:none}
+
+/* Existing mobile breakpoint: no desktop PROCESS or LIVE declarations are changed. */
+@media(max-width:650px){
+ .uno-homepage__archive .comeback-project__label{letter-spacing:0}
+ .uno-homepage__archive .comeback-project__album-name,.uno-homepage__archive .comeback-project__track-title{font-size:28px}
+ .uno-homepage__archive .comeback-project__divider{margin:13px 0}
+ .uno-homepage__archive .comeback-project__services{gap:4px}
+ .uno-homepage__archive .comeback-project__services .comeback-project__link{min-width:81px;height:18px;padding:0 8px}
+ .uno-homepage__archive .comeback-project__services .comeback-project__link+ .comeback-project__link{min-width:121px}
+ .uno-homepage__archive .comeback-project__track-pick{width:18px;height:18px;flex-basis:18px}
+
+ .uno-homepage__process{height:auto;min-height:0;padding:23px 0 72px}
+ .uno-homepage__process .uno-homepage__section-label{margin-inline:32px;font:700 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:2px}
+ .uno-homepage__process-headline{margin:40.8px 20px 0;font:700 clamp(38px,11.2vw,42px)/1.2 Pretendard,Arial,sans-serif;letter-spacing:0;white-space:pre-line}
+ .uno-homepage__filters{width:calc(100% - 40px);max-width:335px;margin-top:53.2px}
+ .uno-homepage__filter{font:700 11px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0}
+ .uno-homepage__rail-tools,.uno-homepage__process-all{display:none}
+ .uno-homepage__rail{margin-top:0;padding-top:70px;padding-bottom:42px}
+ /* Existing center enlargement is retained, so these base sizes render at 12/21/16px on the active card. */
+ .uno-homepage__card-content{height:auto;min-height:104px;padding:12px 14px 16px}
+ .uno-homepage__card-meta{font:500 10px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;margin-bottom:6px}
+ .uno-homepage__process-card h3{font:700 17.5px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;margin-bottom:2px}
+ .uno-homepage__card-description{font:400 13.3px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;margin:0;word-break:keep-all}
+ .uno-homepage__process-bottom{height:2px;margin:32px 20px 0}
+ .uno-homepage__progress{top:0;width:min(253px,100%);height:2px;background:#d9d9d9;border-radius:2px;overflow:hidden}
+ .uno-homepage__progress-indicator{height:2px;border-radius:2px}
+
+ .uno-homepage__upcoming{height:auto;min-height:0;padding:49px 0 49px}
+ .uno-homepage__upcoming-inner{width:calc(100% - 40px)}
+ .uno-homepage__upcoming .uno-homepage__section-label{font:700 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:2px;color:#858585}
+ .uno-homepage__upcoming-headline{font:700 36px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;white-space:pre-line;margin:21.8px 0}
+ .uno-homepage__live-grid{grid-template-columns:minmax(0,1fr);gap:26px;min-height:0}
+ .uno-homepage__upcoming-image{width:100%;height:auto;object-fit:contain;border-radius:10px}
+ .uno-homepage__upcoming .uno-homepage__schedule{height:auto;min-height:0;margin-top:0}
+ .uno-homepage__schedule-label-desktop{display:none}
+ .uno-homepage__schedule-label-mobile{display:inline}
+ .uno-homepage__upcoming .uno-homepage__schedule-label{font:700 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;margin:0 0 18px}
+ .uno-homepage__date,.uno-homepage__time{font:700 36px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0}
+ .uno-homepage__date{margin-bottom:-7px}
+ .uno-homepage__upcoming .uno-homepage__schedule-description{max-width:100%;margin:18px 0 32px;font:700 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;color:#b4b4b4;word-break:keep-all}
+ .uno-homepage__contact-tabs{gap:16px;margin-bottom:22px}
+ .uno-homepage__contact-tabs [role=tab]{font:700 16px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;padding-bottom:5px}
+ .uno-homepage__contact-tabs [aria-selected=true]:after{height:1.5px}
+ .uno-homepage__contact-input{height:44px;padding:0 23px;border-color:#afafaf;border-radius:27px;font:500 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0}
+ .uno-homepage__contact-input::placeholder{color:#afafaf}
+ .uno-homepage__upcoming .uno-homepage__reminder{height:55px;min-height:55px;margin-top:14px;padding:12px 24px;border-radius:30px;font:700 20px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0}
+ .uno-homepage__reminder-form .uno-homepage__schedule-notice{margin-top:14px;padding:0;font:400 12px/1.35 Pretendard,Arial,sans-serif;letter-spacing:0;color:#b4b4b4;text-align:center}
+}
