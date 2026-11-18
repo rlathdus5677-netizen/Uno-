@@ -1,6 +1,6 @@
 const asset = name => new URL(`./assets/${name}`, import.meta.url).href;
 export const siteData={name:'UNO ENTERTAINMENT',title:'UNO Entertainment — UNIQUE + ONE',logo:asset('figma/header-logo-latest.svg')};
-export const navigationData=[{label:'HOME',href:'#home'},{label:'PROCESS',href:'#process'},{label:'JOIN',href:'#join'},{label:'LIVE',href:'#upcoming-live'}];
+export const navigationData=[{label:'HOME',href:'#home'},{label:'PROCESS',href:'#comeback-archive'},{label:'JOIN',href:'#process'},{label:'LIVE',href:'#upcoming-live'}];
 // Homepage visuals and copy are placeholders. Change these paths without editing layout code.
 export const heroData={eyebrow:'LIVE NOW',headline:'JENA의\n컴백을 도와줘!',metadata:'ARTIST 02 · COMEBACK TALK LIVE',cta:'라이브 참여하기',image:asset('figma/hero-live.png'),imagePosition:'50% 50%',alt:'보라색과 라임색 스타일링을 한 JENA의 라이브 비주얼',previewTitle:'JENA · COMEBACK TALK LIVE',previewDescription:'라이브 참여 기능을 준비하고 있어요. 다음 라이브 일정을 확인하고, 아티스트의 새로운 순간을 함께 기다려주세요.'};
 export const processData={initialCardId:'comeback-look',label:'PROCESS',headline:'JENA의 컴백에\n직접 참여하세요.',filters:[{id:'all',label:'ALL'},{id:'daily',label:'DAILY'},{id:'album',label:'ALBUM'},{id:'stage',label:'STAGE'}]};

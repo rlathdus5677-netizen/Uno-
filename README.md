@@ -171,3 +171,5 @@ BEHIND 01–10의 상세 media viewer는 원본 이미지/영상의 intrinsic �
 Brand는 UPCOMING LIVE 영상의 실제 left edge와 알림 CTA의 right edge를 기준으로 검증합니다. 왼쪽 그룹은 이미 같은 좌표여서 유지하며, UNO SVG 내부 3.92%의 오른쪽 투명 여백만 가로 위치로 보정합니다. 심볼의 실제 그림 끝이 CTA 끝에 맞으며 SVG 크기·세로 배치·원본 파일과 LIVE/Footer는 바꾸지 않습니다.
 
 LISTEN의 하단 orbit guidance DOM과 해당 Focus 안내 갱신만 제거했으며 정보 그룹 간격을 총 약 32px 넓혔습니다. 원형 geometry·animation·Behind data는 유지합니다. LIVE SCHEDULE은 이메일/휴대폰 접근 가능한 탭, 타입별 연락처 입력·검증, 동일 폭 CTA와 개인정보 안내를 표시합니다. 연락처는 현재 페이지 메모리에서만 유지하며 전송·저장하지 않습니다. 실제 알림 발송 서버는 연결되지 않았으므로 유효한 제출에는 기존 준비 중 안내/캘린더 저장을 제공합니다. 오른쪽 블록의 이전 높이를 확보해 기존 라이브 이미지 좌표와 섹션 높이를 유지합니다.
+
+홈페이지 Archive의 LISTEN 정보, mode control, Sound/Autoplay는 LIVE 이미지·CTA와 같은 page gutter 기준선에 정렬합니다. stage padding을 건드리지 않고 UI offset만 계산하므로 원형 및 Behind node 목적지는 유지됩니다. Sound는 mute 상태에 맞춰 icon/소리 켜기·끄기/ON·OFF를 함께 갱신합니다. Navigation은 HOME→상단, PROCESS→Archive+기존 Behind 전환, JOIN→참여 캐러셀 섹션, LIVE→일정 섹션입니다. 기존 scroll RAF가 실제 section 좌표로 단일 active 메뉴를 결정하며 직접 스크롤은 모드를 바꾸지 않습니다. 모드 전환 잠금 중 PROCESS 요청은 완료 후 기존 setMode를 호출하고 이미 Behind이면 중복 실행하지 않습니다. LIVE 오른쪽의 정보 간격은 넓히되 기존 layout slot을 유지해 왼쪽 이미지와 전체 섹션 높이는 그대로입니다.

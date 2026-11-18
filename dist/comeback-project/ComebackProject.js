@@ -37,7 +37,7 @@ export class ComebackProject {
    </div>
   </div>
   <div class="comeback-project__utilities" role="group" aria-label="오디오 설정">
-   <button type="button" class="comeback-project__utility" data-mute aria-pressed="false"><span class="comeback-project__utility-icon" aria-hidden="true"><svg width="12" height="19" viewBox="0 0 115 183" fill="currentColor"><path d="M0 0 115 96V183L0 87Z"/></svg></span><span data-mute-label>소리 끄기</span></button>
+   <button type="button" class="comeback-project__utility" data-mute aria-pressed="false"><span class="comeback-project__utility-icon" data-sound-icon data-muted="false" aria-hidden="true"><svg width="12" height="19" viewBox="0 0 115 183" fill="currentColor"><path d="M0 0 115 96V183L0 87Z"/><path data-sound-mute-mark d="M5 155 110 28" fill="none" stroke="currentColor" stroke-width="12"/></svg></span><span data-mute-label>소리 끄기</span><span class="comeback-project__utility-state" data-sound-state>ON</span></button>
    <button type="button" class="comeback-project__utility" data-autoplay aria-pressed="false" title="자동 재생 설정만 변경됩니다. 연속 재생은 준비 중입니다."><span class="comeback-project__utility-icon" aria-hidden="true"><svg width="18" height="17" viewBox="0 0 276 258" fill="currentColor"><path fill-rule="evenodd" d="M0 34 137 0 276 82V184L137 258 0 178ZM60 65V211L218 128Z"/></svg></span><span>자동 재생</span><span class="comeback-project__utility-state" data-autoplay-state>OFF</span></button>
   </div>
   <div class="comeback-project__toast" role="status" hidden></div><span class="comeback-project__mode-announcement" role="status"></span>
@@ -92,6 +92,8 @@ export class ComebackProject {
   const mute=this.$('[data-mute]'),autoplay=this.$('[data-autoplay]');
   mute.setAttribute('aria-pressed',String(this.muted));
   this.$('[data-mute-label]').textContent=this.muted?'소리 켜기':'소리 끄기';
+  this.$('[data-sound-state]').textContent=this.muted?'OFF':'ON';
+  this.$('[data-sound-icon]').dataset.muted=String(this.muted);
   autoplay.setAttribute('aria-pressed',String(this.autoplayEnabled));
   autoplay.setAttribute('aria-label',`자동 재생 ${this.autoplayEnabled?'끄기':'켜기'} (연속 재생 준비 중)`);
   this.$('[data-autoplay-state]').textContent=this.autoplayEnabled?'ON':'OFF';

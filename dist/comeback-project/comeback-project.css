@@ -200,3 +200,10 @@
 @media(max-width:650px){.comeback-project__note{left:3%;right:3%;top:950px;width:auto;max-width:320px}}
 
 @media(max-width:1249px){.comeback-project__note{--cp-note-row-follow:0;translate:none}}
+
+/* One shared utility row layout keeps both state labels on the same edge. */
+.comeback-project__utility{display:grid;grid-template-columns:20px minmax(0,1fr) 24px;width:160px;column-gap:10px}
+.comeback-project__utility-state{margin-left:0;text-align:right}
+.comeback-project__utility [data-sound-state]{color:var(--cp-purple)}
+.comeback-project__utility[aria-pressed=true] [data-sound-state]{color:#ada4bb}
+.comeback-project__utility-icon[data-muted=false] [data-sound-mute-mark]{display:none}
