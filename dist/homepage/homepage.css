@@ -273,4 +273,5 @@
 @media (max-width:650px) {
   .uno-homepage__copyright { text-align: right; }
   .uno-homepage__copyright-break { display: block; }
+  .uno-homepage__copyright span+span { margin-top: 12px; }
 }
