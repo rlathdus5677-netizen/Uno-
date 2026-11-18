@@ -267,3 +267,10 @@
 @media (max-width:650px) {
   .uno-homepage__rail { --process-card-width: min(240px, 56vw); gap: 16px; }
 }
+
+/* Mobile copyright: deliberate line break without changing desktop text. */
+.uno-homepage__copyright-break { display: none; }
+@media (max-width:650px) {
+  .uno-homepage__copyright { text-align: right; }
+  .uno-homepage__copyright-break { display: block; }
+}
