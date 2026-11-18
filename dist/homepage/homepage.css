@@ -300,3 +300,20 @@
  .uno-participation__pages .uno-participation__page[aria-current=page] { position:relative; isolation:isolate; background:transparent; }
  .uno-participation__pages .uno-participation__page[aria-current=page]::before { content:""; position:absolute; width:32px; height:32px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:50%; background:var(--participation-purple); z-index:-1; }
 }
+
+/* First-visit event popup. */
+.uno-event{box-sizing:border-box;position:relative;width:min(440px,calc(100vw - 32px),calc((100dvh - 88px) * .6966));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:0;border-radius:20px;background:#fff;color:#090909;overflow:hidden;box-shadow:0 14px 36px #0005;font-family:Pretendard,Arial,sans-serif}
+.uno-event:focus{outline:0}
+.uno-event::backdrop{background:#000b}
+.uno-event *{box-sizing:border-box}
+.uno-event[open]{display:flex;flex-direction:column}
+.uno-event__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.uno-event__banner{display:block;width:100%;padding:0;border:0;background:#4b2285;cursor:pointer;line-height:0}
+.uno-event__banner img{display:block;width:100%;height:auto}
+.uno-event__close{position:absolute;top:10px;right:10px;z-index:2;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#00000059;color:#fff;cursor:pointer;display:grid;place-items:center}
+.uno-event__close svg{display:block;width:22px;height:22px}
+.uno-event__banner:focus-visible,.uno-event__close:focus-visible,.uno-event__skip:has(input:focus-visible){outline:2px solid #7c61ff;outline-offset:-4px}
+.uno-event__footer{flex:0 0 auto;display:flex;align-items:center;min-height:56px;padding:0 8px 0 16px;background:#fff}
+.uno-event__skip{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding-right:12px;font-size:14px;font-weight:500;line-height:1.35;color:#333;cursor:pointer;user-select:none}
+.uno-event__skip input{width:20px;height:20px;margin:0;accent-color:#7c61ff;cursor:pointer}
+@media(max-width:480px){.uno-event{border-radius:16px}}
