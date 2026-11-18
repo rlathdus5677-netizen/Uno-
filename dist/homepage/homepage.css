@@ -294,3 +294,9 @@
  .uno-participation__pages button { min-width:32px; min-height:40px; }
  .uno-participation__pages .uno-participation__page-arrow { margin:0; }
 }
+
+/* Preserve the larger mobile tap area while keeping the active marker circular. */
+@media (max-width:480px) {
+ .uno-participation__pages .uno-participation__page[aria-current=page] { position:relative; isolation:isolate; background:transparent; }
+ .uno-participation__pages .uno-participation__page[aria-current=page]::before { content:""; position:absolute; width:32px; height:32px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:50%; background:var(--participation-purple); z-index:-1; }
+}
