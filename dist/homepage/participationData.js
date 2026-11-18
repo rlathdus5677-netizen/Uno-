@@ -7,6 +7,7 @@ export const participationData = {
   title: '이번 컴백, 어떤 모습으로 만날까요?',
   description: '아티스트의 무대에서 보고 싶은 스타일을 골라주세요.',
   pageSize: 8,
+  pageCount: 5, // Pages 2–5 await the additional content.
   items: [
    {id:'arcade',title:'아케이드,핑크,캐주얼',votes:1923903},
    {id:'hyperpop',title:'퍼플,라임 그린,하이퍼팝,Y2K',votes:1453773},
