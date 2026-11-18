@@ -275,3 +275,22 @@
   .uno-homepage__copyright-break { display: block; }
   .uno-homepage__copyright span+span { margin-top: 12px; }
 }
+
+/* Compact mobile participation dialog, preserving readable cards and touch targets. */
+@media (max-width:480px) {
+ .uno-participation { width:calc(100vw - 32px); max-height:calc(100dvh - 80px); padding:48px 16px 28px; border-radius:20px; }
+ .uno-participation__close { width:40px; height:40px; top:8px; right:10px; }
+ .uno-participation__content h2 { font-size:20px; line-height:1.4; word-break:keep-all; margin:0 4px 20px; }
+ .uno-participation__toolbar { gap:12px; margin-bottom:20px; }
+ .uno-participation__sort { gap:6px; max-width:100%; flex-shrink:1; }
+ .uno-participation__sort button { min-height:36px; padding:0 10px; font-size:11px; }
+ .uno-participation__toolbar>p { font-size:12px; line-height:1.5; word-break:keep-all; }
+ .uno-participation__grid { gap:18px 12px; }
+ .uno-participation__card-copy { padding:10px; }
+ .uno-participation__card h3 { font-size:12px; word-break:keep-all; }
+ .uno-participation__card p { font-size:11px; word-break:keep-all; }
+ .uno-participation__favorite { width:40px; height:40px; right:2px; top:2px; padding:8px; }
+ .uno-participation__pages { gap:1px; }
+ .uno-participation__pages button { min-width:32px; min-height:40px; }
+ .uno-participation__pages .uno-participation__page-arrow { margin:0; }
+}
