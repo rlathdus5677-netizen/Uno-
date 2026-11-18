@@ -1,3 +1,4 @@
+import {renderSiteHeader} from './SiteHeader.js';
 import {NavigationMenu} from './NavigationMenu.js';
 import {ComebackProject} from '../comeback-project/ComebackProject.js';
 import {ProcessCarousel} from './ProcessCarousel.js';
@@ -18,19 +19,16 @@ const socials={
 export class UnoHomepage{
  constructor(root){
   this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.archiveNavFrame=0;this.archiveResetFrame=0;this.archiveProcessVisit=false;this.archiveProcessSeen=false;this.lastScrollY=scrollY;this.railAnimation=null;this.calendarUrl=null;this.contactMethod='email';this.contactValues={email:'',phone:''};
-  this.render();this.menu=new NavigationMenu(this.root,{items:navigationData,logo:uiAssets.mobileLogo,burger:uiAssets.menuBurger,close:uiAssets.menuClose,button:this.$('[data-home-action=toggle-menu]')});this.participation=new ParticipationModal(this.root);this.eventPopup=new EventPopup(this.root,{onVote:()=>this.$('#process')?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'})});this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.$('.comeback-project__artist')?.remove();this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
+  this.render();this.menu=new NavigationMenu(this.root,{items:navigationData,logo:uiAssets.mobileLogo,burger:uiAssets.menuBurger,close:uiAssets.menuClose,button:this.$('[data-home-action=toggle-menu]')});this.participation=new ParticipationModal(this.root);this.eventPopup=new EventPopup(this.root,{onVote:()=>location.assign(new URL('../event/',import.meta.url).href)});this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.$('.comeback-project__artist')?.remove();this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
   this.archiveObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.archive=String(entry.isIntersecting);},{threshold:0});this.archiveObserver.observe(this.$('.uno-homepage__archive'));
   this.footerObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.footer=String(entry.isIntersecting);},{threshold:0});this.footerObserver.observe(this.$('.uno-homepage__footer'));
-  requestAnimationFrame(()=>{const hash=location.hash;if(hash){const target=document.getElementById(hash.slice(1));target?.scrollIntoView({behavior:'instant'});}});
+  requestAnimationFrame(()=>{const hash=location.hash;if(hash){const target=document.getElementById(hash.slice(1));target?.scrollIntoView({behavior:'instant'});if(hash==='#comeback-archive')this.openArchiveBehind();}});
   this.eventPopup.openIfAllowed();
  }
  $(selector){return this.root.querySelector(selector)}
  render(){
   this.root.innerHTML=`
-  <header class="uno-homepage__header" id="home">
-   <a class="uno-homepage__logo" href="#home" data-home-action="navigate" data-target="#home" aria-label="UNO Entertainment 홈"><picture><source media="(max-width:650px)" srcset="${esc(uiAssets.mobileLogo)}"><img src="${esc(siteData.logo)}" alt="UNO"></picture><span>Entertainment</span></a>
-   <button type="button" class="uno-homepage__menu-toggle" data-home-action="toggle-menu" aria-label="메뉴 열기" aria-controls="uno-navigation-panel" aria-haspopup="dialog" aria-expanded="false"><img src="${esc(uiAssets.menuBurger)}" alt="" aria-hidden="true"></button>
-  </header>
+  ${renderSiteHeader()}
   <main>
    <section class="uno-homepage__hero" aria-label="Live now">
     <picture><source media="(max-width:650px)" srcset="${esc(heroData.mobileImage)}"><img class="uno-homepage__hero-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}" style="object-position:${esc(heroData.imagePosition)}" fetchpriority="high" draggable="false"></picture>
@@ -79,7 +77,7 @@ export class UnoHomepage{
    const control=event.target.closest('[data-home-action]');if(!control)return;
    switch(control.dataset.homeAction){
     case 'toggle-menu':this.updateScrollUI();this.menu.open();break;
-    case 'event':this.menu.close();this.eventPopup.open();break;
+    case 'event':this.menu.close();location.assign(new URL('../event/',import.meta.url).href);break;
     case 'navigate':{event.preventDefault();this.menu.close();if(control.dataset.target==='#home')this.eventPopup.openIfAllowed();cancelAnimationFrame(this.archiveNavFrame);const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);if(control.dataset.target==='#comeback-archive')this.openArchiveBehind();this.updateScrollUI();break;}
     case 'top':cancelAnimationFrame(this.archiveNavFrame);window.scrollTo({top:0,behavior:this.motion.matches?'instant':'smooth'});break;
     case 'process-all':event.preventDefault();this.activeCategory='all';this.renderCards();this.$('#join').scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'center'});this.$('[data-category=all]').focus({preventScroll:true});break;
