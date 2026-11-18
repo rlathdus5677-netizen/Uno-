@@ -1,3 +1,4 @@
+import {NavigationMenu} from './NavigationMenu.js';
 import {ComebackProject} from '../comeback-project/ComebackProject.js';
 import {ProcessCarousel} from './ProcessCarousel.js';
 import {ParticipationModal} from './ParticipationModal.js';
@@ -17,7 +18,7 @@ const socials={
 export class UnoHomepage{
  constructor(root){
   this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.archiveNavFrame=0;this.archiveResetFrame=0;this.archiveProcessVisit=false;this.archiveProcessSeen=false;this.lastScrollY=scrollY;this.railAnimation=null;this.calendarUrl=null;this.contactMethod='email';this.contactValues={email:'',phone:''};
-  this.render();this.participation=new ParticipationModal(this.root);this.eventPopup=new EventPopup(this.root,{onVote:()=>this.$('#process')?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'})});this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
+  this.render();this.menu=new NavigationMenu(this.root,{items:navigationData,logo:uiAssets.mobileLogo,burger:uiAssets.menuBurger,close:uiAssets.menuClose,button:this.$('[data-home-action=toggle-menu]')});this.participation=new ParticipationModal(this.root);this.eventPopup=new EventPopup(this.root,{onVote:()=>this.$('#process')?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'})});this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
   this.archiveObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.archive=String(entry.isIntersecting);},{threshold:0});this.archiveObserver.observe(this.$('.uno-homepage__archive'));
   this.footerObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.footer=String(entry.isIntersecting);},{threshold:0});this.footerObserver.observe(this.$('.uno-homepage__footer'));
   requestAnimationFrame(()=>{const hash=location.hash;if(hash){const target=document.getElementById(hash.slice(1));target?.scrollIntoView({behavior:'instant'});}});
@@ -27,13 +28,12 @@ export class UnoHomepage{
  render(){
   this.root.innerHTML=`
   <header class="uno-homepage__header" id="home">
-   <a class="uno-homepage__logo" href="#home" data-home-action="navigate" data-target="#home" aria-label="UNO Entertainment 홈"><img src="${esc(siteData.logo)}" alt="UNO"><span>Entertainment</span></a>
-   <nav class="uno-homepage__nav" aria-label="메인 메뉴">${navigationData.map((n,i)=>`<a href="${esc(n.href)}" data-home-action="navigate" data-target="${esc(n.href)}" ${i===0?'aria-current="page"':''}>${esc(n.label)}</a>`).join('')}</nav>
-   <button class="uno-homepage__login" type="button" data-home-action="login">LOGIN</button>
+   <a class="uno-homepage__logo" href="#home" data-home-action="navigate" data-target="#home" aria-label="UNO Entertainment 홈"><picture><source media="(max-width:650px)" srcset="${esc(uiAssets.mobileLogo)}"><img src="${esc(siteData.logo)}" alt="UNO"></picture><span>Entertainment</span></a>
+   <button type="button" class="uno-homepage__menu-toggle" data-home-action="toggle-menu" aria-label="메뉴 열기" aria-controls="uno-navigation-panel" aria-haspopup="dialog" aria-expanded="false"><img src="${esc(uiAssets.menuBurger)}" alt="" aria-hidden="true"></button>
   </header>
   <main>
    <section class="uno-homepage__hero" aria-label="Live now">
-    <img class="uno-homepage__hero-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}" style="object-position:${esc(heroData.imagePosition)}" fetchpriority="high" draggable="false">
+    <picture><source media="(max-width:650px)" srcset="${esc(heroData.mobileImage)}"><img class="uno-homepage__hero-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}" style="object-position:${esc(heroData.imagePosition)}" fetchpriority="high" draggable="false"></picture>
     <p class="uno-homepage__live-label"><i aria-hidden="true"></i>${esc(heroData.eyebrow)}</p>
     <div class="uno-homepage__hero-copy"><h1>${esc(heroData.headline)}</h1><p class="uno-homepage__hero-meta">${esc(heroData.metadata)}</p><button type="button" class="uno-homepage__hero-cta" data-home-action="live-preview">${esc(heroData.cta)}<img src="${esc(uiAssets.heroPlay)}" alt="" aria-hidden="true"></button></div>
    </section>
@@ -78,7 +78,9 @@ export class UnoHomepage{
    const card=event.target.closest('[data-process-id]');if(card){if(!this.carousel.select(card))return;const d=artistProcessData.find(d=>d.id===card.dataset.processId);if(participationData[d.id]){this.participation.open(participationData[d.id],card);return;}this.openDialog(d.title,`<img class="uno-homepage__dialog-image" src="${esc(d.image)}" alt="${esc(d.alt)}"><p>${esc(d.description)}</p>`,`${d.artist} / ${d.category.toUpperCase()}`);return;}
    const control=event.target.closest('[data-home-action]');if(!control)return;
    switch(control.dataset.homeAction){
-    case 'navigate':{event.preventDefault();if(control.dataset.target==='#home')this.eventPopup.openIfAllowed();cancelAnimationFrame(this.archiveNavFrame);const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);if(control.dataset.target==='#comeback-archive')this.openArchiveBehind();this.updateScrollUI();break;}
+    case 'toggle-menu':this.updateScrollUI();this.menu.open();break;
+    case 'event':this.menu.close();this.eventPopup.open();break;
+    case 'navigate':{event.preventDefault();this.menu.close();if(control.dataset.target==='#home')this.eventPopup.openIfAllowed();cancelAnimationFrame(this.archiveNavFrame);const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);if(control.dataset.target==='#comeback-archive')this.openArchiveBehind();this.updateScrollUI();break;}
     case 'top':cancelAnimationFrame(this.archiveNavFrame);window.scrollTo({top:0,behavior:this.motion.matches?'instant':'smooth'});break;
     case 'process-all':event.preventDefault();this.activeCategory='all';this.renderCards();this.$('#join').scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'center'});this.$('[data-category=all]').focus({preventScroll:true});break;
     case 'rail-prev':this.scrollRail(-1);break;
@@ -87,7 +89,7 @@ export class UnoHomepage{
     case 'show-schedule':this.$('dialog.uno-homepage__dialog').close();this.$('#upcoming-live').scrollIntoView({behavior:this.motion.matches?'instant':'smooth'});break;
     case 'reminder':this.openReminderPreview();break;
     case 'calendar':this.downloadCalendar();break;
-    case 'login':this.openDialog('조금만 기다려주세요.','<p>로그인 서비스를 준비하고 있어요. 지금은 UNO의 라이브와 아티스트 콘텐츠를 먼저 둘러보세요.</p>','UNO ACCOUNT');break;
+    case 'login':this.menu.close();this.openDialog('조금만 기다려주세요.','<p>로그인 서비스를 준비하고 있어요. 지금은 UNO의 라이브와 아티스트 콘텐츠를 먼저 둘러보세요.</p>','UNO ACCOUNT');break;
     case 'about':this.openDialog(brandData.aboutTitle,`<p>${esc(brandData.aboutDescription)}</p>`,'ABOUT UNO');break;
     case 'social':event.preventDefault();this.openDialog(control.dataset.channel,'<p>공식 채널 링크를 준비하고 있습니다.</p>','FOLLOW UNO');break;
     case 'privacy':this.openDialog('개인정보처리방침','<p>정식 서비스 공개에 맞춰 개인정보처리방침을 안내하겠습니다.</p>','UNO ENTERTAINMENT');break;
@@ -122,7 +124,7 @@ export class UnoHomepage{
   const reset=()=>{this.archiveResetFrame=0;if(this.abort.signal.aborted)return;if(this.archive.locked||this.archive.focusBusy){this.archiveResetFrame=requestAnimationFrame(reset);return;}if(this.archive.mode!=='listen')this.archive.setMode('listen');};reset();
  }
  updateScrollUI(){
-  if(this.participation.dialog.open)return;
+  if(this.menu.dialog.open||this.participation.dialog.open)return;
   const currentY=scrollY,archiveTop=this.$('#comeback-archive').getBoundingClientRect().top;
   if(this.archiveProcessVisit){
    if(archiveTop<=Math.min(innerHeight*.35,260))this.archiveProcessSeen=true;
@@ -132,6 +134,8 @@ export class UnoHomepage{
   this.$('.uno-homepage__top').dataset.visible=String(window.scrollY>160);
   const links=[...this.root.querySelectorAll('.uno-homepage__nav a')],probe=Math.min(innerHeight*.35,260);let active=links[0];
   links.forEach(link=>{const section=this.$(link.dataset.target);if(section&&section.getBoundingClientRect().top<=probe)active=link;});
+  const last=links.at(-1),lastSection=last&&this.$(last.dataset.target);
+  if(lastSection&&lastSection.getBoundingClientRect().top<innerHeight&&scrollY+innerHeight>=document.documentElement.scrollHeight-2)active=last;
   links.forEach(link=>{if(link===active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
  }
  openDialog(title,body,kicker=''){this.$('.uno-homepage__dialog-content').innerHTML=`${kicker?`<p class="uno-homepage__dialog-kicker">${esc(kicker)}</p>`:''}<h2 id="uno-home-dialog-title">${esc(title)}</h2>${body}`;this.$('dialog.uno-homepage__dialog').showModal()}
@@ -141,5 +145,5 @@ export class UnoHomepage{
   const text=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//UNO Entertainment//Live Schedule//KO','BEGIN:VEVENT',`UID:uno-live-${stamp(start)}@calendar.invalid`,`DTSTAMP:${stamp(new Date())}`,`DTSTART:${stamp(start)}`,`DTEND:${stamp(end)}`,`SUMMARY:${safe(upcomingLiveData.calendarTitle)}`,`DESCRIPTION:${safe(upcomingLiveData.description)}`,'BEGIN:VALARM','TRIGGER:-PT10M','ACTION:DISPLAY',`DESCRIPTION:${safe(upcomingLiveData.calendarTitle)}`,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
   if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.calendarUrl=URL.createObjectURL(new Blob([text],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=this.calendarUrl;link.download='uno-jena-live.ics';link.click();
  }
- destroy(){this.eventPopup.destroy();this.participation.destroy();this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.footerObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);cancelAnimationFrame(this.archiveNavFrame);cancelAnimationFrame(this.archiveResetFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
+ destroy(){this.menu.destroy();this.eventPopup.destroy();this.participation.destroy();this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.footerObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);cancelAnimationFrame(this.archiveNavFrame);cancelAnimationFrame(this.archiveResetFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
 }

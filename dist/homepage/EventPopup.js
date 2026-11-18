@@ -30,7 +30,12 @@ export class EventPopup{
  }
  get skipped(){return storage.get()}
  openIfAllowed(){
-  if(this.dialog.open||storage.get())return false;
+  if(storage.get())return false;
+  return this.open();
+ }
+ // Explicit EVENT navigation can reopen the existing popup even after dismissal.
+ open(){
+  if(this.dialog.open)return false;
   this.dialog.querySelector('[data-event-skip]').checked=false;
   this.dialog.showModal();this.dialog.focus({preventScroll:true});
   return true;

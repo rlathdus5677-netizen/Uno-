@@ -1,0 +1,65 @@
+/* Shared navigation: the existing desktop page grid and section sizes stay intact. */
+.uno-homepage__logo picture{display:block;flex-shrink:0}
+.uno-homepage__menu-toggle,.uno-menu__close{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;cursor:pointer}
+.uno-homepage__menu-toggle img,.uno-menu__close img{display:block}
+.uno-homepage__menu-toggle:focus-visible,.uno-menu button:focus-visible,.uno-menu a:focus-visible{outline:2px solid var(--uno-purple);outline-offset:4px}
+.uno-menu{position:fixed;inset:0 0 0 auto;box-sizing:border-box;width:min(500px,100vw);height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:white;color:#151515;font-family:Pretendard,Arial,sans-serif;overflow:hidden;overscroll-behavior:contain}
+.uno-menu[open]{display:flex;flex-direction:column}
+.uno-menu::backdrop{background:#0007}
+.uno-menu__header{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:62px;padding:0 7px 0 21px}
+.uno-menu__header a,.uno-menu__header img{display:block}
+.uno-menu__content{display:flex;flex-direction:column;justify-content:space-between;flex:1;min-height:0;padding:42px 20px 32px;gap:32px;overflow:auto}
+.uno-menu .uno-homepage__nav{position:static;left:auto;transform:none;display:flex;flex-direction:column;align-items:stretch;gap:0;width:100%;padding:0;flex-shrink:0}
+.uno-menu .uno-homepage__nav a,.uno-menu__event{display:flex;align-items:center;height:68px;width:100%;padding:0;border:0;border-bottom:1px solid #e7e7e7;background:transparent;text-decoration:none;color:#151515;font:700 34px/1.2 Pretendard,Arial,sans-serif;letter-spacing:-.68px;cursor:pointer;transition:color .2s ease}
+.uno-menu .uno-homepage__nav a[aria-current=page],.uno-menu .uno-homepage__nav a:hover,.uno-menu__event:hover{color:var(--uno-purple)}
+.uno-menu .uno-homepage__login{width:100%;height:54px;min-height:54px;flex-shrink:0;border-radius:27px;font:700 15px/1.2 Pretendard,Arial,sans-serif;letter-spacing:.6px}
+
+/* Existing mobile breakpoint; every rule below is scoped to the homepage. */
+@media(max-width:650px){
+ .uno-homepage__header{height:53px;padding:0 7px 0 21px}
+ .uno-homepage__logo img{max-width:none}
+ .uno-homepage__logo span{display:none}
+ .uno-menu{width:100vw}
+ .uno-menu__header{height:53px}
+
+ .uno-homepage__archive{min-height:0;--archive-stage-inset:20px}
+ .uno-homepage__archive .comeback-project{height:auto;min-height:0;padding:52px 20px 48px;font-family:Pretendard,Arial,sans-serif}
+ .uno-homepage__archive .comeback-project__label{font-size:12px;font-weight:700;line-height:14px;letter-spacing:0}
+ .uno-homepage__archive .comeback-project[data-mode=listen] .comeback-project__stage{height:auto}
+ .uno-homepage__archive .comeback-project__stage{height:auto;min-height:0;margin-top:24px;padding-top:412px}
+ .uno-homepage__archive .comeback-project__listen{position:relative;left:0;top:auto;width:100%}
+ .uno-homepage__archive .comeback-project__album-artist{font-size:10px;font-weight:400;line-height:1.11;letter-spacing:.2px;margin:0 0 10px}
+ .uno-homepage__archive .comeback-project__album-name{font-size:28px;font-weight:700;line-height:1.11;letter-spacing:.56px;margin:0 0 10px}
+ .uno-homepage__archive .comeback-project__album-edition{font-size:10px;line-height:1.11;letter-spacing:.2px;margin:0}
+ .uno-homepage__archive .comeback-project__divider{margin:13px 0;height:1px}
+ .uno-homepage__archive .comeback-project__track-details{font-size:10px;line-height:1.11}
+ .uno-homepage__archive .comeback-project__track-count{display:block;font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px;word-spacing:5px;color:#7c61ff}
+ .uno-homepage__archive .comeback-project__track-title{font-size:28px;font-weight:700;line-height:1.11;letter-spacing:.56px;margin:10px 0}
+ .uno-homepage__archive .comeback-project__preview-label{display:block;font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px}
+ .uno-homepage__archive .comeback-project__play-row{gap:20px;margin-top:32px}
+ .uno-homepage__archive .comeback-project__play{width:49px;height:49px}
+ .uno-homepage__archive .comeback-project__wave{flex:0 1 150px;min-width:0}
+ .uno-homepage__archive .comeback-project__time{margin-left:26px;font:400 10px/1.11 Pretendard,Arial,sans-serif;letter-spacing:.2px}
+ .uno-homepage__archive .comeback-project__services{gap:4px;margin-top:36px}
+ .uno-homepage__archive .comeback-project__services .comeback-project__link{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:81px;height:18px;padding:0 8px;border:0;border-radius:11px;background:#7c61ff;color:#fff;font-size:10px!important;line-height:1.11;letter-spacing:.2px;white-space:nowrap}
+ .uno-homepage__archive .comeback-project__services .comeback-project__link+ .comeback-project__link{min-width:121px}
+ .uno-homepage__archive .comeback-project__services .comeback-project__link svg{margin:0;width:8px;height:8px}
+ .uno-homepage__archive .comeback-project__select-tracks{margin-top:25px;gap:6px}
+ .uno-homepage__archive .comeback-project__track-pick{width:18px;height:18px;flex:0 0 18px;border:0;border-radius:50%;font:400 10px/1.11 Pretendard,Arial,sans-serif!important;letter-spacing:.2px;color:#f4f2f7!important}
+ .uno-homepage__archive .comeback-project__track-pick[aria-pressed=true]{background:#7c61ff;color:white!important}
+ .uno-homepage__archive .comeback-project__switch{top:304px;right:0;gap:16px}
+ .uno-homepage__archive .comeback-project__switch-tab{width:46px;height:46px}
+ .uno-homepage__archive .comeback-project__switch-tab .comeback-project__listen-symbol{width:46px;height:46px}
+ .uno-homepage__archive .comeback-project__switch-tab[data-mode-target=behind]>svg{width:11px;height:33px}
+ .uno-homepage__archive .comeback-project__switch-tab[aria-pressed=true] .comeback-project__listen-symbol circle:first-child{fill:#7c61ff}
+ .uno-homepage__archive .comeback-project__utilities{display:none}
+
+ /* Keep the same timeline/node destinations and let the content below them flow. */
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__stage{padding-top:0}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__listen{position:absolute;top:412px}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__behind{position:relative;display:flex;flex-direction:column}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__timeline{position:relative;top:20px;height:450px;flex-shrink:0;margin-bottom:40px}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__release{position:relative;top:auto;margin-bottom:30px;order:1}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__media{position:relative;top:auto;right:auto;width:94%;order:2}
+ .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__note{--cp-note-row-follow:0;position:relative;top:auto;left:3%;right:auto;translate:none;width:94%;max-width:none;order:3;margin-top:24px}
+}

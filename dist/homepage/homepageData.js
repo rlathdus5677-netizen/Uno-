@@ -1,8 +1,8 @@
 const asset = name => new URL(`./assets/${name}`, import.meta.url).href;
 export const siteData={name:'UNO ENTERTAINMENT',title:'UNO Entertainment — UNIQUE + ONE',logo:asset('figma/header-logo-latest.svg')};
-export const navigationData=[{label:'HOME',href:'#home'},{label:'PROCESS',href:'#comeback-archive'},{label:'JOIN',href:'#process'},{label:'LIVE',href:'#upcoming-live'}];
+export const navigationData=[{label:'HOME',href:'#home'},{label:'PROCESS',href:'#comeback-archive'},{label:'JOIN',href:'#process'},{label:'LIVE',href:'#upcoming-live'},{label:'EVENT',action:'event'},{label:'UNO',href:'#about-uno'}];
 // Homepage visuals and copy are placeholders. Change these paths without editing layout code.
-export const heroData={eyebrow:'LIVE NOW',headline:'JENA의\n컴백을 도와줘!',metadata:'ARTIST 02 · COMEBACK TALK LIVE',cta:'라이브 참여하기',image:asset('figma/hero-live-refresh.png'),imagePosition:'50% 50%',alt:'보라색과 라임색 스타일링을 한 JENA의 라이브 비주얼',previewTitle:'JENA · COMEBACK TALK LIVE',previewDescription:'라이브 참여 기능을 준비하고 있어요. 다음 라이브 일정을 확인하고, 아티스트의 새로운 순간을 함께 기다려주세요.'};
+export const heroData={eyebrow:'LIVE NOW',headline:'JENA의\n컴백을 도와줘!',metadata:'ARTIST 02 · COMEBACK TALK LIVE',cta:'라이브 참여하기',image:asset('figma/hero-live-refresh.png'),mobileImage:asset('figma/hero-mobile-3947-1069.png'),imagePosition:'50% 50%',alt:'보라색과 라임색 스타일링을 한 JENA의 라이브 비주얼',previewTitle:'JENA · COMEBACK TALK LIVE',previewDescription:'라이브 참여 기능을 준비하고 있어요. 다음 라이브 일정을 확인하고, 아티스트의 새로운 순간을 함께 기다려주세요.'};
 export const processData={initialCardId:'comeback-look',label:'PROCESS',headline:'JENA의 컴백에\n직접 참여하세요.',filters:[{id:'all',label:'ALL'},{id:'daily',label:'DAILY'},{id:'album',label:'ALBUM'},{id:'stage',label:'STAGE'}]};
 // Each card owns its image path; replace these independently without changing carousel logic.
 export const artistProcessData=[
@@ -20,6 +20,6 @@ export const brandData={label:'UNO ENTERTAINMENT',words:[{parts:[{text:'UN',acce
 export const socialLinks=[{name:'YouTube',icon:'youtube',image:asset('figma/youtube.svg'),url:'#'},{name:'Weibo',icon:'weibo',image:asset('figma/weibo.svg'),url:'#'},{name:'Facebook',icon:'facebook',image:asset('figma/facebook.svg'),url:'#'},{name:'Instagram',icon:'instagram',image:asset('figma/instagram.svg'),url:'#'},{name:'X',icon:'x',image:asset('figma/x.svg'),url:'#'}];
 export const footerData={name:'UNO',tagline:'UNIQUE + ONE',links:[{label:'개인정보처리방침',action:'privacy'},{label:'비즈니스 문의',action:'business'}],notice:'UNO Entertainment의 모든 콘텐츠는 저작권의 보호를 받고 있습니다.',copyright:'©UNO Entertainment RIGHTS RESERVED.'};
 
-export const uiAssets={heroPlay:asset('figma/hero-play-latest.svg'),topChevron:asset('figma/chevron-up.svg'),liveChevron:asset('figma/chevron-right.svg')};
+export const uiAssets={mobileLogo:asset('figma/mobile-uno-logo.svg'),menuBurger:asset('figma/menu-burger.svg'),menuClose:asset('figma/menu-close.svg'),heroPlay:asset('figma/hero-play-latest.svg'),topChevron:asset('figma/chevron-up.svg'),liveChevron:asset('figma/chevron-right.svg')};
 
 export const liveContactData={email:{label:"이메일",placeholder:"이메일 주소를 입력해주세요.",type:"email",autocomplete:"email"},phone:{label:"휴대폰",placeholder:"휴대폰 번호를 입력해주세요.",type:"tel",autocomplete:"tel"}};
