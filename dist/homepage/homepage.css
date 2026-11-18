@@ -56,7 +56,7 @@
 .uno-homepage__schedule{margin-top:50px}
 .uno-homepage__upcoming-headline{font-size:var(--type-section-compact);font-weight:var(--weight-heading);letter-spacing:0;line-height:var(--leading-heading);white-space:nowrap;margin:21.8px 0 36px}
 .uno-homepage__live-grid{display:grid;grid-template-columns:minmax(0,757fr) minmax(0,383fr);gap:var(--live-gap);align-items:start;width:100%;max-width:none;margin-left:auto;margin-right:auto}
-.uno-homepage__upcoming-image{width:100%;aspect-ratio:791/500;object-fit:cover;object-position:50% 50%;border-radius:18px;display:block}
+.uno-homepage__upcoming-image{width:100%;height:auto;aspect-ratio:auto 1440/790;object-fit:contain;object-position:50% 50%;border-radius:18px;display:block}
 .uno-homepage__schedule-label{font-size:var(--type-meta);font-weight:var(--weight-heading);letter-spacing:1.5px;color:var(--uno-muted);line-height:1.35;margin:0 0 34px}
 .uno-homepage__date{font-size:var(--type-feature-large);font-weight:var(--weight-feature);letter-spacing:0;line-height:1.35;color:var(--uno-ink);margin:0}
 .uno-homepage__time{font-size:var(--type-feature-large);font-weight:var(--weight-feature);letter-spacing:0;line-height:1.35;color:var(--uno-ink);margin:0}
@@ -146,4 +146,11 @@
 @media(min-width:1200px){
  .uno-homepage__rail{--process-wide-gutter:32px;--process-wide-gap:26px;--process-viewport-width:calc(100vw - 2*var(--process-wide-gutter));--process-card-width:calc((var(--process-viewport-width) - 4*var(--process-wide-gap) - 12px)/5.20322);width:var(--process-viewport-width);gap:var(--process-wide-gap);padding-inline:max(0px,calc((var(--process-viewport-width) - var(--process-card-width))/2));margin-inline:auto}
  .uno-homepage__process-card{display:flex;flex-direction:column;height:auto;min-height:342.411px}
+}
+
+/* Show the complete live artwork at its intrinsic ratio. Keep the heading anchored
+   while the first grid row centers the schedule alongside the shorter image. */
+@media(min-width:1025px){
+ .uno-homepage__live-grid{min-height:calc((100vw - 2*var(--page-gutter) - var(--live-gap))*757/1140*500/791);grid-template-rows:auto 1fr;align-items:center}
+ .uno-homepage__schedule{margin-top:0}
 }

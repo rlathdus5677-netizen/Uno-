@@ -163,3 +163,5 @@ Verified in Chromium: all ten row/label center alignments; actual intermediate m
 UPCOMING LIVE는 desktop에서 1024px 높이를 사용하고, Archive wrapper와 동일한 `--uno-dark` 배경 토큰을 재사용합니다. 공통 105px gutter, 가로 grid, 이미지·CTA 크기 및 typography를 유지하며 전체 내부 블록을 세로 중앙에 배치합니다. 라벨·보조 문구는 밝은 muted gray, 제목·날짜·시간은 white를 사용합니다. 작은 화면에서는 기존 자동 높이 배치를 유지합니다.
 
 Hero LIVE NOW의 dot은 `#B7FF3C`이며 크기·위치·효과는 변경하지 않습니다.
+
+UPCOMING LIVE의 이미지는 원본 1440:790 비율과 width 100% / height auto를 사용해 crop과 내부 letterbox 없이 전체 영역을 표시합니다. Desktop에서는 기존 제목과 섹션 경계를 유지하며, 짧아진 이미지 옆에 LIVE SCHEDULE을 세로 중앙 정렬합니다. 이미지 asset·가로 너비·105px gutter·CTA 디자인은 유지합니다.
