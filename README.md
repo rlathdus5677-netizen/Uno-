@@ -165,3 +165,5 @@ UPCOMING LIVE는 desktop에서 1024px 높이를 사용하고, Archive wrapper와
 Hero LIVE NOW의 dot은 `#B7FF3C`이며 크기·위치·효과는 변경하지 않습니다.
 
 UPCOMING LIVE의 이미지는 원본 1440:790 비율과 width 100% / height auto를 사용해 crop과 내부 letterbox 없이 전체 영역을 표시합니다. Desktop에서는 기존 제목과 섹션 경계를 유지하며, 짧아진 이미지 옆에 LIVE SCHEDULE을 세로 중앙 정렬합니다. 이미지 asset·가로 너비·105px gutter·CTA 디자인은 유지합니다.
+
+BEHIND 01–10의 상세 media viewer는 원본 이미지/영상의 intrinsic 비율로 높이를 계산합니다. `media-visual`의 고정 ratio와 mobile ratio override를 제거하고 내부 media에 width 100% / height auto를 적용했습니다. 가로 위치·폭은 그대로이며 caption/number/title/description이 기존 간격을 유지해 media 바로 아래로 따라옵니다. 타임라인·Note·원형 artwork crop 및 morph 로직은 변경하지 않습니다.
