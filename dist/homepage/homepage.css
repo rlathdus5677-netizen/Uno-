@@ -1,5 +1,5 @@
 @font-face{font-family:Pretendard;src:url('./assets/fonts/PretendardVariable.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
-.uno-homepage{--uno-purple:#6547f5;--uno-archive-purple:#aa87ff;--uno-dark:#202124;--uno-white:#fff;--uno-light-gray:#f6f6f6;--uno-ink:#090909;--uno-muted:#858585;--page-padding:clamp(24px,calc(5vw - 12px),60px);--page-gutter:var(--page-padding);--content-width:calc(100% - 2*var(--page-gutter));--type-section:42px;--type-section-compact:40px;--type-feature:17.087px;--type-feature-large:34px;--type-body:14px;--type-meta:12px;--weight-heading:700;--weight-feature:700;--weight-body:400;--weight-meta:500;--leading-heading:1.35;--leading-body:1.35;--header-height:62px;--hero-height:790px;--archive-height:928px;--process-height:930px;--live-height:750px;--brand-height:550px;--footer-height:150px;background:var(--uno-white);color:var(--uno-ink);font-family:Pretendard,Arial,Helvetica,sans-serif}
+.uno-homepage{--uno-purple:#6547f5;--uno-archive-purple:#aa87ff;--uno-dark:#202124;--uno-white:#fff;--uno-light-gray:#f6f6f6;--uno-ink:#090909;--uno-muted:#858585;--page-padding:clamp(24px,calc(10vw - 54px),90px);--page-gutter:var(--page-padding);--content-width:calc(100% - 2*var(--page-gutter));--type-section:42px;--type-section-compact:40px;--type-feature:17.087px;--type-feature-large:34px;--type-body:14px;--type-meta:12px;--weight-heading:700;--weight-feature:700;--weight-body:400;--weight-meta:500;--leading-heading:1.35;--leading-body:1.35;--header-height:62px;--hero-height:790px;--archive-height:928px;--process-height:930px;--live-height:750px;--brand-height:550px;--footer-height:150px;background:var(--uno-white);color:var(--uno-ink);font-family:Pretendard,Arial,Helvetica,sans-serif}
 .uno-homepage *{box-sizing:border-box}
 .uno-homepage__header{height:var(--header-height);padding:0 var(--page-gutter);display:flex;align-items:center;justify-content:space-between;position:relative;background:#fff}
 .uno-homepage__logo{display:flex;flex-direction:row;align-items:center;gap:2px;text-decoration:none;color:#000;width:auto}
@@ -130,7 +130,7 @@
 @media(max-width:380px){.uno-homepage__logo img{max-width:52px}.uno-homepage__logo span{font-size:8px}.uno-homepage__nav{gap:8px}.uno-homepage__nav a{font-size:8px}.uno-homepage__login{width:48px}}
 @media(prefers-reduced-motion:reduce){.uno-homepage__top,.uno-homepage__process-card,.uno-homepage__progress-indicator{transition:none}}
 
-/* Shared 60px desktop gutter, selected after the Figma boundary audit. */
+/* Shared 90px desktop gutter, selected after the Figma boundary audit. */
 @media(min-width:1025px){.uno-homepage__header{padding-top:1px}.uno-homepage__nav{padding-top:2px}}
 .uno-homepage__hero-cta{position:relative;left:-4px}
 .uno-homepage__schedule-description{max-width:318px}
