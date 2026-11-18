@@ -1,6 +1,6 @@
 import {ComebackProject} from '../comeback-project/ComebackProject.js';
 import {ProcessCarousel} from './ProcessCarousel.js';
-import {siteData,navigationData,heroData,processData,artistProcessData,upcomingLiveData,brandData,socialLinks,footerData} from './homepageData.js';
+import {siteData,navigationData,heroData,processData,artistProcessData,upcomingLiveData,brandData,socialLinks,footerData,uiAssets} from './homepageData.js';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.2"/></svg>';
 const externalArrow='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="m5 19 14-14M7 5h12v12" stroke="currentColor" stroke-width="1.2"/></svg>';
@@ -14,15 +14,16 @@ const socials={
 export class UnoHomepage{
  constructor(root){
   this.root=root;this.activeCategory='all';this.abort=new AbortController();this.motion=matchMedia('(prefers-reduced-motion: reduce)');this.scrollFrame=0;this.railAnimation=null;this.calendarUrl=null;
-  this.render();this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.updateScrollUI();
+  this.render();this.archive=new ComebackProject(this.$('#uno-comeback-project'));this.carousel=new ProcessCarousel(this.$('.uno-homepage__rail'),{previous:this.$('[data-home-action=rail-prev]'),next:this.$('[data-home-action=rail-next]'),reducedMotion:this.motion,progress:this.$('.uno-homepage__progress')});this.bind();this.renderCards();this.carousel.center(Math.max(0,artistProcessData.findIndex(card=>card.id===processData.initialCardId)),{animate:false});this.updateScrollUI();
   this.archiveObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.archive=String(entry.isIntersecting);},{threshold:0});this.archiveObserver.observe(this.$('.uno-homepage__archive'));
+  this.footerObserver=new IntersectionObserver(([entry])=>{this.$('.uno-homepage__top').dataset.footer=String(entry.isIntersecting);},{threshold:0});this.footerObserver.observe(this.$('.uno-homepage__footer'));
   requestAnimationFrame(()=>{const hash=location.hash;if(hash){const target=document.getElementById(hash.slice(1));target?.scrollIntoView({behavior:'instant'});}});
  }
  $(selector){return this.root.querySelector(selector)}
  render(){
   this.root.innerHTML=`
   <header class="uno-homepage__header" id="home">
-   <a class="uno-homepage__logo" href="#home" data-home-action="navigate" data-target="#home" aria-label="UNO Entertainment 홈"><img src="${esc(siteData.logo)}" alt="UNO"><span>ENTERTAINMENT</span></a>
+   <a class="uno-homepage__logo" href="#home" data-home-action="navigate" data-target="#home" aria-label="UNO Entertainment 홈"><img src="${esc(siteData.logo)}" alt="UNO"><span>Entertainment</span></a>
    <nav class="uno-homepage__nav" aria-label="메인 메뉴">${navigationData.map((n,i)=>`<a href="${esc(n.href)}" data-home-action="navigate" data-target="${esc(n.href)}" ${i===0?'aria-current="page"':''}>${esc(n.label)}</a>`).join('')}</nav>
    <button class="uno-homepage__login" type="button" data-home-action="login">LOGIN</button>
   </header>
@@ -30,7 +31,7 @@ export class UnoHomepage{
    <section class="uno-homepage__hero" aria-label="Live now">
     <img class="uno-homepage__hero-image" src="${esc(heroData.image)}" alt="${esc(heroData.alt)}" style="object-position:${esc(heroData.imagePosition)}" fetchpriority="high" draggable="false">
     <p class="uno-homepage__live-label"><i aria-hidden="true"></i>${esc(heroData.eyebrow)}</p>
-    <div class="uno-homepage__hero-copy"><h1>${esc(heroData.headline)}</h1><p class="uno-homepage__hero-meta">${esc(heroData.metadata)}</p><button type="button" class="uno-homepage__text-link" data-home-action="live-preview">${esc(heroData.cta)}${arrow}</button></div>
+    <div class="uno-homepage__hero-copy"><h1>${esc(heroData.headline)}</h1><p class="uno-homepage__hero-meta">${esc(heroData.metadata)}</p><button type="button" class="uno-homepage__hero-cta" data-home-action="live-preview">${esc(heroData.cta)}<img src="${esc(uiAssets.heroPlay)}" alt="" aria-hidden="true"></button></div>
    </section>
    <section class="uno-homepage__archive" id="comeback-archive" aria-label="Comeback Archive">
     <section id="uno-comeback-project" class="comeback-project" aria-label="UNO Comeback Archive"></section>
@@ -46,19 +47,19 @@ export class UnoHomepage{
     <div class="uno-homepage__upcoming-inner">
     <p class="uno-homepage__section-label">${esc(upcomingLiveData.label)}</p><h2 class="uno-homepage__upcoming-headline" id="uno-upcoming-title">${esc(upcomingLiveData.headline)}</h2>
     <div class="uno-homepage__live-grid"><img class="uno-homepage__upcoming-image" src="${esc(upcomingLiveData.image)}" alt="${esc(upcomingLiveData.alt)}" loading="lazy">
-     <div class="uno-homepage__schedule"><p class="uno-homepage__schedule-label">${esc(upcomingLiveData.eyebrow)}</p><p class="uno-homepage__date">${esc(upcomingLiveData.dateLabel)}</p><p class="uno-homepage__time">${esc(upcomingLiveData.timeLabel)}</p><h3 class="uno-homepage__schedule-title">${esc(upcomingLiveData.title)}</h3><p class="uno-homepage__schedule-description">${esc(upcomingLiveData.description)}</p><button type="button" class="uno-homepage__text-link uno-homepage__reminder" data-home-action="reminder">${esc(upcomingLiveData.cta)}<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></button><p class="uno-homepage__schedule-notice">${esc(upcomingLiveData.notice)}</p></div>
+     <div class="uno-homepage__schedule"><p class="uno-homepage__schedule-label">${esc(upcomingLiveData.eyebrow)}</p><p class="uno-homepage__date">${esc(upcomingLiveData.dateLabel)}</p><p class="uno-homepage__time">${esc(upcomingLiveData.timeLabel)}</p><h3 class="uno-homepage__schedule-title">${esc(upcomingLiveData.title)}</h3><p class="uno-homepage__schedule-description">${esc(upcomingLiveData.description)}</p><button type="button" class="uno-homepage__text-link uno-homepage__reminder" data-home-action="reminder">${esc(upcomingLiveData.cta)}<img class="uno-homepage__chevron-image" src="${esc(uiAssets.liveChevron)}" alt="" aria-hidden="true"></button><p class="uno-homepage__schedule-notice">${esc(upcomingLiveData.notice)}</p></div>
     </div></div>
    </section>
    <section class="uno-homepage__brand" id="about-uno" aria-label="About UNO Entertainment">
     <div class="uno-homepage__brand-grid"><div class="uno-homepage__brand-copy">
      <p class="uno-homepage__section-label">${esc(brandData.label)}</p>
      <h2 class="uno-homepage__brand-words" aria-label="UNIQUE ONE">${brandData.words.map(w=>`<span class="uno-homepage__brand-word">${w.parts.map(p=>`<span${p.accent?' class="uno-homepage__word-accent"':''}>${esc(p.text)}</span>`).join('')}</span>`).join('')}</h2>
-     <div class="uno-homepage__brand-bottom"><button type="button" class="uno-homepage__text-link uno-homepage__about" data-home-action="about">${esc(brandData.aboutLabel)}${arrow}</button><div class="uno-homepage__socials" aria-label="공식 소셜 채널">${socialLinks.map(s=>`<a href="${esc(s.url)}" aria-label="${esc(s.name)}" ${s.url==='#'?`data-home-action="social" data-channel="${esc(s.name)}"`:'target="_blank" rel="noopener noreferrer"'}><svg viewBox="0 0 24 24" aria-hidden="true">${socials[s.icon]||''}</svg></a>`).join('')}</div></div>
-    </div><div class="uno-homepage__brand-symbol" style="--uno-brand-symbol:url('${esc(brandData.symbol)}')" role="img" aria-label="UNO 심볼"></div></div>
+     <div class="uno-homepage__brand-bottom"><button type="button" class="uno-homepage__text-link uno-homepage__about" data-home-action="about">${esc(brandData.aboutLabel)}${arrow}</button><div class="uno-homepage__socials" aria-label="공식 소셜 채널">${socialLinks.map(s=>`<a href="${esc(s.url)}" aria-label="${esc(s.name)}" ${s.url==='#'?`data-home-action="social" data-channel="${esc(s.name)}"`:'target="_blank" rel="noopener noreferrer"'}>${s.image?`<img src="${esc(s.image)}" alt="" aria-hidden="true">`:`<svg viewBox="0 0 24 24" aria-hidden="true">${socials[s.icon]||''}</svg>`}</a>`).join('')}</div></div>
+    </div><div class="uno-homepage__brand-symbol"><img src="${esc(brandData.symbol)}" alt="UNO 심볼" draggable="false"></div></div>
    </section>
   </main>
   <footer class="uno-homepage__footer"><div class="uno-homepage__footer-brand"><p class="uno-homepage__footer-name">${esc(footerData.name)}</p><p class="uno-homepage__footer-tagline">${esc(footerData.tagline)}</p></div><div class="uno-homepage__footer-right"><div class="uno-homepage__footer-links">${footerData.links.map(l=>`<button type="button" data-home-action="${esc(l.action)}">${esc(l.label)}</button>`).join('')}</div><p class="uno-homepage__copyright"><span>${esc(footerData.notice)}</span><span>${esc(footerData.copyright)}</span></p></div></footer>
-  <button type="button" class="uno-homepage__top" data-home-action="top" data-visible="false" data-archive="false" aria-label="맨 위로 이동" title="TOP"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M12 20V4m-6 6 6-6 6 6" stroke="currentColor" stroke-width="1.4"/></svg></button>
+  <button type="button" class="uno-homepage__top" data-home-action="top" data-visible="false" data-archive="false" data-footer="false" aria-label="맨 위로 이동" title="TOP"><img src="${esc(uiAssets.topChevron)}" alt="" aria-hidden="true"><span class="uno-homepage__top-label" aria-hidden="true">TOP</span></button>
   <dialog class="uno-homepage__dialog" aria-labelledby="uno-home-dialog-title"><button type="button" class="uno-homepage__dialog-close" data-home-action="close-dialog" aria-label="닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 14 14M19 5 5 19" stroke="currentColor" stroke-width="1.2"/></svg></button><div class="uno-homepage__dialog-content"></div></dialog>`;
  }
  bind(){
@@ -103,5 +104,5 @@ export class UnoHomepage{
   const text=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//UNO Entertainment//Live Schedule//KO','BEGIN:VEVENT',`UID:uno-live-${stamp(start)}@calendar.invalid`,`DTSTAMP:${stamp(new Date())}`,`DTSTART:${stamp(start)}`,`DTEND:${stamp(end)}`,`SUMMARY:${safe(upcomingLiveData.calendarTitle)}`,`DESCRIPTION:${safe(upcomingLiveData.description)}`,'BEGIN:VALARM','TRIGGER:-PT10M','ACTION:DISPLAY',`DESCRIPTION:${safe(upcomingLiveData.calendarTitle)}`,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
   if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.calendarUrl=URL.createObjectURL(new Blob([text],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=this.calendarUrl;link.download='uno-jena-live.ics';link.click();
  }
- destroy(){this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
+ destroy(){this.carousel.destroy();this.abort.abort();this.archiveObserver.disconnect();this.footerObserver.disconnect();this.railAnimation?.cancel();cancelAnimationFrame(this.scrollFrame);if(this.calendarUrl)URL.revokeObjectURL(this.calendarUrl);this.archive.destroy();if(this.$('dialog.uno-homepage__dialog').open)this.$('dialog.uno-homepage__dialog').close()}
 }
