@@ -9,7 +9,7 @@ export const participationData = {
   pageSize: 8,
   pageCount: 5, // Pages 2–5 await the additional content.
   items: [
-   {id:'arcade',title:'아케이드,핑크,캐주얼',votes:1923903},
+   {id:'arcade',voteEnabled:true,title:'아케이드,핑크,캐주얼',votes:1923903},
    {id:'hyperpop',title:'퍼플,라임 그린,하이퍼팝,Y2K',votes:1453773},
    {id:'christmas',title:'겨울,크리스마스',votes:976325},
    {id:'black',title:'YG,블랙,강함',votes:927512},

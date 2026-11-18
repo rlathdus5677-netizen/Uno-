@@ -228,3 +228,37 @@
 @media(max-width:1100px){.uno-participation{padding:60px 32px 40px}.uno-participation__content h2{font-size:32px}.uno-participation__toolbar{flex-wrap:wrap;margin-bottom:40px}.uno-participation__grid{gap:30px 20px}}
 @media(max-width:800px){.uno-participation__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.uno-participation__content h2{font-size:28px}.uno-participation__sort{gap:8px;flex-wrap:wrap}.uno-participation__sort button{min-width:72px}.uno-participation__toolbar>p{font-size:13px}}
 @media(max-width:480px){.uno-participation{width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:58px 20px 30px;border-radius:24px}.uno-participation__content h2{font-size:24px;margin-bottom:28px}.uno-participation__toolbar{gap:20px;margin-bottom:28px}.uno-participation__sort{gap:6px}.uno-participation__sort button{min-width:0;padding:0 12px}.uno-participation__sort button:last-child{min-width:0}.uno-participation__grid{gap:24px 14px}.uno-participation__card-copy{padding:10px}.uno-participation__card h3{font-size:11px}.uno-participation__card p{font-size:10px}.uno-participation__pages{margin-top:32px}}
+
+/* The first outfit's transparent action covers the card; its heart stays separate. */
+.uno-participation__choose{position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;background:transparent;cursor:pointer}
+.uno-participation__choose:focus-visible{outline-offset:-3px!important}
+.uno-participation__card:has(.uno-participation__choose) .uno-participation__favorite{z-index:2}
+
+/* Independent top-layer completion dialog. Existing page/modal geometry is unchanged. */
+.uno-vote-complete{--vote-purple:#7159ff;box-sizing:border-box;width:min(500px,calc(100vw - 32px));height:548px;max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:32px 36px 36px;border:0;border-radius:34px;background:#fff;color:#090909;box-shadow:0 14px 36px #00000024;overflow:auto;overscroll-behavior:contain;font-family:Pretendard,Arial,sans-serif;z-index:2}
+.uno-vote-complete[open]{display:flex;flex-direction:column;align-items:stretch;gap:28px}
+.uno-vote-complete::backdrop{background:#0007}
+.uno-vote-complete *{box-sizing:border-box}
+.uno-vote-complete button{border:0;cursor:pointer;font-family:inherit}
+.uno-vote-complete button:focus-visible{outline:2px solid var(--vote-purple);outline-offset:4px}
+.uno-vote-complete__header{display:flex;justify-content:flex-end;flex-shrink:0;height:24px}
+.uno-vote-complete__close{display:block;width:24px;height:24px;padding:0;background:transparent}
+.uno-vote-complete__close img{display:block}
+.uno-vote-complete__body{display:flex;flex-direction:column;gap:28px;flex-shrink:0}
+.uno-vote-complete__summary{display:flex;flex-direction:column;gap:24px}
+.uno-vote-complete__message{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.uno-vote-complete__icon{display:block;flex-shrink:0}
+.uno-vote-complete__message>div{width:100%}
+.uno-vote-complete h2{margin:0;font-size:28px;font-weight:700;line-height:33px}
+.uno-vote-complete__message p{margin:3px 0 0;font-size:14px;font-weight:400;line-height:22px;color:#858585}
+.uno-vote-complete__selection{display:flex;flex-direction:column;gap:10px;padding:20px;border-radius:16px;background:#f6f6f6}
+.uno-vote-complete__selection-label{margin:0;font-size:12px;line-height:14px;font-weight:400;color:#858585}
+.uno-vote-complete__selection-row{display:flex;align-items:center;gap:12px}
+.uno-vote-complete__heart{display:flex;align-items:center;justify-content:center;flex:0 0 32px;height:32px;border-radius:16px;background:var(--vote-purple);color:#fff;font-family:'Noto Sans KR',Pretendard,sans-serif;font-size:15px;font-weight:700;line-height:18px}
+.uno-vote-complete__selection-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}
+.uno-vote-complete h3{margin:0;font-size:14px;font-weight:700;line-height:17px}
+.uno-vote-complete__selection-copy p{margin:0;color:#858585;font-size:11px;font-weight:400;line-height:13px}
+.uno-vote-complete__event{display:flex;align-items:center;gap:10px;margin:0;min-height:17px}
+.uno-vote-complete__event>span{color:var(--vote-purple);font-family:'Noto Sans KR',Pretendard,sans-serif;font-size:14px;font-weight:700;line-height:17px}
+.uno-vote-complete__event strong{font-size:13px;font-weight:700;line-height:16px}
+.uno-vote-complete__confirm{width:100%;height:52px;border-radius:26px;background:var(--vote-purple);color:#fff;font-size:20px;font-weight:700;line-height:24px}
