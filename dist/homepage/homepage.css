@@ -13,7 +13,7 @@
 .uno-homepage__hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
 .uno-homepage__hero:after{content:'';position:absolute;left:0;top:calc(var(--hero-height) - 345px);width:100%;height:345px;background:linear-gradient(to top,rgba(6,0,18,.6) 48.025%,rgba(42,2,120,0) 94.256%);filter:blur(132.5px);mix-blend-mode:multiply;z-index:-1;pointer-events:none}
 .uno-homepage__live-label{position:absolute;top:70px;left:var(--page-gutter);font-size:12px;font-weight:700;line-height:1.35;letter-spacing:2px;margin:0}
-.uno-homepage__live-label i{position:absolute;left:-18px;top:-8px;width:10px;height:10px;border-radius:50%;background:#b8a2fb}
+.uno-homepage__live-label i{position:absolute;left:-18px;top:-8px;width:10px;height:10px;border-radius:50%;background:#b7ff3c}
 .uno-homepage__hero-copy{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--hero-height) - 321px);width:346px;max-width:calc(100% - 48px);text-align:center}
 .uno-homepage__hero h1{font-size:58px;line-height:1.11;font-weight:var(--weight-heading);letter-spacing:0;white-space:pre-line;margin:0 0 10px}
 .uno-homepage__hero-meta{font-size:16px;line-height:1.35;letter-spacing:0;margin:0 0 30px;color:#d6d6d6}
@@ -140,3 +140,10 @@
 .uno-homepage__upcoming .uno-homepage__section-label,.uno-homepage__upcoming .uno-homepage__schedule-label,.uno-homepage__upcoming .uno-homepage__schedule-notice{color:var(--live-muted)}
 .uno-homepage__upcoming .uno-homepage__upcoming-headline,.uno-homepage__upcoming .uno-homepage__date,.uno-homepage__upcoming .uno-homepage__time,.uno-homepage__upcoming .uno-homepage__schedule-title{color:var(--uno-white)}
 .uno-homepage__upcoming .uno-homepage__schedule-description{color:#c9c5cf}
+
+/* Five complete desktop cards, including the existing center enlargement.
+   Total visual width = 5.20322 cards + four gaps; 6px breathing room per edge. */
+@media(min-width:1200px){
+ .uno-homepage__rail{--process-card-width:min(259.601px,calc((100vw - 2*var(--page-gutter) - 4*31.631px - 12px)/5.20322));width:min(var(--content-width),calc(5.20322*259.601px + 4*31.631px + 12px));margin-inline:auto}
+ .uno-homepage__process-card{display:flex;flex-direction:column;height:342.411px}
+}
