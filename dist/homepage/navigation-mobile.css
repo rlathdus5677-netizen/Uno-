@@ -65,3 +65,11 @@
  .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__media{position:relative;top:auto;right:auto;width:94%;order:2}
  .uno-homepage__archive .comeback-project[data-mode=behind] .comeback-project__note{--cp-note-row-follow:0;position:relative;top:auto;left:3%;right:auto;translate:none;width:94%;max-width:none;order:3;margin-top:24px}
 }
+
+/* Shared Desktop entry points; the existing mobile header stays logo + hamburger. */
+.uno-homepage__desktop-nav,.uno-homepage__desktop-login{display:none}
+.uno-homepage__header-actions{display:flex;align-items:center;gap:16px}
+@media(min-width:1025px){
+ .uno-homepage__desktop-nav{display:flex}
+ .uno-homepage__desktop-login{display:inline-flex;align-items:center;justify-content:center}
+}

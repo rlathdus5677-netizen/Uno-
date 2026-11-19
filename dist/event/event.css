@@ -97,3 +97,15 @@ html{scroll-behavior:smooth}body{margin:0;background:#202124}
 .event-dialog h2{font-size:21px;line-height:1.35}
 .event-dialog p{margin:16px 0 24px!important;font-size:14px;line-height:1.5;white-space:pre-line}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Desktop shares site navigation; the existing EVENT content remains a centered fallback.
+   A future Desktop design can extend these sections on this same /event/ route. */
+@media(min-width:1025px){
+ .uno-event-page{max-width:none}
+ .uno-event-page>main,.uno-event-page>.event-footer{width:100%;max-width:480px;margin-inline:auto}
+ .uno-event-page .uno-homepage__header{height:var(--header-height);padding:1px var(--page-gutter) 0}
+ .uno-event-page .uno-homepage__logo{color:#000}
+ .uno-event-page .uno-homepage__logo span{display:inline}
+ .uno-event-page .uno-homepage__desktop-nav a{color:var(--uno-muted)}
+ .uno-event-page .uno-homepage__desktop-nav a[aria-current=page],.uno-event-page .uno-homepage__desktop-nav a:hover{color:var(--uno-purple)}
+}

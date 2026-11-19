@@ -12,7 +12,7 @@ export class EventPage{
   this.menu.dialog.querySelector('[data-home-action=event]').setAttribute('aria-current','page');
   this.bind();this.updateCountdown();this.timer=setInterval(()=>this.updateCountdown(),1000);
  }
- render(){this.root.innerHTML=`${renderSiteHeader({homeHref:homeUrl('#home'),compact:true})}
+ render(){this.root.innerHTML=`${renderSiteHeader({homeHref:homeUrl('#home'),homeBase:homeUrl(''),activePage:'event',compact:true})}
  <main>
   <section class="event-hero" aria-labelledby="event-title">
    <img class="event-hero__background" src="${data.hero}" alt="보라색 봉투 안의 JENA 콘서트 티켓" fetchpriority="high">
@@ -43,7 +43,7 @@ export class EventPage{
    const control=event.target.closest('[data-home-action]');if(control){const action=control.dataset.homeAction;
     if(action==='toggle-menu'){this.menu.open();return;}
     if(action==='navigate'){event.preventDefault();this.menu.close();location.assign(homeUrl(control.dataset.target));return;}
-    if(action==='event'){this.menu.close();return;}
+    if(action==='event'){event.preventDefault();this.menu.close();return;}
     if(action==='login'){this.menu.close();this.openDialog('LOGIN','로그인 기능을 준비하고 있어요.');return;}
    }
    if(event.target.closest('[data-event-vote]')){const mood=data.moods.find(m=>m.id===this.selectedMood);this.openDialog('투표 기능을 준비 중이에요.',`선택한 무드: ${mood.title}\n현재는 투표와 티켓 추첨 응모가 접수되지 않습니다.`);}

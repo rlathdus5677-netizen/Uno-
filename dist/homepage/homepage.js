@@ -77,7 +77,7 @@ export class UnoHomepage{
    const control=event.target.closest('[data-home-action]');if(!control)return;
    switch(control.dataset.homeAction){
     case 'toggle-menu':this.updateScrollUI();this.menu.open();break;
-    case 'event':this.menu.close();location.assign(new URL('../event/',import.meta.url).href);break;
+    case 'event':event.preventDefault();this.menu.close();location.assign(new URL('../event/',import.meta.url).href);break;
     case 'navigate':{event.preventDefault();this.menu.close();if(control.dataset.target==='#home')this.eventPopup.openIfAllowed();cancelAnimationFrame(this.archiveNavFrame);const target=this.$(control.dataset.target);target?.scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'start'});history.replaceState(null,'',control.dataset.target);if(control.dataset.target==='#comeback-archive')this.openArchiveBehind();this.updateScrollUI();break;}
     case 'top':cancelAnimationFrame(this.archiveNavFrame);window.scrollTo({top:0,behavior:this.motion.matches?'instant':'smooth'});break;
     case 'process-all':event.preventDefault();this.activeCategory='all';this.renderCards();this.$('#join').scrollIntoView({behavior:this.motion.matches?'instant':'smooth',block:'center'});this.$('[data-category=all]').focus({preventScroll:true});break;
@@ -133,11 +133,11 @@ export class UnoHomepage{
   // Keep the mobile TOP button in the compact footer's clear upper-right area.
   const topButton=this.$('.uno-homepage__top'),footerLinksTop=this.$('.uno-homepage__footer-links').getBoundingClientRect().top;
   if(innerWidth<=650)topButton.style.setProperty('--footer-top-bottom',`${Math.max(16,innerHeight-footerLinksTop+8)}px`);else topButton.style.removeProperty('--footer-top-bottom');
-  const links=[...this.root.querySelectorAll('.uno-homepage__nav a')],probe=Math.min(innerHeight*.35,260);let active=links[0];
+  const links=[...this.root.querySelectorAll('.uno-homepage__nav a')].filter(link=>link.dataset.target),probe=Math.min(innerHeight*.35,260);let active=links[0];
   links.forEach(link=>{const section=this.$(link.dataset.target);if(section&&section.getBoundingClientRect().top<=probe)active=link;});
   const last=links.at(-1),lastSection=last&&this.$(last.dataset.target);
   if(lastSection&&lastSection.getBoundingClientRect().top<innerHeight&&scrollY+innerHeight>=document.documentElement.scrollHeight-2)active=last;
-  links.forEach(link=>{if(link===active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
+  links.forEach(link=>{if(link.dataset.target===active?.dataset.target)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
  }
  openDialog(title,body,kicker=''){this.$('.uno-homepage__dialog-content').innerHTML=`${kicker?`<p class="uno-homepage__dialog-kicker">${esc(kicker)}</p>`:''}<h2 id="uno-home-dialog-title">${esc(title)}</h2>${body}`;this.$('dialog.uno-homepage__dialog').showModal()}
  downloadCalendar(){
