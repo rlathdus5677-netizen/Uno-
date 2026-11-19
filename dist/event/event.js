@@ -15,7 +15,7 @@ export class EventPage{
  render(){this.root.innerHTML=`${renderSiteHeader({homeHref:homeUrl('#home'),homeBase:homeUrl(''),activePage:'event',compact:true})}
  <main>
   <section class="event-hero" aria-labelledby="event-title">
-   <img class="event-hero__background" src="${data.hero}" alt="보라색 봉투 안의 JENA 콘서트 티켓" fetchpriority="high">
+   <picture class="event-media"><source media="(min-width:1025px)" srcset="${data.heroDesktop}"><img class="event-hero__background" src="${data.hero}" alt="보라색 봉투 안의 JENA 콘서트 티켓" fetchpriority="high"></picture>
    <div class="event-hero__brand"><img src="${data.logo}" alt="UNO"><span>ENTERTAINMENT</span></div>
    <div class="event-hero__intro"><div class="event-hero__eyebrow"><span>UNO 이벤트</span></div>
     <h1 id="event-title"><em>티켓값</em>은 <em>UNO</em>가 낼게</h1>
@@ -33,7 +33,7 @@ export class EventPage{
    <fieldset class="event-moods"><legend class="event-sr">투표할 컴백 무드 선택</legend>${data.moods.map((m,i)=>`<label class="event-mood"><input type="radio" name="mood" value="${m.id}" ${i===0?'checked':''}><img class="event-mood__image" src="${m.image}" style="object-position:${m.imagePosition}" alt="${esc(m.title)} 무드 이미지"><span class="event-mood__copy"><span class="event-mood__meta">${m.label}</span><strong>${esc(m.title)}</strong><span class="event-mood__description">${esc(m.description)}</span></span><span class="event-mood__indicator" aria-hidden="true"></span></label>`).join('')}</fieldset>
    <button class="event-primary" type="button" data-event-vote>이 무드에 투표하기</button><p class="event-vote__count">지금까지 ${data.participationCount}명이 참여했어요</p>
   </section>
-  <section class="event-benefit" aria-labelledby="benefit-title"><img class="event-benefit__light" src="${data.light}" alt="" aria-hidden="true"><div class="event-benefit__eyebrow"><p>EVENT BENEFIT</p><p>JENA CONCERT TICKET</p></div><img class="event-benefit__ticket" src="${data.ticket}" alt="JENA 콘서트 티켓"><h2 id="benefit-title">티켓값은<br><em>UNO</em>가 낼게</h2><div class="event-benefit__detail"><span>당첨 혜택</span><strong>JENA 콘서트 티켓</strong></div></section>
+  <section class="event-benefit" aria-labelledby="benefit-title"><img class="event-benefit__light" src="${data.light}" alt="" aria-hidden="true"><div class="event-benefit__eyebrow"><p>EVENT BENEFIT</p><p>JENA CONCERT TICKET</p></div><picture class="event-media"><source media="(min-width:1025px)" srcset="${data.ticketDesktop}"><img class="event-benefit__ticket" src="${data.ticket}" alt="JENA 콘서트 티켓"></picture><h2 id="benefit-title">티켓값은<br><em>UNO</em>가 낼게</h2><div class="event-benefit__detail"><span>당첨 혜택</span><strong>JENA 콘서트 티켓</strong></div></section>
   <section class="event-notice" aria-labelledby="notice-title"><p class="event-label">EVENT NOTICE</p><h2 id="notice-title"><img src="${data.warning}" alt="" aria-hidden="true">꼭 확인해주세요</h2><ul>${data.notices.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></section>
   <section class="event-final" aria-labelledby="final-title"><p class="event-label">READY TO VOTE?</p><h2 id="final-title">당신의 한 표로<br>JENA의 다음 장면을 완성하세요.</h2><a class="event-primary" href="${homeUrl('#process')}">UNO에서 투표하러 가기<img src="${data.arrow}" alt="" aria-hidden="true"></a><p class="event-final__notice">세 번째 PROCESS 섹션에서 참가하실 수 있습니다.</p></section>
  </main><footer class="event-footer"><p>UNO ENTERTAINMENT</p><p>UNIQUE + ONE</p></footer>
