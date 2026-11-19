@@ -88,3 +88,15 @@
  .event-final__notice{grid-area:note;justify-self:start;max-width:380px;font-size:12px;line-height:1.6}
  .event-footer{padding-block:var(--event-space-4);font-size:11px;line-height:1.4}
 }
+
+/* Mobile BENEFIT only — Figma 4105:881 (375 x 651). The existing ticket
+   asset and natural document flow are retained; Desktop rules above are untouched. */
+@media(max-width:767px){
+ .event-benefit{min-height:0;padding: min(118.666667vw,569.6px) 24px 36px}
+ .event-benefit__ticket{top:0;left:50%;translate:-50% 0;width:min(100%,480px);height:auto}
+ .event-benefit__eyebrow{top:36px;right:24px;font-size:11px;line-height:13px;letter-spacing:0}
+ .event-benefit__eyebrow p+p{margin-top:3px;letter-spacing:0}
+ .event-benefit h2{font-size:44px;line-height:1.14;letter-spacing:0}
+ .event-benefit__detail{margin-top:12px;min-height:58px;padding:18px 0}
+ .event-benefit__detail strong{color:var(--event-lime)}
+}

@@ -1,5 +1,6 @@
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const bannerUrl=new URL('./assets/event/uno-event-banner.jpg',import.meta.url).href;
+const bannerUrl=new URL('./assets/event/popup-envelope.png',import.meta.url).href;
+const logoUrl=new URL('./assets/figma/header-logo-latest.svg',import.meta.url).href;
 const STORAGE_KEY='uno-event-popup-skip';
 const storage={
  get(){try{return sessionStorage.getItem(STORAGE_KEY)==='1'}catch{return false}},
@@ -14,9 +15,16 @@ export class EventPopup{
   this.onVote=onVote;this.abort=new AbortController();
   const dialog=this.dialog=document.createElement('dialog');
   dialog.className='uno-event';dialog.tabIndex=-1;dialog.setAttribute('aria-labelledby','uno-event-title');
-  dialog.innerHTML=`<h2 id="uno-event-title" class="uno-event__sr">UNO 이벤트: 티켓값은 UNO가 낼게</h2>
-   <button type="button" class="uno-event__close" data-event-action="close" aria-label="이벤트 팝업 닫기">${closeIcon}</button>
-   <button type="button" class="uno-event__banner" data-event-action="vote" aria-label="투표하러가기"><img src="${esc(bannerUrl)}" alt="UNO 이벤트. 티켓값은 UNO가 낼게. JENA의 컴백무드에 한 표, 내 손엔 공짜표. 11월 27일부터 11월 30일까지. 투표하러가기" draggable="false"></button>
+  dialog.innerHTML=`<button type="button" class="uno-event__close" data-event-action="close" aria-label="이벤트 팝업 닫기">${closeIcon}</button>
+   <div class="uno-event__banner">
+    <img class="uno-event__art" src="${esc(bannerUrl)}" alt="보라색 봉투에 담긴 JENA 콘서트 티켓" draggable="false">
+    <div class="uno-event__brand"><img src="${esc(logoUrl)}" alt="UNO"><span>ENTERTAINMENT</span></div>
+    <p class="uno-event__eyebrow">UNO 이벤트</p>
+    <h2 id="uno-event-title" class="uno-event__title"><em>티켓값</em>은 <em>UNO</em>가 낼게</h2>
+    <p class="uno-event__copy">JENA의 컴백무드에 <mark>한 표,</mark> 내 손엔 <mark>꽁짜표</mark></p>
+    <p class="uno-event__period">11.27 - 12.24</p>
+    <button type="button" class="uno-event__cta" data-event-action="vote">투표하러가기<svg viewBox="0 0 12 28" aria-hidden="true"><path d="m2 2 8 12-8 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+   </div>
    <div class="uno-event__footer"><label class="uno-event__skip"><input type="checkbox" data-event-skip><span>오늘은 그만 보기</span></label></div>`;
   root.append(dialog);
   const signal=this.abort.signal;

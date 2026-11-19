@@ -302,14 +302,31 @@
 }
 
 /* First-visit event popup. */
-.uno-event{box-sizing:border-box;position:relative;width:min(440px,calc(100vw - 32px),calc((100dvh - 88px) * .6966));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:0;border-radius:20px;background:#fff;color:#090909;overflow:hidden;box-shadow:0 14px 36px #0005;font-family:Pretendard,Arial,sans-serif}
+.uno-event{box-sizing:border-box;position:relative;width:min(560px,calc(100vw - 32px),calc((100dvh - 88px) * .7011686));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:0;border-radius:20px;background:#fff;color:#090909;overflow:hidden;box-shadow:0 14px 36px #0005;font-family:Pretendard,Arial,sans-serif}
 .uno-event:focus{outline:0}
 .uno-event::backdrop{background:#000b}
 .uno-event *{box-sizing:border-box}
 .uno-event[open]{display:flex;flex-direction:column}
 .uno-event__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.uno-event__banner{display:block;width:100%;padding:0;border:0;background:#4b2285;cursor:pointer;line-height:0}
-.uno-event__banner img{display:block;width:100%;height:auto}
+/* Figma 4105:832: artwork stays an image; copy and CTA remain accessible HTML. */
+.uno-event__banner{container-type:inline-size;position:relative;flex:none;width:100%;aspect-ratio:840/1198;background:#4b2285;color:white;line-height:1.35}
+.uno-event__art{display:block;width:100%;height:auto}
+.uno-event__banner :is(h2,p){margin:0}
+.uno-event__brand{position:absolute;left:5.14%;top:3%;display:flex;align-items:center;gap:.65cqw}
+.uno-event__brand img{display:block;width:7.59cqw;height:auto;filter:brightness(0) invert(1)}
+.uno-event__brand span{font-size:1.57cqw;font-weight:500;letter-spacing:.25cqw}
+.uno-event__eyebrow{position:absolute;top:10.815%;left:35.714%;width:28.572%;height:5.207%;display:grid;place-items:center;border:1px solid #ffffffc9;border-radius:999px;font-size:3.808cqw;font-weight:500}
+.uno-event__eyebrow:before,.uno-event__eyebrow:after,.uno-event__period:before,.uno-event__period:after{content:'';position:absolute;top:50%;width:12.4cqw;border-top:1px solid #ffffff40}
+.uno-event__eyebrow:before,.uno-event__period:before{right:calc(100% + 1.65cqw)}
+.uno-event__eyebrow:after,.uno-event__period:after{left:calc(100% + 1.65cqw)}
+.uno-event__title{position:absolute;top:19.225%;left:3.6%;width:92.8%;white-space:nowrap;font-size:10.1cqw;font-weight:900;font-style:italic;line-height:1.12;letter-spacing:-.45cqw;text-align:center}
+.uno-event__title em{font-style:inherit;color:#a6ff00}
+.uno-event__copy{position:absolute;top:28.24%;left:0;width:100%;text-align:center;white-space:nowrap;font-size:4.19cqw;font-weight:500;line-height:1.35}
+.uno-event__copy mark{padding:.25cqw .3cqw;background:#a6ff00;color:#421c66;font-weight:700}
+.uno-event__period{position:absolute;top:78.438%;left:50%;translate:-50% 0;font-size:5.143cqw;font-weight:500;white-space:nowrap;line-height:1.35}
+.uno-event__cta{position:absolute;left:23.333%;top:85.581%;width:53.43%;height:8.411%;display:flex;align-items:center;justify-content:center;gap:1.428cqw;border:0;border-radius:999px;background:#ffe5ff;color:#421c66;font:700 5.714cqw/1.35 Pretendard,Arial,sans-serif;cursor:pointer}
+.uno-event__cta svg{width:1.7cqw;height:3.7cqw}
+.uno-event__cta:focus-visible{outline:2px solid #a6ff00;outline-offset:3px}
 .uno-event__close{position:absolute;top:10px;right:10px;z-index:2;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#00000059;color:#fff;cursor:pointer;display:grid;place-items:center}
 .uno-event__close svg{display:block;width:22px;height:22px}
 .uno-event__banner:focus-visible,.uno-event__close:focus-visible,.uno-event__skip:has(input:focus-visible){outline:2px solid #7c61ff;outline-offset:-4px}
