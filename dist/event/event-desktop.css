@@ -89,14 +89,19 @@
  .event-footer{padding-block:var(--event-space-4);font-size:11px;line-height:1.4}
 }
 
-/* Mobile BENEFIT only — Figma 4105:881 (375 x 651). The existing ticket
-   asset and natural document flow are retained; Desktop rules above are untouched. */
+/* Mobile BENEFIT — measured from Figma 4105:881 (375 x 651).
+   Artwork includes both 4105:884 (50% rear ticket) and 4105:885 (front).
+   Headline y445, divider y557/615, guides x24/351, bottom breathing room 36.
+   Desktop rules and the existing front-ticket asset remain unchanged. */
 @media(max-width:767px){
  .event-benefit{min-height:0;padding: min(118.666667vw,569.6px) 24px 36px}
+ /* The rear Figma image is decorative; its paint already includes 50% opacity.
+    Both cropped image layers share the same origin and responsive artwork width. */
+ .event-benefit::before{content:'';position:absolute;top:0;left:max(0px,calc((100% - 480px)/2));width:min(97.866667%,469.76px);aspect-ratio:367/464;background:url('./assets/benefit-ticket-back-mobile.png') left top/100% auto no-repeat;z-index:-1;pointer-events:none}
  .event-benefit__ticket{top:0;left:50%;translate:-50% 0;width:min(100%,480px);height:auto}
- .event-benefit__eyebrow{top:36px;right:24px;font-size:11px;line-height:13px;letter-spacing:0}
+ .event-benefit__eyebrow{top:36px;right:24px;font-size:11px;line-height:13px;letter-spacing:0;color:#a7ff00}
  .event-benefit__eyebrow p+p{margin-top:3px;letter-spacing:0}
- .event-benefit h2{font-size:44px;line-height:1.14;letter-spacing:0}
+ .event-benefit h2{font-size:44px;line-height:50px;letter-spacing:0}
  .event-benefit__detail{margin-top:12px;min-height:58px;padding:18px 0}
  .event-benefit__detail strong{color:var(--event-lime)}
 }

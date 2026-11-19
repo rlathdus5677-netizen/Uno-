@@ -3,7 +3,7 @@ const sharedAsset=name=>new URL(`../homepage/assets/figma/${name}`,import.meta.u
 export const eventData={
  startsAt:'2026-11-27T00:00:00+09:00',endsAt:'2026-12-24T23:59:59+09:00',period:'11.27 - 12.24',
  hero:asset('hero-background.png'),heroDesktop:asset('hero-desktop-original.png'),logo:asset('hero-logo.svg'),chevron:asset('hero-chevron.svg'),
- ticket:asset('ticket.png'),ticketDesktop:asset('benefit-ticket-original.png'),light:asset('benefit-light.svg'),warning:asset('warning.svg'),arrow:asset('arrow-right.svg'),
+ ticket:asset('ticket.png'),ticketMobile:asset('benefit-ticket-front-mobile-2x.png'),ticketDesktop:asset('benefit-ticket-original.png'),light:asset('benefit-light.svg'),warning:asset('warning.svg'),arrow:asset('arrow-right.svg'),
  // Design sample only: a live vote-count endpoint has not been configured.
  participationCount:'1,734,031',
  moods:[
