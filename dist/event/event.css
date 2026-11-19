@@ -98,14 +98,33 @@ html{scroll-behavior:smooth}body{margin:0;background:#202124}
 .event-dialog p{margin:16px 0 24px!important;font-size:14px;line-height:1.5;white-space:pre-line}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* Desktop shares site navigation; the existing EVENT content remains a centered fallback.
-   A future Desktop design can extend these sections on this same /event/ route. */
+/* Desktop shares site navigation. The responsive content fallback is defined below. */
 @media(min-width:1025px){
  .uno-event-page{max-width:none}
- .uno-event-page>main,.uno-event-page>.event-footer{width:100%;max-width:480px;margin-inline:auto}
  .uno-event-page .uno-homepage__header{height:var(--header-height);padding:1px var(--page-gutter) 0}
  .uno-event-page .uno-homepage__logo{color:#000}
  .uno-event-page .uno-homepage__logo span{display:inline}
  .uno-event-page .uno-homepage__desktop-nav a{color:var(--uno-muted)}
  .uno-event-page .uno-homepage__desktop-nav a[aria-current=page],.uno-event-page .uno-homepage__desktop-nav a:hover{color:var(--uno-purple)}
+}
+
+/* Responsive fallback: full-width section surfaces, bounded existing content.
+   Mobile <=650px retains the exact 375px design; no alternate route or card grid. */
+@media(min-width:651px){
+ .uno-event-page{--event-content-width:960px;--event-reading-width:760px;--event-gutter:clamp(28px,4.2vw,64px);max-width:none}
+ .uno-event-page>main,.uno-event-page>.event-footer{width:100%;max-width:none;margin-inline:0}
+ .uno-event-page main>section{width:100%}
+ .event-hero{aspect-ratio:auto;min-height:760px}
+ .event-hero__background{inset:0 auto 0 50%;translate:-50% 0;width:min(calc(100vw - 168px),700px);object-fit:cover;object-position:center;-webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent)}
+ .event-hero__brand{left:var(--event-gutter);top:24px}
+ .event-hero__intro{top:64px;left:var(--event-gutter);right:var(--event-gutter)}
+ .event-countdown{padding-inline:var(--event-gutter)}
+ .event-clock{width:100%;max-width:560px;margin-inline:auto}
+ .event-how,.event-benefit,.event-footer{padding-inline:max(var(--event-gutter),calc((100% - var(--event-content-width))/2))}
+ .event-vote,.event-notice,.event-final{padding-inline:max(var(--event-gutter),calc((100% - var(--event-reading-width))/2))}
+ .event-vote .event-primary{max-width:480px;margin-inline:auto}
+ .event-benefit__ticket{left:50%;translate:-50% 0;width:min(100%,440px)}
+ .event-benefit__eyebrow{right:max(var(--event-gutter),calc((100% - var(--event-content-width))/2))}
+ .event-benefit__light{left:calc(50% - 350px)}
+ .event-final .event-primary,.event-final__notice{width:100%;max-width:480px}
 }
