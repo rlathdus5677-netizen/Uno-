@@ -16,7 +16,7 @@
  .event-mood__description{line-height:1.5}
 }
 
-/* Desktop EVENT: current Figma 4167:1331, successor of removed 4141:30.
+/* Desktop EVENT: latest Figma 4167:1331.
    1440 x 4072; common guides x120/x1320. Reuse the existing route and controls.
    Only decorative artwork is positioned; content uses natural grid/flex flow. */
 @media(min-width:1024px){
@@ -67,17 +67,17 @@
  .event-clock small{font-size:13px;line-height:16px;letter-spacing:0;color:#b9a6ff}
  .uno-event-page .event-countdown__notice{grid-column:2;grid-row:3;margin:0;font-size:16px;line-height:19px;white-space:nowrap;color:#e8e1ff;opacity:1}
 
- .event-how{display:block;min-height:560px;padding-block:101.23px 8.62px;background:#f5f3ee;color:#202124}
+ .event-how{display:block;min-height:560px;padding-block:57.23px 52.62px;background:#f5f3ee;color:#202124}
  .event-how>.event-label{color:#6547f5;line-height:18.31px}
  .event-how h2{margin-top:9.69px;font-size:52px;font-weight:700;line-height:67.85px}
  .event-how h2 br{display:none}
- .event-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:44.15px}
+ .event-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:37.15px}
  .event-steps li{display:flex;flex-direction:column;align-items:flex-start;gap:28px;min-height:226.15px;padding:30.15px 32px 24px;border:0;border-radius:24px;background:#fff;color:#202124}
  .event-steps__number{width:48px;height:51.69px;font-size:16px;line-height:20.46px;background:#6547f5}
  .event-steps li>div{gap:11.85px}
  .event-steps li p{font-size:14px;line-height:18.31px;letter-spacing:0;color:#6b6b73}
  .event-steps h3{font-size:22px;line-height:30.77px;font-weight:700;word-break:keep-all}
- .uno-event-page .event-entry{display:flex;align-items:center;justify-content:center;width:100%;max-width:none;min-height:60.31px;margin-top:23.69px;padding:0 20px;border-radius:30px;background:#6547f5;color:#fff;font-size:20px;line-height:25.85px;font-weight:700;gap:6px}
+ .uno-event-page .event-entry{display:flex;align-items:center;justify-content:center;width:100%;max-width:none;min-height:60.31px;margin-top:30.69px;padding:0 20px;border-radius:30px;background:#6547f5;color:#fff;font-size:20px;line-height:25.85px;font-weight:700;gap:6px}
 
  .event-vote{min-height:840px;padding-block:92px 31px;background:#e8e1ff;color:#202124;text-align:center}
  .event-vote__label{width:100px;height:36px;background:#202124;color:#e8e1ff;font-size:14px;line-height:17px}
@@ -98,19 +98,19 @@
  .event-vote .event-primary{width:360px;max-width:100%;min-height:64px;margin:44px auto 0;padding:0 20px;border-radius:32px;background:#202124;font:700 20px/24px EventInter,Pretendard,sans-serif}
  .uno-event-page .event-vote__count{margin-top:24px;font-size:14px;line-height:17px;color:#6b6b73}
 
- .event-benefit{--event-benefit-unit:max(1px,var(--event-art-unit));display:block;position:relative;min-height:640px;padding-block:148px 20px;isolation:isolate;background:#100725 url('./assets/desktop-benefit-background.png') center/cover no-repeat}
+ .event-benefit{--event-benefit-unit:max(1px,var(--event-art-unit));display:block;position:relative;min-height:640px;padding-block:111px 20px;isolation:isolate;background:#100725 url('./assets/desktop-benefit-background.png') center/cover no-repeat}
  .event-benefit__light{display:none}
  .event-benefit__eyebrow{position:relative;inset:auto;text-align:left;color:#a6ff00;font-size:14px;line-height:17px;font-weight:700;letter-spacing:0;z-index:2}
  .event-benefit__eyebrow p+p{margin-top:10px;font-size:13px;line-height:16px;font-weight:700;letter-spacing:0}
  .event-benefit h2{position:relative;margin-top:19px;font-size:72px;line-height:80px;font-weight:700;letter-spacing:0;z-index:2}
  .event-benefit h2 em{color:#8f78ff;margin-right:18px}
- .event-benefit__ticket{position:absolute;top:0;left:calc(50% - 276 * var(--event-benefit-unit));translate:none;transform:none;width:calc(996 * var(--event-benefit-unit));height:auto;max-width:none;z-index:0}
- .event-benefit:before{content:'';position:absolute;top:0;left:calc(50% - 285.053 * var(--event-benefit-unit));width:calc(926 * var(--event-benefit-unit));aspect-ratio:926/640;background:url('./assets/desktop-benefit-ticket-back.png') top left/100% auto no-repeat;z-index:0;pointer-events:none}
+ .event-benefit__ticket{position:absolute;top:0;left:calc(50% - 272 * var(--event-benefit-unit));translate:none;transform:none;width:calc(992 * var(--event-benefit-unit));height:auto;max-width:none;z-index:0}
+ .event-benefit:before{content:'';position:absolute;top:0;left:calc(50% - 281.053 * var(--event-benefit-unit));width:calc(926 * var(--event-benefit-unit));aspect-ratio:926/640;background:url('./assets/desktop-benefit-ticket-back.png') top left/100% auto no-repeat;z-index:0;pointer-events:none}
  .event-benefit__detail{display:none}
  .event-benefit__desktop-info{display:block;position:relative;z-index:2;width:570px;max-width:52%;margin-top:14px;color:#c9c9d1}
  .event-benefit__desktop-info>p{font-size:18px;line-height:22px}
  .event-benefit__desktop-info dl{margin:26px 0 0;border-bottom:1px solid #ffffff40}
- .event-benefit__desktop-info dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;min-height:60px;border-top:1px solid #ffffff40;padding:18px 0}
+ .event-benefit__desktop-info dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;min-height:60px;border-top:1px solid #ffffff40;padding:17.5px 0}
  .event-benefit__desktop-info dt{font-size:15px;line-height:18px;font-weight:400}
  .event-benefit__desktop-info dd{margin:0;color:white;font-size:20px;line-height:24px;font-weight:700;text-align:right}
 
